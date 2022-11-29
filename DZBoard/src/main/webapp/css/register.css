@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+#header {
+	grid-area: header;
+}
+
+#infoTitle {
+	grid-area: infoTitle;	
+}
+
+#infoInput {
+	grid-area: infoInput;
+}
+
+#termTitle {
+	grid-area: termTitle;
+}
+
+#termCheck {
+	grid-area: termCheck;
+}
+
+body {
+	display:grid;
+	grid-template-columns: repeat(3);
+	grid-template-rows: repeat(3);
+	grid-template-areas:
+	"header header header"
+	"infoTitle infoInput infoInput"
+	"termTitle termCheck termCheck";
+}
+
+label {
+	display:block;
+}
