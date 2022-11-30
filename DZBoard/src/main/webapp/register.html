@@ -6,28 +6,32 @@
 	<link rel="stylesheet" href="css/register.css"/>
 </head>
 <body>
-<header id="header"><h1>DZBoard 회원가입</h1></header>
 	<form>
-		<section>
+		<header id="header"><h1>DZBoard 회원가입</h1></header>
+		
 		<h2 id="infoTitle">정보 입력</h2>
 		<div id="infoInput">
 			<label>
-				<input type="text" placeholder="이름"/>
+				<input type="text" placeholder="이름" id="name" name="name"/>
 			</label>
+			
 			<label>
-				<input type="text" placeholder="아이디"/>
-				<mark>아이디는 영문, 숫자만 사용하실 수 있습니다.</mark>
+				<input type="text" placeholder="아이디" id="id" name="id"/>
 			</label>
+			<mark>아이디는 영문, 숫자만 사용하실 수 있습니다.</mark>
+			
 			<label>
-				<input type="password" placeholder="비밀번호"/>
-				<address>안전한 사용을 위해 영문, 숫자, 특수문자 조합 8~15자를 사용해 주세요.</address>
+				<input type="password" placeholder="비밀번호" id="pwd" name="pwd"/>
 			</label>
+			<mark>안전한 사용을 위해 영문, 숫자, 특수문자 조합 8~15자를 사용해 주세요.</mark>
+			
 			<label>
-				<input type="password" placeholder="비밀번호 재입력"/>
-				<mark>비밀번호를 재입력해주세요.</mark>
+				<input type="password" placeholder="비밀번호 재입력" id="pwdchk" name="pwdchk"/>
 			</label>
+			<mark>비밀번호를 재입력해주세요.</mark>
+			
 			<label>
-			<select>
+			<select id="phonefirst">
 				<option selected>휴대폰 번호 선택</option>
 				<option>010</option>
 				<option>011</option>
@@ -38,9 +42,9 @@
 				<option>019</option>
 			</select>
 			-
-			<input type="number">
+			<input type="number" id="phonemid">
 			-
-			<input type="number">
+			<input type="number" id="phonelast">
 			</label>
 			<label>
 			<input type="text" placeholder="이메일">
@@ -59,8 +63,6 @@
 			</label>
 			<mark>이메일 주소를 입력해주세요.</mark>
 		</div>
-		</section>
-		<section>
 			<h2 id="termTitle">약관 동의</h2>
 			<div id="termCheck">
 			<label>
@@ -86,7 +88,6 @@
 				<input type="checkbox"/> 혜택 알림 이메일, 문자, 앱, 푸시 수신 <small>(선택)</small>
 			</label>						
 		</div>
-		</section>
 	</form>
 </body>
 </html>

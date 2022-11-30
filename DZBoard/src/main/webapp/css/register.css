@@ -2,28 +2,36 @@
 
 #header {
 	grid-area: header;
+	text-align: center;
+	margin: 5%;
 }
 
 #infoTitle {
-	grid-area: infoTitle;	
+	grid-area: infoTitle;
+	text-align: center;
+	margin: 5%;
 }
 
 #infoInput {
 	grid-area: infoInput;
+	margin: 5%;
 }
 
 #termTitle {
 	grid-area: termTitle;
+	text-align: center;
+	margin: 5%;
 }
 
 #termCheck {
 	grid-area: termCheck;
+	margin: 5%;
 }
 
-body {
+form {
 	display:grid;
-	grid-template-columns: repeat(3);
-	grid-template-rows: repeat(3);
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
 	grid-template-areas:
 	"header header header"
 	"infoTitle infoInput infoInput"
@@ -32,4 +40,21 @@ body {
 
 label {
 	display:block;
+	
+}
+input, select {
+	margin-top: 10px;
+	margin-bottom:10px;
+	height: 30px;
+}
+#name, #id, #pwd, #pwdchk {
+	width: 440px;
+}
+
+#phonefist, #phonemid, #phonelast, #email {
+	width: 136px;
+}
+
+mark {
+	font-size: 80%;
 }
