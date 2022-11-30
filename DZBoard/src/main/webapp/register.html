@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>DZBoard 회원가입</title>
 	<link rel="stylesheet" href="css/register.css"/>
+	<script type="text/javascript" src="js/register.js"></script>
 </head>
 <body>
 	<form>
@@ -18,17 +19,17 @@
 			<label>
 				<input type="text" placeholder="아이디" id="id" name="id"/>
 			</label>
-			<mark>아이디는 영문, 숫자만 사용하실 수 있습니다.</mark>
+			<mark id="markid">아이디는 영문, 숫자만 사용하실 수 있습니다.</mark>
 			
 			<label>
 				<input type="password" placeholder="비밀번호" id="pwd" name="pwd"/>
 			</label>
-			<mark>안전한 사용을 위해 영문, 숫자, 특수문자 조합 8~15자를 사용해 주세요.</mark>
+			<mark id="markpwd">안전한 사용을 위해 영문, 숫자, 특수문자 조합 8~15자를 사용해 주세요.</mark>
 			
 			<label>
 				<input type="password" placeholder="비밀번호 재입력" id="pwdchk" name="pwdchk"/>
 			</label>
-			<mark>비밀번호를 재입력해주세요.</mark>
+			<mark id="markpwdchk">비밀번호를 재입력해주세요.</mark>
 			
 			<label>
 			<select id="phonefirst">
@@ -46,7 +47,7 @@
 			-
 			<input type="number" id="phonelast">
 			</label>
-			<label>
+			<label >
 			<input type="text" placeholder="이메일">
 			@
 			<input type="hidden"/>
@@ -61,7 +62,7 @@
 				<option>직접입력</option>
 			</select>
 			</label>
-			<mark>이메일 주소를 입력해주세요.</mark>
+			<mark id="markemail">이메일 주소를 입력해주세요.</mark>
 		</div>
 			<h2 id="termTitle">약관 동의</h2>
 			<div id="termCheck">
