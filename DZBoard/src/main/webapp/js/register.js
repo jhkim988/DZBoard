@@ -34,6 +34,17 @@ const main = () => {
 		input.style['border-bottom'] = '1px solid #ddd';
 		input.style['border-left'] = '1px solid #aaa';
 	}
+	
+	const termAllSelect = document.querySelector('#termAll');
+	const terms = document.querySelectorAll('.term');
+	termAllSelect.addEventListener('click', e => {
+		terms.forEach(x => x.checked = e.target.checked);
+	});
+	
+	const emailManual = document.querySelector("#emailManual");
+	emailManual.addEventListener('change', () => {
+		console.log("SELECTED");
+	})
 }
 
 window.onload = main;

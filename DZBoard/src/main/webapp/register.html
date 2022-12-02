@@ -9,6 +9,7 @@
 <body>
 	<header id="header"><h1>DZBoard 회원가입</h1></header>
 	<form>
+		<section>
 		<h2 id="infoTitle">1. 정보 입력</h2>
 		<div id="infoInput">
 			<label>
@@ -42,9 +43,9 @@
 				<option>019</option>
 			</select>
 			-
-			<input type="number" id="phonemid">
+			<input type="number" id="phonemid" class="phone">
 			-
-			<input type="number" id="phonelast">
+			<input type="number" id="phonelast" class="phone">
 			</label>
 			<label >
 			<input type="text" placeholder="이메일">
@@ -52,13 +53,13 @@
 			<input type="hidden"/>
 			<select>
 				<option selected>선택</option>
-				<option>naver.com</option>
-				<option>hanmail.net</option>
-				<option>daum.net</option>
-				<option>nate.com</option>
-				<option>gmail.com</option>
-				<option>hot.com</option>
-				<option>직접입력</option>
+				<option value="naver.com">naver.com</option>
+				<option value="hanmail.net">hanmail.net</option>
+				<option value="daum.net">daum.net</option>
+				<option value="name.com">nate.com</option>
+				<option value="gmail.com">gmail.com</option>
+				<option value="hotmail.com">hotmail.com</option>
+				<option id="emailManual">직접입력</option>
 			</select>
 			</label>
 			<mark id="markemail">이메일 주소를 입력해주세요.</mark>
@@ -66,28 +67,35 @@
 			<h2 id="termTitle">2. 약관 동의</h2>
 			<div id="termCheck">
 			<label>
-				<input type="checkbox"/> 전체 동의
+				<input type="checkbox" id="termAll"/> 전체 동의
 			</label>
 			<hr/>
 			<label>
-				<input type="checkbox"/> DZBoard 이용약관 <small>(필수)</small>
+				<input type="checkbox" class="term required"/> DZBoard 이용약관 <small>(필수)</small>
 			</label>
 			<label>
-				<input type="checkbox"/> 전자금융거래 이용약관 <small>(필수)</small>
+				<input type="checkbox" class="term required"/> 전자금융거래 이용약관 <small>(필수)</small>
 			</label>		
 			<label>
-				<input type="checkbox"/> 개인정보 수집 및 이용 <small>(필수)</small>
+				<input type="checkbox" class="term required"/> 개인정보 수집 및 이용 <small>(필수)</small>
 			</label>
 			<label>
-				<input type="checkbox"/> 개인정보 제3자(판매자) 제공 <small>(선택)</small>
+				<input type="checkbox" class="term optional"/> 개인정보 제3자(판매자) 제공 <small>(선택)</small>
 			</label>
 			<label>
-				<input type="checkbox"/> 위치정보 이용약관 <small>(선택)</small>
+				<input type="checkbox" class="term optional"/> 위치정보 이용약관 <small>(선택)</small>
 			</label>
 			<label>
-				<input type="checkbox"/> 혜택 알림 이메일, 문자, 앱, 푸시 수신 <small>(선택)</small>
+				<input type="checkbox" class="term optional"/> 혜택 알림 이메일, 문자, 앱, 푸시 수신 <small>(선택)</small>
 			</label>						
 		</div>
+		</section>
+		<footer>
+			<input type="submit" class="button" id="register" value="회원가입">
+			<button class="button" id="cancel">취소</button>
+		</footer>
+		
 	</form>
+	
 </body>
 </html>

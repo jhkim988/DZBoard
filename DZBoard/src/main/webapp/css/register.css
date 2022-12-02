@@ -27,10 +27,12 @@
 	margin: 5%;
 }
 
-form {
+section {
+	width: 980px;
+	margin: auto;
 	display:grid;
 	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: repeat(3, 1fr);
+	grid-template-rows: repeat(2, 1fr);
 	grid-template-areas:
 	"infoTitle infoInput infoInput"
 	"termTitle termCheck termCheck";
@@ -49,6 +51,7 @@ input, select {
     border-right: 1px solid #e2e2e2;
     border-bottom: 1px solid #ddd;
     border-left: 1px solid #aaa;
+    vertical-align: middle;
 }
 #name, #id, #pwd, #pwdchk {
 	width: 440px;
@@ -56,6 +59,10 @@ input, select {
 
 #phonefist, #phonemid, #phonelast, #email {
 	width: 136px;
+	-moz-appearance: textfield;
+}
+.phone::-webkit-inner-spin-button {
+	-webkit-appearance: none;
 }
 
 mark {
@@ -64,4 +71,28 @@ mark {
 	display: none;
 	color: red;
 	background: none;
+}
+#termAll {
+	transform: scale(2);
+}
+footer {
+	text-align: center;
+}
+.button {
+	width: 215px;
+	height: 50px;
+}
+#register {
+	text-align: center;
+    font-size: 16px;
+    color: #fff;
+    background-color: #E63740;
+    border: 1px solid #E63740;	
+}
+#cancel {
+    text-align: center;
+    font-size: 16px;
+    color: #222;
+    background-color: #ffffff;
+    border: 1px solid #d6d6d6;
 }
