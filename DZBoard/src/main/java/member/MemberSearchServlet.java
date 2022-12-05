@@ -17,7 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 @WebServlet("/admin/memberList")
-public class MemberListServlet extends HttpServlet {
+public class MemberSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,7 +30,7 @@ public class MemberListServlet extends HttpServlet {
 		MemberRepository repository = new MemberRepository();
 		List<Member> list = new ArrayList<>();
 		
-		if (type == null) {
+		if ("all".equals(type)) {
 			list = repository.findMembers();
 		} else if ("id".equals(type)) {
 			list.add(repository.findOneMemberById(first));
@@ -44,7 +44,7 @@ public class MemberListServlet extends HttpServlet {
 			list = repository.findMembersByCreated(first, second);
 		} else if ("updatedAt".equals(type)) {
 			list = repository.findMembersByUpdated(first, second);
-		} else if ("authoriity".equals(type)) {
+		} else if ("authority".equals(type)) {
 			list = repository.findMembersByAuthority(first);
 		} else {
 			throw new UnsupportedOperationException();

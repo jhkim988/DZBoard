@@ -24,12 +24,12 @@ public class Member {
 	public JSONObject toJSONObject() {
 		JSONObject json = new JSONObject();
 		json.put("id", id);
-		json.put("pwd", id);
-		json.put("name", id);
-		json.put("email", id);
-		json.put("phone", id);
-		json.put("createAt", id);
-		json.put("updatedAt", id);
+		json.put("pwd", pwd);
+		json.put("name", name);
+		json.put("email", email);
+		json.put("phone", phone);
+		json.put("createdAt", createdAt.toString());
+		json.put("updatedAt", updatedAt.toString());
 		json.put("authority", authority);
 		return json;
 	}

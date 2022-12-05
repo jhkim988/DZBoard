@@ -58,6 +58,8 @@ const main = () => {
 			<td>${member.createdAt}</td>
 			<td>${member.updatedAt}</td>
 			<td>${member.authority}</td>
+			<td><a href='/DZBoard/admin/updateMember?id=${member.id}'>수정</a></td>
+			<td><a href='/DZBoard/admin/deleteMember?id=${member.id}'>삭제</a></td>
 		</tr>`;
 }
 

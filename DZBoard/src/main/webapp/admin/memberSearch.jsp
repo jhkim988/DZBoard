@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="js/admin.js"></script>
+<script type="text/javascript" src="memberSearch.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -41,6 +41,8 @@
 				<th>회원 가입 일자</th>
 				<th>최근 활동 일자</th>
 				<th>권한 레벨</th>
+				<th>수정</th>
+				<th>삭제</th>
 			</tr>
 		</thead>
 		<tbody>

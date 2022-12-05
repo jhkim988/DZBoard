@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import org.json.JSONObject;
 
 @WebServlet("/register")
-public class Register extends HttpServlet {
+public class RegisterMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

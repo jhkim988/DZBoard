@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import org.json.JSONObject;
 
 @WebServlet("/member/dupMemberCheck")
-public class DupMemberCheck extends HttpServlet {
+public class DupMemberCheckServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

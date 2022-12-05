@@ -58,6 +58,37 @@ public class MemberRepository extends Repository {
 		return findMembers("select * from tb_dzboard_member where authority = ?", level);
 	}
 	
+	public boolean deleteMemberById(String id) {
+		open();
+		try {
+			pstmt = conn.prepareStatement("delete from tb_dzboard_member where id = ?");
+			pstmt.setString(1, id);
+			return pstmt.executeUpdate() == 1;
+		} catch (Exception e) {
+			
+		} finally {
+			close();
+		}
+		return false;
+	}
+	
+	public boolean updateMember(Member member) {
+		open();
+		try {
+			pstmt = conn.prepareStatement("update tb_dzboard_member set pwd = ?, name = ?, email = ?, phone = ?, authority = ? where id = ?");
+			pstmt.setString(1, member.getPwd());
+			pstmt.setString(2, member.getName());
+			pstmt.setString(3, member.getEmail());
+			pstmt.setString(4, member.getPhone());
+			pstmt.setInt(5, member.getAuthority());
+			pstmt.setString(6, member.getId());
+			return pstmt.executeUpdate() == 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public Member resultSetToMember() {
 		try {
 			return Member.builder()
