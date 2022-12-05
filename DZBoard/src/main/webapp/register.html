@@ -13,26 +13,26 @@
 		<h2 id="infoTitle">1. 정보 입력</h2>
 		<div id="infoInput">
 			<label>
-				<input type="text" placeholder="이름" id="name" name="name"/>
+				<input type="text" placeholder="이름" id="name" name="name" class='required'/>
 			</label>
 			
 			<label>
-				<input type="text" placeholder="아이디" id="id" name="id"/>
+				<input type="text" placeholder="아이디" id="id" name="id" class='required'/>
 			</label>
 			<mark id="markid">아이디는 영문, 숫자만 사용하실 수 있습니다.</mark>
 			
 			<label>
-				<input type="password" placeholder="비밀번호" id="pwd" name="pwd"/>
+				<input type="password" placeholder="비밀번호" id="pwd" name="pwd" class='required'/>
 			</label>
 			<mark id="markpwd">안전한 사용을 위해 영문, 숫자, 특수문자 조합 8~15자를 사용해 주세요.</mark>
 			
 			<label>
-				<input type="password" placeholder="비밀번호 재입력" id="pwdchk" name="pwdchk"/>
+				<input type="password" placeholder="비밀번호 재입력" id="pwdchk" name="pwdchk" class='required'/>
 			</label>
 			<mark id="markpwdchk">비밀번호를 재입력해주세요.</mark>
 			
 			<label>
-			<select id="phonefirst">
+			<select id="phonefirst" class='required'>
 				<option selected>휴대폰 번호 선택</option>
 				<option>010</option>
 				<option>011</option>
@@ -43,15 +43,15 @@
 				<option>019</option>
 			</select>
 			-
-			<input type="number" id="phonemid" class="phone">
+			<input type="number" id="phonemid" class="phone" class='required'>
 			-
-			<input type="number" id="phonelast" class="phone">
+			<input type="number" id="phonelast" class="phone" class='required'>
 			</label>
 			<label >
-			<input type="text" placeholder="이메일">
+			<input type="text" placeholder="이메일" class='required'>
 			@
-			<input type="hidden"/>
-			<select>
+			<input id="emailHost" type="hidden" class='required'/>
+			<select id="emailSelect">
 				<option selected>선택</option>
 				<option value="naver.com">naver.com</option>
 				<option value="hanmail.net">hanmail.net</option>
@@ -59,7 +59,7 @@
 				<option value="name.com">nate.com</option>
 				<option value="gmail.com">gmail.com</option>
 				<option value="hotmail.com">hotmail.com</option>
-				<option id="emailManual">직접입력</option>
+				<option value="emailManual">직접입력</option>
 			</select>
 			</label>
 			<mark id="markemail">이메일 주소를 입력해주세요.</mark>
