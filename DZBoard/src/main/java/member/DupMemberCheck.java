@@ -29,7 +29,7 @@ public class DupMemberCheck extends HttpServlet {
 		}
 		
 		MemberRepository memberRepository = new MemberRepository();
-		Member member = memberRepository.findUserById(id);
+		Member member = memberRepository.findOneMemberById(id);
 		if (member == null) {
 			jsonResult.put("status", true);
 			jsonResult.put("message", "Usable ID");

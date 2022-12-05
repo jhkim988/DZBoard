@@ -40,6 +40,18 @@ const main = () => {
 		input.style['border-bottom'] = '1px solid #ddd';
 		input.style['border-left'] = '1px solid #aaa';
 	}
+	const phoneNumber = document.querySelectorAll(".phone");
+	phoneNumber.forEach(p => {
+		p.addEventListener("keyup", e => {
+			let value = e.target.value;
+			console.log(value);
+			if (value.length > 4) {
+				alert("휴대폰 번호는 4자리까지만 입력 가능합니다.");
+				e.target.value = e.target.value.slice(0, 4);
+				e.defaultPrevented();
+			}
+		});
+	});
 	
 	const termAllSelect = document.querySelector('#termAll');
 	const terms = document.querySelectorAll('.term');
