@@ -1,27 +1,34 @@
 const main = () => {
 	const validInputObj = {
-		id: text => text.match(/[^0-9A-Za-z]/g) == null
+		id: async text => {
+			if (text.match(/[^0-9A-Za-z]/g) != null) return false;
+			let response = await fetch(`/DZBoard/member/dupMemberCheck?id=${text}`);
+			let json = await response.json();
+			return json.status;
+		}
 		, pwd: text => text.match(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/)
 		, pwdchk: text => document.querySelector('#pwd').value === text
 		, email: text => text
 		
 	}
 	const inputs = document.querySelectorAll('input');
-	inputs.forEach(input => input.addEventListener("blur", e => {
+	inputs.forEach(input => input.addEventListener("blur", async e => {
 		const target = e.target;
 		const id = target.getAttribute('id');
 		const mark = document.querySelector(`#mark${id}`);
 		if (!mark) return;
 		
-		validInput(target, target.value)
+		let isValid = await validInput(target, target.value)
+		console.log("isValid: " + isValid);
+		isValid
 		? correctInputStyle(target, mark)
-		: worngInputStyle(target, mark);
+		: wrongInputStyle(target, mark);
 	}));
 	const validInput = (target, text) => {
 		if (text === "") return false;
 		return validInputObj[target.getAttribute('id')](text);
 	}
-	const worngInputStyle = (input, mark) => {
+	const wrongInputStyle = (input, mark) => {
 		mark.style.display = 'block';
 		input.style.border = '1px solid #ff424c';
     	input.style.background = '#fff2f3';

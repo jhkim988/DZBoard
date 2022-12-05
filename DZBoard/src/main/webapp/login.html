@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/login.css"/>
+<title>DZBoard</title>
+</head>
+<body>
+<h1>로그인</h1>
+	<form id="loginForm">
+	<label>
+		<input type="text" name="id" placeholder="아이디" required />
+	</label>
+	<br/>
+	<label>
+		<input type="password" name="pw" placeholder="비밀번호" required />
+	</label>
+	<br/>
+	<input id="loginButton" type="submit" value="로그인"/>
+	
+	<footer>
+	<label>
+		<input class="bottom" type="checkbox">
+		아이디 저장
+	</label>
+	<a href="/DZBoard/findId.html" class="button bottom">아이디 찾기</a>
+	<a href="/DZBoard/findPwd.html" class="button bottom">비밀번호 찾기</a>
+	<a href="/DZBoard/register.html" class="button bottom">회원가입</a>
+	</footer>
+	
+	</form>
+</body>
+</html>
