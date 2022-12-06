@@ -20,22 +20,33 @@ public class DupMemberCheckServlet extends HttpServlet {
 		response.setContentType("application/json;utf-8");
 		PrintWriter out = response.getWriter();
 		JSONObject jsonResult = new JSONObject();
-		String id = request.getParameter("id");
-		System.out.println("request: " + id);
-		if (id == null) {
+		String type= request.getParameter("type");
+		String value = request.getParameter("value");
+		if (type == null || value == null) {
 			jsonResult.put("status", false);
-			jsonResult.put("message", "Invalid Input Data: [id]");
+			jsonResult.put("message", "잘못된 요청");
 			out.print(jsonResult);
+			return;
+		}
+
+		MemberRepository memberRepository = new MemberRepository();
+		Member member = null;
+		if ("id".equals(type)) {
+			member = memberRepository.findOneMemberById(value);
+		} else if ("phone".equals(type)) {
+			member = memberRepository.findOneMemberByPhone(value);
+		} else if ("email".equals(type)) {
+			member = memberRepository.findOneMemberByEmail(value);
+		} else {
+			throw new UnsupportedOperationException();
 		}
 		
-		MemberRepository memberRepository = new MemberRepository();
-		Member member = memberRepository.findOneMemberById(id);
 		if (member == null) {
 			jsonResult.put("status", true);
-			jsonResult.put("message", "Usable ID");
+			jsonResult.put("message", "사용 가능합니다.");
 		} else {
 			jsonResult.put("status", false);
-			jsonResult.put("message", "Duplicate ID");
+			jsonResult.put("message", "이미 등록된 정보입니다.");
 		}
 		out.print(jsonResult);
 	}

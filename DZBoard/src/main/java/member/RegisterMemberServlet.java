@@ -9,40 +9,46 @@ import repository.MemberRepository;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 
-@WebServlet("/register")
+@WebServlet("/member/register")
 public class RegisterMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private static final List<String> keys = Arrays.asList("id", "pwd", "pwdchk", "email", "emailHost", "phoneFirst", "phoneSecond", "phoneThird");
+	private final Map<String, String> info = new HashMap<>();
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;utf-8");
 		PrintWriter out = response.getWriter();
-		if (hasNullParameter(request)) {
+		keys.forEach(key -> info.put(key, request.getParameter(key)));
+		if (hasNullParameter()) {
 			out.print(resultJSON(false, "Required Data Omission"));
 			return;
 		}
-		String name = request.getParameter("name");
-		String id = request.getParameter("id");
-		String pwd = request.getParameter("pwd");
-		String pwdChk = request.getParameter("pwdchk");
-		String phoneFirst = request.getParameter("phoneFirst");
-		String phoneSecond = request.getParameter("phoneSecond");
-		String phoneThird = request.getParameter("phoneThird");
-		String phone = new StringBuilder(phoneFirst)
-				.append(phoneSecond)
-				.append(phoneThird)
+		
+		info.put("name", request.getParameter("name"));
+		String emailFull = new StringBuilder(info.get("email"))
+				.append('@')
+				.append(info.get("emailHost"))
 				.toString();
-		if (!pwd.equals(pwdChk)) {
+		String phone = new StringBuilder(info.get("phoneFirst"))
+				.append(info.get("phoneSecond"))
+				.append(info.get("phoneThird"))
+				.toString();
+		if (!info.get("pwd").equals(info.get("pwdchk"))) {
 			out.print(resultJSON(false, "Password Check Error"));
 			return;
 		}
 		Member member = Member.builder()
-				.name(name)
-				.id(id)
-				.pwd(pwd)
+				.name(info.get("name"))
+				.id(info.get("id"))
+				.pwd(info.get("pwd"))
 				.phone(phone)
+				.email(emailFull)
 				.build();
 		MemberRepository memberRepository = new MemberRepository();
 		boolean status = memberRepository.addMember(member);
@@ -53,9 +59,10 @@ public class RegisterMemberServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
-	private boolean hasNullParameter(HttpServletRequest request) {
-		return request.getParameterMap().values().stream()
-					.allMatch(x -> x != null);
+	private boolean hasNullParameter() {
+		info.entrySet().stream().forEach(x -> System.out.println(x.getKey() + ": " + x.getValue()));
+		return !info.values().stream()
+				.allMatch(x -> x != null);
 	}
 	private JSONObject resultJSON(boolean status, String message) {
 		JSONObject json = new JSONObject();

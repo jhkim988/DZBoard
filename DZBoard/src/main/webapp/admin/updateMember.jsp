@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>관리자 - 회원 정보 수정</title>
 <script type="text/javascript" src="./updateMember.js"></script>
 </head>
 <body>

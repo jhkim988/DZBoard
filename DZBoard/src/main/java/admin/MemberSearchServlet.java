@@ -1,10 +1,11 @@
-package member;
+package admin;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import member.Member;
 import repository.MemberRepository;
 
 import java.io.BufferedReader;
@@ -16,7 +17,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-@WebServlet("/admin/memberList")
+@WebServlet("/admin/memberSearch")
 public class MemberSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -26,47 +27,46 @@ public class MemberSearchServlet extends HttpServlet {
 		String type = json.getString("type");
 		String first = json.getString("first");
 		String second = json.getString("second");
-
+		String page = json.getString("page");
+		int limit = json.getInt("limit");
+		String last = null;
+		if (json.getBoolean("hasLast")) {
+			last = json.getString("last");
+		}
+		
 		MemberRepository repository = new MemberRepository();
 		List<Member> list = new ArrayList<>();
 		
 		if ("all".equals(type)) {
-			list = repository.findMembers();
+			list = repository.findMembersAll(page, limit, last);
+		}  else if ("name".equals(type)) {
+			list = repository.findMembersByName(first, page, limit, last);
+		}   else if ("createdAt".equals(type)) {
+			list = repository.findMembersByCreated(first, second, page, limit, last);
+		} else if ("updatedAt".equals(type)) {
+			list = repository.findMembersByUpdated(first, second, page, limit, last);
+		} else if ("authority".equals(type)) {
+			list = repository.findMembersByAuthority(first, page, limit, last);
 		} else if ("id".equals(type)) {
 			list.add(repository.findOneMemberById(first));
-		} else if ("name".equals(type)) {
-			list = repository.findMembersByName(first);
 		} else if ("email".equals(type)) {
 			list.add(repository.findOneMemberByEmail(first));
 		} else if ("phone".equals(type)) {
 			list.add(repository.findOneMemberByPhone(first));
-		} else if ("createdAt".equals(type)) {
-			list = repository.findMembersByCreated(first, second);
-		} else if ("updatedAt".equals(type)) {
-			list = repository.findMembersByUpdated(first, second);
-		} else if ("authority".equals(type)) {
-			list = repository.findMembersByAuthority(first);
 		} else {
 			throw new UnsupportedOperationException();
 		}
-		responseUsers(response, list);
+
+		PrintWriter out = response.getWriter();
+		JSONObject jsonOut = new JSONObject();
+		JSONArray jsonArr = new JSONArray();
+		list.forEach(x -> jsonArr.put(x));
+		jsonOut.put("status", true);
+		jsonOut.put("data", jsonArr);
+		out.print(jsonOut);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-	
-	private void responseUsers(HttpServletResponse response, List<Member> list) throws IOException {
-		response.setContentType("application/json;utf-8");
-		PrintWriter out = response.getWriter();
-		JSONObject json = new JSONObject();
-		JSONArray jsonArray = new JSONArray();
-		list.stream()
-			.filter(member -> member != null)
-			.forEach(member -> jsonArray.put(member.toJSONObject()));
-		json.put("status", true);
-		json.put("data", jsonArray);
-		out.print(json);
-	}
-	
 }

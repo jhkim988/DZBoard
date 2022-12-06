@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="memberSearch.js"></script>
-<title>Insert title here</title>
+<script type="text/javascript" src="memberListView.js"></script>
+<title>관리자 - 회원 검색</title>
 </head>
 <body>
 	<form>
@@ -28,7 +28,7 @@
 		<label>
 			<input id="second" type="hidden"/>
 		</label>
-		<button id="searchButton">검색</button>
+		<input type="submit" id="searchButton" value="검색">
 	</form>
 	<table>
 		<thead>
