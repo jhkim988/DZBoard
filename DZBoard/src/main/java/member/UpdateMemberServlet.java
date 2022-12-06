@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.MemberRepository;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.json.JSONObject;
 
@@ -26,14 +28,15 @@ public class UpdateMemberServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
-		String pwd = request.getParameter("pwd");
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String phone = request.getParameter("phone");
-		String authority = request.getParameter("authority");
+		BufferedReader in = request.getReader();
+		JSONObject json = new JSONObject(in.readLine());
+		String id = json.getString("id");
+		String pwd = json.getString("pwd");
+		String name = json.getString("name");
+		String email = json.getString("email");
+		String phone = json.getString("phone");
+		String authority = json.getString("authority");
 		
-		JSONObject json = new JSONObject();
 		
 		MemberRepository repository = new MemberRepository();
 		Member member = repository.findOneMemberById(id);
@@ -42,8 +45,15 @@ public class UpdateMemberServlet extends HttpServlet {
 		member.setEmail(email);
 		member.setPhone(phone);
 		member.setAuthority(Integer.parseInt(authority));
-		json.put("status", repository.updateMember(member));
-		response.sendRedirect("/admin/memberSearch");
+		
+		boolean result = repository.updateMember(member);
+		json.put("status", result);
+		if (!result) {
+			json.put("message", "Member Not Found");
+		}
+		
+		response.setContentType("application/json;utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(json);
 	}
-
 }

@@ -5,6 +5,7 @@
 <head>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
+<script type="text/javascript" src="./updateMember.js"></script>
 </head>
 <body>
 	<table>
@@ -32,14 +33,14 @@
 				<td>${ member.authority }</td>
 			</tr>
 			<tr>
-				<td>-</td>
-				<td><input type="text"/></td>
-				<td><input type="text"/></td>
-				<td><input type="text"/></td>
-				<td><input type="text"/></td>
-				<td>-</td>
-				<td>-</td>
-				<td><input type="number"/></td>
+				<td>${ member.id }</td>
+				<td><input type="text" id="pwd" value='${member.pwd}'/></td>
+				<td><input type="text" id="name" value='${member.name}'/></td>
+				<td><input type="text" id="email" value='${member.email}'/></td>
+				<td><input type="text" id="phone" value='${member.phone}'/></td>
+				<td>${ member.createdAt }</td>
+				<td>${ member.updatedAt }</td>
+				<td><input type="number" id="authority" value='${member.authority}'/></td>
 			</tr>
 		</tbody>
 	</table>
