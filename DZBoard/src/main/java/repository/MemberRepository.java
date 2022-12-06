@@ -7,8 +7,6 @@ import member.Member;
 
 public class MemberRepository extends Repository {
 	
-	
-	
 	public Member findOneMemberById(String id) {
 		return findOneMember("select * from tb_dzboard_member where id = ?", id);
 	}
@@ -21,39 +19,59 @@ public class MemberRepository extends Repository {
 		return findOneMember("select * from tb_dzboard_member where phone = ?", phone);
 	}
 	
-	public List<Member> findMembersAll(String page, int limit, String last) {
+	public List<Member> findMembersAll(int page, int limit, String last, boolean asc) {
 		if (last == null) {
-			return findMembers("select * from tb_dzboard_member order by id limit ?", limit);
+			return asc
+					? findMembers("select * from tb_dzboard_member order by id limit ?", limit)
+					: findMembers("select * from tb_dzboard_member order by id desc limit ?", limit);
 		}
-		return findMembers("select * from tb_dzboard_member where id > ? order by id limit ?", limit, last);
+		return asc
+				? findMembers("select * from tb_dzboard_member where id > ? order by id limit ?", limit, last)
+				: findMembers("select * from tb_dzboard_member where id > ? order by id desc limit ?", limit, last);
+	}
+	// TODO: ID 제외한 다른 조건 사용 시, 조건 체크 확인
+	public List<Member> findMembersByName(String name, int page, int limit, String last, boolean asc) {
+		if (last == null) {
+			return asc
+					? findMembers("select * from tb_dzboard_member where name = ? order by id limit ?", limit, name)
+					: findMembers("select * from tb_dzboard_member where name = ? order by id desc limit ?", limit, name);
+		}
+		return asc
+				? findMembers("select * from tb_dzboard_member where name = ? and id > ? order by id limit ?", limit, name, last)
+				: findMembers("select * from tb_dzboard_member where name = ? and id > ? order by id desc limit ?", limit, name, last);
 	}
 	
-	public List<Member> findMembersByName(String name, String page, int limit, String last) {
+	public List<Member> findMembersByCreated(String from, String to, int page, int limit, String last, boolean asc) {
 		if (last == null) {
-			return findMembers("select * from tb_dzboard_member where name = ? order by id limit ?", limit, name);
+			return asc
+					? findMembers("select * from tb_dzboard_member where createdAt between ? and ? order by id limit ?", limit, from, to)
+					: findMembers("select * from tb_dzboard_member where createdAt between ? and ? order by id desc limit ?", limit, from, to);
 		}
-		return findMembers("select * from tb_dzboard_member where name = ? and id > ? order by id limit ?", limit, name, last);
+		return asc
+				? findMembers("select * from tb_dzboard_member where id > ? and createdAt between ? and ? order by id limit ?", limit, last, from, to)
+				: findMembers("select * from tb_dzboard_member where id > ? and createdAt between ? and ? order by id desc limit ?", limit, last, from, to);
 	}
 	
-	public List<Member> findMembersByCreated(String from, String to, String page, int limit, String last) {
+	public List<Member> findMembersByUpdated(String from, String to, int page, int limit, String last, boolean asc) {
 		if (last == null) {
-			findMembers("select * from tb_dzboard_member where createdAt between ? and ? order by id limit ?", limit, from, to);
+			return asc
+					? findMembers("select * from tb_dzboard_member where updatedAt between ? and ? order by id limit ?", limit, from, to)
+					: findMembers("select * from tb_dzboard_member where updatedAt between ? and ? order by id desc limit ?", limit, from, to);
 		}
-		return findMembers("select * from tb_dzboard_member where id > ? and createdAt between ? and ? order by id limit ?", limit, last, from, to);
+		return asc
+				? findMembers("select * from tb_dzboard_member where id > ? and updatedAt between ? and ? order by id limit ?", limit, last, from, to)
+				: findMembers("select * from tb_dzboard_member where id > ? and updatedAt between ? and ? order by id desc limit ?", limit, last, from, to);
 	}
 	
-	public List<Member> findMembersByUpdated(String from, String to, String page, int limit, String last) {
+	public List<Member> findMembersByAuthority(String level, int page, int limit, String last, boolean asc) {
 		if (last == null) {
-			return findMembers("select * from tb_dzboard_member where updatedAt between ? and ? order by id limit ?", limit, from, to);
+			return asc
+					? findMembers("select * from tb_dzboard_member where authority = ? order by id limit ?", limit, level)
+					: findMembers("select * from tb_dzboard_member where authority = ? order by id desc limit ?", limit, level);
 		}
-		return findMembers("select * from tb_dzboard_member where id > ? and updatedAt between ? and ? order by id limit ?", limit, last, from, to);
-	}
-	
-	public List<Member> findMembersByAuthority(String level, String page, int limit, String last) {
-		if (last == null) {
-			return findMembers("select * from tb_dzboard_member where authority = ? order by id limit ?", limit, level);
-		}
-		return findMembers("select * from tb_dzboard_member where authority = ? and id > ? order by id limit ?", limit, level, last);
+		return asc
+				? findMembers("select * from tb_dzboard_member where authority = ? and id > ? order by id limit ?", limit, level, last)
+				:findMembers("select * from tb_dzboard_member where authority = ? and id > ? order by id desc limit ?", limit, level, last);
 	}
 	
 	public boolean addMember(Member member) {
@@ -106,23 +124,7 @@ public class MemberRepository extends Repository {
 		return false;
 	}
 	
-	public Member resultSetToMember() {
-		try {
-			return Member.builder()
-					.id(rs.getString("id"))
-					.pwd(rs.getString("pwd"))
-					.name(rs.getString("name"))
-					.email(rs.getString("email"))
-					.phone(rs.getString("phone"))
-					.createdAt(rs.getDate("createdAt"))
-					.updatedAt(rs.getDate("updatedAt"))
-					.authority(rs.getInt("authority"))
-					.build();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+
 	
 	public Member findOneMember(String query, String value) {
 		open();
@@ -161,5 +163,23 @@ public class MemberRepository extends Repository {
 			close();
 		}
 		return ret;
+	}
+	
+	private Member resultSetToMember() {
+		try {
+			return Member.builder()
+					.id(rs.getString("id"))
+					.pwd(rs.getString("pwd"))
+					.name(rs.getString("name"))
+					.email(rs.getString("email"))
+					.phone(rs.getString("phone"))
+					.createdAt(rs.getDate("createdAt"))
+					.updatedAt(rs.getDate("updatedAt"))
+					.authority(rs.getInt("authority"))
+					.build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

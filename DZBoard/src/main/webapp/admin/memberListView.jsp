@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <script type="text/javascript" src="memberListView.js"></script>
 <title>관리자 - 회원 검색</title>
 </head>
@@ -48,5 +49,15 @@
 		<tbody>
 		</tbody>
 	</table>
+	<footer>
+		<button id="firstButton">처음</button>
+		<button class='useCursor' data-value='-2'></button>
+		<button class='useCursor' data-value='-1'></button>
+		<button class='useCursor' data-value='0'></button>
+		<button class='useCursor' data-value='1'></button>
+		<button class='useCursor' data-value='2'></button>
+		<button id="lastButton">마지막</button>
+		
+	</footer>
 </body>
 </html>

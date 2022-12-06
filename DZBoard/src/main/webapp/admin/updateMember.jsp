@@ -4,21 +4,21 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>°ü¸®ÀÚ - È¸¿ø Á¤º¸ ¼öÁ¤</title>
+<title>ê´€ë¦¬ìž - íšŒì› ì •ë³´ ìˆ˜ì •</title>
 <script type="text/javascript" src="./updateMember.js"></script>
 </head>
 <body>
 	<table>
 		<thead>
 			<tr>
-				<th>¾ÆÀÌµð</th>
-				<th>ºñ¹Ð¹øÈ£</th>
-				<th>ÀÌ¸§</th>
-				<th>ÀÌ¸ÞÀÏ</th>
-				<th>¿¬¶ôÃ³</th>
-				<th>È¸¿ø °¡ÀÔ ÀÏÀÚ</th>
-				<th>ÃÖ±Ù È°µ¿ ÀÏÀÚ</th>
-				<th>±ÇÇÑ ·¹º§</th>
+				<th>ì•„ì´ë””</th>
+				<th>ë¹„ë°€ë²ˆí˜¸</th>
+				<th>ì´ë¦„</th>
+				<th>ì´ë©”ì¼</th>
+				<th>ì—°ë½ì²˜</th>
+				<th>íšŒì› ê°€ìž… ì¼ìž</th>
+				<th>ìµœê·¼ í™œë™ ì¼ìž</th>
+				<th>ê¶Œí•œ ë ˆë²¨</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -44,6 +44,6 @@
 			</tr>
 		</tbody>
 	</table>
-	<button id="updateButton">¼öÁ¤</button>
+	<button id="updateButton">ìˆ˜ì •</button>
 </body>
 </html>

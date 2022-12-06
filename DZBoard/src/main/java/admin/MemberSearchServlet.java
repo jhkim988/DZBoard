@@ -27,7 +27,8 @@ public class MemberSearchServlet extends HttpServlet {
 		String type = json.getString("type");
 		String first = json.getString("first");
 		String second = json.getString("second");
-		String page = json.getString("page");
+		boolean asc = json.getBoolean("asc");
+		int page = json.getInt("page");
 		int limit = json.getInt("limit");
 		String last = null;
 		if (json.getBoolean("hasLast")) {
@@ -38,15 +39,15 @@ public class MemberSearchServlet extends HttpServlet {
 		List<Member> list = new ArrayList<>();
 		
 		if ("all".equals(type)) {
-			list = repository.findMembersAll(page, limit, last);
+			list = repository.findMembersAll(page, limit, last, asc);
 		}  else if ("name".equals(type)) {
-			list = repository.findMembersByName(first, page, limit, last);
+			list = repository.findMembersByName(first, page, limit, last, asc);
 		}   else if ("createdAt".equals(type)) {
-			list = repository.findMembersByCreated(first, second, page, limit, last);
+			list = repository.findMembersByCreated(first, second, page, limit, last, asc);
 		} else if ("updatedAt".equals(type)) {
-			list = repository.findMembersByUpdated(first, second, page, limit, last);
+			list = repository.findMembersByUpdated(first, second, page, limit, last, asc);
 		} else if ("authority".equals(type)) {
-			list = repository.findMembersByAuthority(first, page, limit, last);
+			list = repository.findMembersByAuthority(first, page, limit, last, asc);
 		} else if ("id".equals(type)) {
 			list.add(repository.findOneMemberById(first));
 		} else if ("email".equals(type)) {
@@ -60,7 +61,7 @@ public class MemberSearchServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		JSONObject jsonOut = new JSONObject();
 		JSONArray jsonArr = new JSONArray();
-		list.forEach(x -> jsonArr.put(x));
+		list.forEach(x -> jsonArr.put(x.toJSONObject()));
 		jsonOut.put("status", true);
 		jsonOut.put("data", jsonArr);
 		out.print(jsonOut);
