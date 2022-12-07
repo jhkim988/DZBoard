@@ -1,35 +1,31 @@
-package admin;
+package test;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import repository.MemberRepository;
+import member.Member;
+import repository.PostRepository;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.sql.DataSource;
 
-import org.json.JSONObject;
+import board.Post;
 
-@WebServlet("/admin/deleteMember")
-public class DeleteMemberServlet extends HttpServlet {
+@WebServlet("/generatePost")
+public class PostGeneratorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;utf-");
-		
-		String id = request.getParameter("id");
-		JSONObject json = new JSONObject();
-		PrintWriter out = response.getWriter();
-		
 		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
-		json.put("status", repository.deleteMemberById(id));
-		out.print(json);
-		response.sendRedirect(request.getHeader("referer"));
+		PostRepository postRepository = new PostRepository(dataFactory);
+		for (int i = 0; i < 1000; i++) {
+			postRepository.addPost(
+					Post.builder().title("test" + i).content("test" + i).category("테스트").build()
+					, Member.builder().id("user01").build());
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

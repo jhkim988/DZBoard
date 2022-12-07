@@ -10,6 +10,8 @@ import repository.MemberRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.sql.DataSource;
+
 import org.json.JSONObject;
 
 @WebServlet("/member/dupMemberCheck")
@@ -29,7 +31,8 @@ public class DupMemberCheckServlet extends HttpServlet {
 			return;
 		}
 
-		MemberRepository memberRepository = new MemberRepository();
+		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
+		MemberRepository memberRepository = new MemberRepository(dataFactory);
 		Member member = null;
 		if ("id".equals(type)) {
 			member = memberRepository.findOneMemberById(value);

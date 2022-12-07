@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.sql.DataSource;
+
 import org.json.JSONObject;
 
 @WebServlet("/login")
@@ -25,8 +27,9 @@ public class LoginServlet extends HttpServlet {
 		String id = jsonInput.getString("id");
 		String pwd = jsonInput.getString("pwd");
 		
-		MemberRepository repository = new MemberRepository();
-		Member member = repository.findOneMemberById(id);
+		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
+		MemberRepository memberRepository = new MemberRepository(dataFactory);
+		Member member = memberRepository.findOneMemberById(id);
 		JSONObject jsonResult = new JSONObject();
 		
 		if (member == null) {

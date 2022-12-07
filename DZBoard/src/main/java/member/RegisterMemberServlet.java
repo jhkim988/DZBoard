@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.json.JSONObject;
 
 @WebServlet("/member/register")
@@ -50,7 +52,8 @@ public class RegisterMemberServlet extends HttpServlet {
 				.phone(phone)
 				.email(emailFull)
 				.build();
-		MemberRepository memberRepository = new MemberRepository();
+		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
+		MemberRepository memberRepository = new MemberRepository(dataFactory);
 		boolean status = memberRepository.addMember(member);
 		out.print(resultJSON(status, member.getName()));
 	}

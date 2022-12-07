@@ -13,7 +13,7 @@
 	<form>
 		<label>
 			<select id="searchType">
-				<option value="all">검색조건</option>
+				<option value="allMember">검색조건</option>
 				<option value="id" class="str">아이디</option>
 				<option value="name" class="str">이름</option>
 				<option value="email" class="str">이메일</option>
@@ -49,15 +49,6 @@
 		<tbody>
 		</tbody>
 	</table>
-	<footer>
-		<button id="firstButton">처음</button>
-		<button class='useCursor' data-value='-2'></button>
-		<button class='useCursor' data-value='-1'></button>
-		<button class='useCursor' data-value='0'></button>
-		<button class='useCursor' data-value='1'></button>
-		<button class='useCursor' data-value='2'></button>
-		<button id="lastButton">마지막</button>
-		
-	</footer>
+	<button id="more" data-request=''>더 보기</button>
 </body>
 </html>

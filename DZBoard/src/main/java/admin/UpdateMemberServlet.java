@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.sql.DataSource;
+
 import org.json.JSONObject;
 
 @WebServlet("/admin/updateMember")
@@ -21,7 +23,8 @@ public class UpdateMemberServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		MemberRepository repository = new MemberRepository();
+		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
+		MemberRepository repository = new MemberRepository(dataFactory);
 		Member member = repository.findOneMemberById(id);
 		request.setAttribute("member", member);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin/updateMember.jsp");
@@ -38,8 +41,8 @@ public class UpdateMemberServlet extends HttpServlet {
 		String phone = json.getString("phone");
 		String authority = json.getString("authority");
 		
-		
-		MemberRepository repository = new MemberRepository();
+		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
+		MemberRepository repository = new MemberRepository(dataFactory);
 		Member member = repository.findOneMemberById(id);
 		member.setPwd(pwd);
 		member.setName(name);

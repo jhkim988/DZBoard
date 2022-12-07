@@ -1,6 +1,6 @@
 package member;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import org.json.JSONObject;
 
@@ -17,8 +17,8 @@ public class Member {
 	private String name;
 	private String email;
 	private String phone;
-	private Date createdAt;
-	private Date updatedAt;
+	private Timestamp createdAt;
+	private Timestamp updatedAt;
 	private Integer authority;
 	
 	public JSONObject toJSONObject() {

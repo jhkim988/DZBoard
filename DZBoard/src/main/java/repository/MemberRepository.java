@@ -1,11 +1,47 @@
 package repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import member.Member;
 
-public class MemberRepository extends Repository {
+public class MemberRepository {
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	private DataSource dataFactory;
+	
+	public MemberRepository(DataSource dataFactory) {
+		this.dataFactory = dataFactory;
+	}
+	
+	private void open() {
+		try {
+			conn = dataFactory.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void close() {
+		try {
+			if (rs != null)
+				rs.close();
+			if (pstmt != null)
+				pstmt.close();
+			if (conn != null)
+				conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public Member findOneMemberById(String id) {
 		return findOneMember("select * from tb_dzboard_member where id = ?", id);
@@ -19,59 +55,43 @@ public class MemberRepository extends Repository {
 		return findOneMember("select * from tb_dzboard_member where phone = ?", phone);
 	}
 	
-	public List<Member> findMembersAll(int page, int limit, String last, boolean asc) {
-		if (last == null) {
-			return asc
-					? findMembers("select * from tb_dzboard_member order by id limit ?", limit)
-					: findMembers("select * from tb_dzboard_member order by id desc limit ?", limit);
-		}
-		return asc
-				? findMembers("select * from tb_dzboard_member where id > ? order by id limit ?", limit, last)
-				: findMembers("select * from tb_dzboard_member where id > ? order by id desc limit ?", limit, last);
-	}
-	// TODO: ID 제외한 다른 조건 사용 시, 조건 체크 확인
-	public List<Member> findMembersByName(String name, int page, int limit, String last, boolean asc) {
-		if (last == null) {
-			return asc
-					? findMembers("select * from tb_dzboard_member where name = ? order by id limit ?", limit, name)
-					: findMembers("select * from tb_dzboard_member where name = ? order by id desc limit ?", limit, name);
-		}
-		return asc
-				? findMembers("select * from tb_dzboard_member where name = ? and id > ? order by id limit ?", limit, name, last)
-				: findMembers("select * from tb_dzboard_member where name = ? and id > ? order by id desc limit ?", limit, name, last);
+	public List<Member> findMembersAll() {
+		return findMembers("select * from tb_dzboard_member order by id limit 10");
 	}
 	
-	public List<Member> findMembersByCreated(String from, String to, int page, int limit, String last, boolean asc) {
-		if (last == null) {
-			return asc
-					? findMembers("select * from tb_dzboard_member where createdAt between ? and ? order by id limit ?", limit, from, to)
-					: findMembers("select * from tb_dzboard_member where createdAt between ? and ? order by id desc limit ?", limit, from, to);
-		}
-		return asc
-				? findMembers("select * from tb_dzboard_member where id > ? and createdAt between ? and ? order by id limit ?", limit, last, from, to)
-				: findMembers("select * from tb_dzboard_member where id > ? and createdAt between ? and ? order by id desc limit ?", limit, last, from, to);
+	public List<Member> findMembersAll(String last) {
+		return findMembers("select * from tb_dzboard_member where id > ? order by id limit 10", last);
+	}
+
+	public List<Member> findMembersByName(String name) {
+		return findMembers("select * from tb_dzboard_member where name = ? order by id limit 10", name);
+	}
+	public List<Member> findMembersByName(String name, String last) {
+		return findMembers("select * from tb_dzboard_member where name = ? and id > ? order by id limit 10", name, last);
 	}
 	
-	public List<Member> findMembersByUpdated(String from, String to, int page, int limit, String last, boolean asc) {
-		if (last == null) {
-			return asc
-					? findMembers("select * from tb_dzboard_member where updatedAt between ? and ? order by id limit ?", limit, from, to)
-					: findMembers("select * from tb_dzboard_member where updatedAt between ? and ? order by id desc limit ?", limit, from, to);
-		}
-		return asc
-				? findMembers("select * from tb_dzboard_member where id > ? and updatedAt between ? and ? order by id limit ?", limit, last, from, to)
-				: findMembers("select * from tb_dzboard_member where id > ? and updatedAt between ? and ? order by id desc limit ?", limit, last, from, to);
+	public List<Member> findMembersByCreated(Timestamp from, Timestamp to) {
+		return findMembersByTimestamp("select * from tb_dzboard_member where createdAt between ? and ? order by createdAt asc, id asc limit 10", from, to);
 	}
 	
-	public List<Member> findMembersByAuthority(String level, int page, int limit, String last, boolean asc) {
-		if (last == null) {
-			return asc
-					? findMembers("select * from tb_dzboard_member where authority = ? order by id limit ?", limit, level)
-					: findMembers("select * from tb_dzboard_member where authority = ? order by id desc limit ?", limit, level);
-		}
-		return asc
-				? findMembers("select * from tb_dzboard_member where authority = ? and id > ? order by id limit ?", limit, level, last)
-				:findMembers("select * from tb_dzboard_member where authority = ? and id > ? order by id desc limit ?", limit, level, last);
+	public List<Member> findMembersByCreated(Timestamp from, Timestamp to, String lastId, Timestamp lastCraetedAt) {
+		return findMembersByTimestamp("select * from tb_dzboard_member where (createdAt between ? and ?) and (createdAt > ? or (createdAt = ? and id > ?)) order by createdAt asc, id asc limit 10", lastId, from, to, lastCraetedAt, lastCraetedAt);
+	}
+	
+	public List<Member> findMembersByUpdated(Timestamp from, Timestamp to) {
+		return findMembersByTimestamp("select * from tb_dzboard_member where updatedAt between ? and ? order by updatedAt asc, id asc limit 10", from, to);
+	}
+	
+	public List<Member> findMembersByUpdated(Timestamp from, Timestamp to, String lastId, Timestamp lastUpdatedAt) {
+		return findMembersByTimestamp("select * from tb_dzboard_member where (updatedAt between ? and ?) and (updatedAt > ? or (updatedAt = ? and id > ?)) order by updatedAt asc, id asc limit 10", lastId, from, to, lastUpdatedAt, lastUpdatedAt);
+	}
+
+	public List<Member> findMembersByAuthority(String level) {
+		return findMembers("select * from tb_dzboard_member where authority = ? order by id limit 10", level);
+	}
+	
+	public List<Member> findMembersByAuthority(String level, String last) {
+		return findMembers("select * from tb_dzboard_member where authority = ? and id > ? order by id asc limit 10", level, last);
 	}
 	
 	public boolean addMember(Member member) {
@@ -144,7 +164,7 @@ public class MemberRepository extends Repository {
 		return ret;
 	}
 	
-	public List<Member> findMembers(String query, int limit, String... value) {
+	public List<Member> findMembers(String query, String... value) {
 		open();
 		List<Member> ret = new ArrayList<>();
 		try {
@@ -152,7 +172,6 @@ public class MemberRepository extends Repository {
 			for (int i = 0; i < value.length; i++) {
 				pstmt.setString(i+1, value[i]);
 			}
-			pstmt.setInt(value.length+1, limit);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				ret.add(resultSetToMember());
@@ -173,13 +192,72 @@ public class MemberRepository extends Repository {
 					.name(rs.getString("name"))
 					.email(rs.getString("email"))
 					.phone(rs.getString("phone"))
-					.createdAt(rs.getDate("createdAt"))
-					.updatedAt(rs.getDate("updatedAt"))
+					.createdAt(rs.getTimestamp("createdAt"))
+					.updatedAt(rs.getTimestamp("updatedAt"))
 					.authority(rs.getInt("authority"))
 					.build();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<Member> findMembersByTimestamp(String query, Timestamp...timestamps) {
+		List<Member> ret = new ArrayList<>();
+		open();
+		try {
+			pstmt = conn.prepareStatement(query);
+			for (int i = 1; i <= timestamps.length; i++) {
+				pstmt.setTimestamp(i, timestamps[i-1]);
+			}
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ret.add(Member.builder()
+						.id(rs.getString("id"))
+						.pwd(rs.getString("pwd"))
+						.name(rs.getString("name"))
+						.email(rs.getString("email"))
+						.phone(rs.getString("phone"))
+						.createdAt(rs.getTimestamp("createdAt"))
+						.updatedAt(rs.getTimestamp("updatedAt"))
+						.authority(rs.getInt("authority"))
+						.build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return ret;
+	}
+	
+	public List<Member> findMembersByTimestamp(String query, String lastId, Timestamp...timestamps) {
+		List<Member> ret = new ArrayList<>();
+		open();
+		try {
+			pstmt = conn.prepareStatement(query);
+			for (int i = 1; i <= timestamps.length; i++) {
+				pstmt.setTimestamp(i, timestamps[i-1]);
+			}
+			pstmt.setString(timestamps.length+1, lastId);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ret.add(Member.builder()
+						.id(rs.getString("id"))
+						.pwd(rs.getString("pwd"))
+						.name(rs.getString("name"))
+						.email(rs.getString("email"))
+						.phone(rs.getString("phone"))
+						.createdAt(rs.getTimestamp("createdAt"))
+						.updatedAt(rs.getTimestamp("updatedAt"))
+						.authority(rs.getInt("authority"))
+						.build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return ret;
 	}
 }

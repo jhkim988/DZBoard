@@ -1,35 +1,33 @@
-package admin;
+package board;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import repository.MemberRepository;
+import repository.PostRepository;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.sql.DataSource;
 
-import org.json.JSONObject;
-
-@WebServlet("/admin/deleteMember")
-public class DeleteMemberServlet extends HttpServlet {
+@WebServlet("/board/view")
+public class ViewPostServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;utf-");
-		
-		String id = request.getParameter("id");
-		JSONObject json = new JSONObject();
-		PrintWriter out = response.getWriter();
-		
+		int postId = Integer.parseInt(request.getParameter("id"));
 		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
-		json.put("status", repository.deleteMemberById(id));
-		out.print(json);
-		response.sendRedirect(request.getHeader("referer"));
+		PostRepository postRepository = new PostRepository(dataFactory);
+		Post post = postRepository.findOnePostById(postId);
+		if (post == null) {
+			response.sendRedirect("/board");
+			return;
+		}
+		request.setAttribute("post", post);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/board/view.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

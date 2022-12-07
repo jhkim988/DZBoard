@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.sql.DataSource;
+
 import org.json.JSONObject;
 
 @WebServlet("/member/updateMember")
@@ -24,7 +26,8 @@ public class UpdateMemberServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		JSONObject jsonIn = new JSONObject(in.readLine());
 		JSONObject jsonOut = new JSONObject();
-		MemberRepository memberRepository = new MemberRepository();
+		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
+		MemberRepository memberRepository = new MemberRepository(dataFactory);
 		System.out.println("HERE");
 		String pwd = jsonIn.getString("pwd");
 		String name = jsonIn.getString("name");

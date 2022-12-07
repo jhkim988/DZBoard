@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.sql.DataSource;
+
 import org.json.JSONObject;
 
 @WebServlet("/member/findId")
@@ -29,13 +31,14 @@ public class FindIdServlet extends HttpServlet {
 		String first = jsonIn.getString("first");
 		String second = jsonIn.getString("second");
 	
-		MemberRepository repository = new MemberRepository();
+		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
+		MemberRepository memberRepository = new MemberRepository(dataFactory);
 		Member member = null;
 		
 		if ("findIdByPhone".equals(type)) {
-			member = repository.findOneMemberByPhone(second);
+			member = memberRepository.findOneMemberByPhone(second);
 		} else if ("findIdByEmail".equals(type)) {
-			member = repository.findOneMemberByEmail(second);
+			member = memberRepository.findOneMemberByEmail(second);
 		} else {
 			throw new UnsupportedOperationException();
 		}
