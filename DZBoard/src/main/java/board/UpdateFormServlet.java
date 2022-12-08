@@ -21,15 +21,9 @@ public class UpdateFormServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Member loginMember = (Member) session.getAttribute("member");
-		if (loginMember == null) {
-			response.sendRedirect("/DZBoard/member/login.html");
-			return;
-		}
-		
 		int postId = Integer.parseInt(request.getParameter("id"));
 		
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		PostRepository postRepository = new PostRepository(dataFactory);
+		PostRepository postRepository = new PostRepository();
 		Post oldPost = postRepository.findOnePostById(postId);
 		if (oldPost.isSameAuthor(loginMember)) {
 			request.setAttribute("id", postId);

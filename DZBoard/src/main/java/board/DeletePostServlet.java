@@ -29,8 +29,7 @@ public class DeletePostServlet extends HttpServlet {
 			return;			
 		}
 		
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		PostRepository postRepository = new PostRepository(dataFactory);
+		PostRepository postRepository = new PostRepository();
 
 		Post post = postRepository.findOnePostById(id);
 		

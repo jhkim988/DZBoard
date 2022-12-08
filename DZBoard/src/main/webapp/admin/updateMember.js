@@ -17,13 +17,13 @@ const main = () => {
 		const response = await fetch("/DZBoard/admin/updateMember", {
 			method: 'POST'
 			, headers: {
-				'Content-Type': 'application/json;utf-8'
+				'Content-Type': 'application/json;charset=utf-8'
 			}
 			, body: JSON.stringify(getValues())
 		});
 		const json = await response.json();
 		if (json.status) {
-			location.href = '/DZBoard/admin/memberSearch.jsp';
+			location.href = '/DZBoard/admin/memberListView.jsp';
 		} else {
 			alert(`네트워크 오류: ${json.message}`);
 		}

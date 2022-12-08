@@ -27,8 +27,7 @@ public class MemberSearchByNameServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		String last = request.getParameter("last");
 		
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
+		MemberRepository repository = new MemberRepository();
 		
 		List<Member> list = null;
 		if (last == null) {
@@ -44,7 +43,7 @@ public class MemberSearchByNameServlet extends HttpServlet {
 		jsonOut.put("data", jsonArr);
 		if (list.size() > 0) {
 			Member lastMember = list.get(list.size()-1);
-			jsonOut.put("more", "name="+lastMember.getName()+"&last="+lastMember.getId());
+			jsonOut.put("more", urlSearchParams(lastMember));
 		}
 		out.print(jsonOut);
 	}
@@ -53,4 +52,11 @@ public class MemberSearchByNameServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
+	private String urlSearchParams(Member lastMember) {
+		return new StringBuilder("name=")
+				.append(lastMember.getName())
+				.append("&last=")
+				.append(lastMember.getId())
+				.toString();
+	}
 }

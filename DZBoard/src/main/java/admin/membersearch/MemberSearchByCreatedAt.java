@@ -33,8 +33,7 @@ public class MemberSearchByCreatedAt extends HttpServlet {
 			lastCreatedAt = Timestamp.valueOf(request.getParameter("lastCreatedAt"));
 		}
 		
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
+		MemberRepository repository = new MemberRepository();
 		List<Member> list = null;
 		if (last == null) {
 			list = repository.findMembersByCreated(from, to);
@@ -49,7 +48,7 @@ public class MemberSearchByCreatedAt extends HttpServlet {
 		jsonOut.put("data", jsonArr);
 		if (list.size() > 0) {
 			Member lastMember = list.get(list.size()-1);
-			jsonOut.put("more", "from="+from.toString()+"&to="+to.toString()+"&last="+lastMember.getId()+"&lastCreatedAt="+lastMember.getCreatedAt());
+			jsonOut.put("more", urlSearchParams(from, to, lastMember));
 		}
 		out.print(jsonOut);
 	}
@@ -57,5 +56,16 @@ public class MemberSearchByCreatedAt extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
+	
+	private String urlSearchParams(Timestamp from, Timestamp to, Member lastMember) {
+		return new StringBuilder("from=")
+				.append(from)
+				.append("&to=")
+				.append(to)
+				.append("&last=")
+				.append(lastMember.getId())
+				.append("&lastCreatedAt=")
+				.append(lastMember.getCreatedAt())
+				.toString();
+	}
 }

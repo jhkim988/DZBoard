@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 
 import org.json.JSONObject;
 
-@WebServlet("/login")
+@WebServlet("/member/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 2950492920898863375L;
 
@@ -27,8 +27,7 @@ public class LoginServlet extends HttpServlet {
 		String id = jsonInput.getString("id");
 		String pwd = jsonInput.getString("pwd");
 		
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository memberRepository = new MemberRepository(dataFactory);
+		MemberRepository memberRepository = new MemberRepository();
 		Member member = memberRepository.findOneMemberById(id);
 		JSONObject jsonResult = new JSONObject();
 		
@@ -38,6 +37,9 @@ public class LoginServlet extends HttpServlet {
 		} else if (!member.getPwd().equals(pwd)) {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "비밀번호가 틀렸습니다.");
+		} else if (member.getAuthority() < 1) {
+			jsonResult.put("status", false);
+			jsonResult.put("message", "로그인 제한");
 		} else { // login success
 			HttpSession session = request.getSession();
 			session.setAttribute("member", member);

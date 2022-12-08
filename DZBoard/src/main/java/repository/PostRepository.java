@@ -17,11 +17,7 @@ public class PostRepository {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
-	private DataSource dataFactory;
-	
-	public PostRepository(DataSource dataFactory) {
-		this.dataFactory = dataFactory;
-	}
+	private static DataSource dataFactory;
 	
 	private void open() {
 		try {
@@ -183,5 +179,49 @@ public class PostRepository {
 		return false;
 	}
 
+	public static void setDataFactory(DataSource dataSource) {
+		dataFactory = dataSource;
+	}
+
+	public boolean incrementViewCount(int postId) {
+		open();
+		try {
+			pstmt = conn.prepareStatement("update tb_dzboard_board set viewcount = viewcount+1 where id = ?");
+			pstmt.setInt(1, postId);
+			return pstmt.executeUpdate() == 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return false;
+	}
 	
+	public boolean incrementGood(int postId) {
+		open();
+		try {
+			pstmt = conn.prepareStatement("update tb_dzboard_board set good = good+1 where id = ?");
+			pstmt.setInt(1, postId);
+			return pstmt.executeUpdate() == 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return false;
+	}
+	
+	public boolean incrementBad(int postId) {
+		open();
+		try {
+			pstmt = conn.prepareStatement("update tb_dzboard_board set bad = bad+1 where id = ?");
+			pstmt.setInt(1, postId);
+			return pstmt.executeUpdate() == 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return false;
+	}
 }

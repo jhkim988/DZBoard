@@ -25,8 +25,7 @@ public class DeleteMemberServlet extends HttpServlet {
 		JSONObject json = new JSONObject();
 		PrintWriter out = response.getWriter();
 		
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
+		MemberRepository repository = new MemberRepository();
 		json.put("status", repository.deleteMemberById(id));
 		out.print(json);
 		response.sendRedirect(request.getHeader("referer"));

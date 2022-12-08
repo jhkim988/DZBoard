@@ -33,9 +33,7 @@ public class MemberSearchByUpdatedAt extends HttpServlet {
 		if (request.getParameter("lastUpdatedAt") != null) {
 			lastUpdatedAt = Timestamp.valueOf(request.getParameter("lastUpdatedAt"));
 		}
-		System.out.println("lastUpdatedAt: " + lastUpdatedAt);
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
+		MemberRepository repository = new MemberRepository();
 		List<Member> list = null;
 		if (last == null) {
 			list = repository.findMembersByUpdated(from, to);
@@ -48,10 +46,9 @@ public class MemberSearchByUpdatedAt extends HttpServlet {
 		list.forEach(x -> jsonArr.put(x.toJSONObject()));
 		jsonOut.put("status", true);
 		jsonOut.put("data", jsonArr);
-		System.out.println("list.size(): " + list.size());
 		if (list.size() > 0) {
 			Member lastMember = list.get(list.size()-1);
-			jsonOut.put("more", "from="+from.toString()+"&to="+to.toString()+"&last="+lastMember.getId()+"&lastUpdatedAt="+lastMember.getUpdatedAt());
+			jsonOut.put("more", urlSearchParams(from, to, lastMember));
 		}
 		out.print(jsonOut);
 		
@@ -61,4 +58,15 @@ public class MemberSearchByUpdatedAt extends HttpServlet {
 		doGet(request, response);
 	}
 
+	private String urlSearchParams(Timestamp from, Timestamp to, Member lastMember) {
+		return new StringBuilder("from=")
+				.append(from)
+				.append("&to=")
+				.append(to)
+				.append("&last=")
+				.append(lastMember.getId())
+				.append("&lastUpdatedAt=")
+				.append(lastMember.getUpdatedAt())
+				.toString();
+	}
 }

@@ -26,8 +26,7 @@ public class AllMemberServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String last = request.getParameter("last");
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
+		MemberRepository repository = new MemberRepository();
 		
 		List<Member> list = null;
 		if (last == null) {
@@ -42,7 +41,8 @@ public class AllMemberServlet extends HttpServlet {
 		jsonOut.put("status", true);
 		jsonOut.put("data", jsonArr);
 		if (list.size() > 0) {
-			jsonOut.put("more", "last="+list.get(list.size()-1).getId());
+			Member lastMember = list.get(list.size()-1);
+			jsonOut.put("more", urlSearchParams(lastMember));
 		}
 		out.print(jsonOut);
 	}
@@ -50,5 +50,10 @@ public class AllMemberServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
+	
+	private String urlSearchParams(Member lastMember) {
+		return new StringBuilder("last=")
+				.append(lastMember.getId())
+				.toString();
+	}
 }

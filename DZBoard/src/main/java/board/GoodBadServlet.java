@@ -5,45 +5,53 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import member.Member;
+import repository.GoodBadRepository;
 import repository.PostRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.sql.DataSource;
-
 import org.json.JSONObject;
 
-@WebServlet("/board/createPost")
-public class CreatePostServlet extends HttpServlet {
+@WebServlet("/board/goodBad")
+public class GoodBadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+      
+	// TODO: FILTER
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		Member member = (Member) session.getAttribute("member");
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
+		String type = jsonIn.getString("type");
+		int postId = jsonIn.getInt("postid");
+		Member member = (Member) request.getSession().getAttribute("member");
 		
-		String title = jsonIn.getString("title");
-		String category = jsonIn.getString("category");
-		String content = jsonIn.getString("content");
-		Post post = Post.builder()
-				.title(title)
-				.content(content)
-				.category(category)
-				.build();
 		PostRepository postRepository = new PostRepository();
-		PrintWriter out = response.getWriter();
+		GoodBadRepository goodBadRepository = new GoodBadRepository();
+		
 		JSONObject jsonOut = new JSONObject();
-		jsonOut.put("status", postRepository.addPost(post, member));
+		jsonOut.put("message", "이미 클릭하셨습니다.");
+		if ("good".equals(type)) {
+			if (goodBadRepository.click("y", member.getId(), postId)) {
+				postRepository.incrementGood(postId);
+				jsonOut.put("message", "추천!");
+			}
+		} else if ("bad".equals(type)) {
+			if (goodBadRepository.click("n", member.getId(), postId)) {
+				postRepository.incrementBad(postId);
+				jsonOut.put("message", "비추천!");
+			}
+		} else {
+			throw new UnsupportedOperationException();
+		}
+		
+		response.setContentType("application/json;charset=utf-8");
+		PrintWriter out = response.getWriter();
 		out.print(jsonOut);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

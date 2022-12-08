@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.MemberRepository;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -19,20 +20,17 @@ public class DupMemberCheckServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;utf-8");
+		response.setContentType("application/json;charset=utf-8");
+		BufferedReader in = request.getReader();
+		JSONObject jsonIn = new JSONObject(in.readLine());
+		
 		PrintWriter out = response.getWriter();
 		JSONObject jsonResult = new JSONObject();
-		String type= request.getParameter("type");
-		String value = request.getParameter("value");
-		if (type == null || value == null) {
-			jsonResult.put("status", false);
-			jsonResult.put("message", "잘못된 요청");
-			out.print(jsonResult);
-			return;
-		}
-
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository memberRepository = new MemberRepository(dataFactory);
+		
+		String type= jsonIn.getString("type");
+		String value = jsonIn.getString("value");
+		
+		MemberRepository memberRepository = new MemberRepository();
 		Member member = null;
 		if ("id".equals(type)) {
 			member = memberRepository.findOneMemberById(value);
@@ -50,6 +48,7 @@ public class DupMemberCheckServlet extends HttpServlet {
 		} else {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "이미 등록된 정보입니다.");
+			jsonResult.put("id", member.getId());
 		}
 		out.print(jsonResult);
 	}

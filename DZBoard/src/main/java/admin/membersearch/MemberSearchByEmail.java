@@ -26,8 +26,7 @@ public class MemberSearchByEmail extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String email = request.getParameter("email");
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
+		MemberRepository repository = new MemberRepository();
 		
 		List<Member> list = new ArrayList<>();
 		Member member = repository.findOneMemberByEmail(email);

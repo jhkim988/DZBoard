@@ -1,50 +1,41 @@
-package admin.membersearch;
+package admin;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import member.Member;
-import repository.MemberRepository;
+import repository.UrlAuthRepository;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-@WebServlet("/admin/memberSearch/phone")
-public class MemberSearchByPhone extends HttpServlet {
+@WebServlet("/admin/viewUrlAuthority")
+public class UpdateUrlAuthority extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
 		PrintWriter out = response.getWriter();
-		
-		String phone = request.getParameter("phone");
-		MemberRepository repository = new MemberRepository();
-		
-		List<Member> list = new ArrayList<>();
-		Member member = repository.findOneMemberByPhone(phone);
-		if (member != null) {
-			list.add(member);
-		}
-		
 		JSONObject jsonOut = new JSONObject();
 		JSONArray jsonArr = new JSONArray();
-		list.forEach(x -> jsonArr.put(x.toJSONObject()));
-		jsonOut.put("status", true);
+		urlAuthRepository.findAllUrlAuth().entrySet().stream()
+			.forEach(entry -> {
+				JSONObject j = new JSONObject();
+				j.put("url", entry.getKey());
+				j.put("authority", entry.getValue());
+				jsonArr.put(j);
+			});
 		jsonOut.put("data", jsonArr);
+		jsonOut.put("status", true);
 		out.print(jsonOut);
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

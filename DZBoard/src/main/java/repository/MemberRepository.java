@@ -13,14 +13,11 @@ import javax.sql.DataSource;
 import member.Member;
 
 public class MemberRepository {
+	private static DataSource dataFactory;
+
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
-	private DataSource dataFactory;
-	
-	public MemberRepository(DataSource dataFactory) {
-		this.dataFactory = dataFactory;
-	}
 	
 	private void open() {
 		try {
@@ -259,5 +256,9 @@ public class MemberRepository {
 			close();
 		}
 		return ret;
+	}
+	
+	public static void setDataFactory(DataSource dataSource) {
+		dataFactory = dataSource;
 	}
 }

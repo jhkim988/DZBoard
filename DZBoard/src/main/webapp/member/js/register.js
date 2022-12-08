@@ -28,7 +28,17 @@ const main = () => {
 				, message: '아이디는 영문, 숫자만 사용하실 수 있습니다.'
 			});
 		}
-		const response = await fetch(`/DZBoard/member/dupMemberCheck?type=id&value=${text}`);
+		const requestJSON = {
+			type: "id"
+			, value: text
+		}
+		const response = await fetch(`/DZBoard/member/dupMemberCheck`, {
+			method: 'POST'
+			, headers: {
+				'Content-Type': "application/json;charset=utf-8"
+			}
+			, body: JSON.stringify(requestJSON)
+		});
 		const json = await response.json();
 		return json;
 	}
@@ -37,7 +47,17 @@ const main = () => {
 		if (phonefirst.value == '휴대폰 번호 선택' || phonemid.value == "" || phonelast.value == "") {
 			return ({status : false, message: '입력해주세요'});
 		}
-		const response = await fetch(`/DZBoard/member/dupMemberCheck?type=phone&value=${phoneNumberMaker()}`)
+		const requestJSON = {
+			type: "phone"
+			, value: phoneNumberMaker()
+		}
+		const response = await fetch(`/DZBoard/member/dupMemberCheck`, {
+			method: 'POST'
+			, headers: {
+				'Content-Type': "application/json;charset=utf-8"
+			}
+			, body: JSON.stringify(requestJSON)
+		});
 		const json = await response.json();
 		return json;
 	}
@@ -46,7 +66,17 @@ const main = () => {
 		if (email.value == '' || emailHost.value == '') {
 			return ({status: false, message: '입력해주세요'});
 		}
-		const response = await fetch(`/DZBoard/member/dupMemberCheck?type=email&value=${emailMaker()}`);
+		const requestJSON = {
+			type: "email"
+			, value: emailMaker()
+		}
+		const response = await fetch(`/DZBoard/member/dupMemberCheck`, {
+			method: 'POST'
+			, headers: {
+				'Content-Type': "application/json;charset=utf-8"
+			}
+			, body: JSON.stringify(requestJSON)
+		});
 		const json = await response.json();
 		return json;
 	}

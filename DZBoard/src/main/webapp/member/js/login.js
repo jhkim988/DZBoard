@@ -10,10 +10,10 @@ const main = () => {
 	const loginButton = document.querySelector("#loginButton");
 	loginButton.addEventListener("click", async e => {
 		e.preventDefault();
-		const response = await fetch("/DZBoard/login", {
+		const response = await fetch("/DZBoard/member/login", {
 			method: 'POST'
 			, headers: {
-				'Content-Type': 'application/json;utf-8'
+				'Content-Type': 'application/json;charset=utf-8'
 			}
 			, body: JSON.stringify(getValue())
 		});	

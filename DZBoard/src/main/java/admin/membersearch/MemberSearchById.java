@@ -26,9 +26,7 @@ public class MemberSearchById extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		String id = request.getParameter("id");
-		System.out.println("id: " + id);
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
+		MemberRepository repository = new MemberRepository();
 		
 		List<Member> list = new ArrayList<>();
 		Member member = repository.findOneMemberById(id);

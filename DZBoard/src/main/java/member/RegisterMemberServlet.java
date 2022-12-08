@@ -24,7 +24,7 @@ public class RegisterMemberServlet extends HttpServlet {
 	private static final List<String> keys = Arrays.asList("id", "pwd", "pwdchk", "email", "emailHost", "phoneFirst", "phoneSecond", "phoneThird");
 	private final Map<String, String> info = new HashMap<>();
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;utf-8");
+		response.setContentType("application/json;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		keys.forEach(key -> info.put(key, request.getParameter(key)));
 		if (hasNullParameter()) {
@@ -52,8 +52,7 @@ public class RegisterMemberServlet extends HttpServlet {
 				.phone(phone)
 				.email(emailFull)
 				.build();
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository memberRepository = new MemberRepository(dataFactory);
+		MemberRepository memberRepository = new MemberRepository();
 		boolean status = memberRepository.addMember(member);
 		out.print(resultJSON(status, member.getName()));
 	}
@@ -63,7 +62,6 @@ public class RegisterMemberServlet extends HttpServlet {
 	}
 
 	private boolean hasNullParameter() {
-		info.entrySet().stream().forEach(x -> System.out.println(x.getKey() + ": " + x.getValue()));
 		return !info.values().stream()
 				.allMatch(x -> x != null);
 	}

@@ -18,17 +18,11 @@ public class UpdatePostServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("HERE: UpdatePostServlet");
 		HttpSession session = request.getSession();
 		Member loginMember = (Member) session.getAttribute("member");
 		int postId = Integer.parseInt(request.getParameter("id"));
-		if (loginMember == null) {
-			response.sendRedirect("/DZBoard/board/view?id="+postId);
-			return;
-		}
 	
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		PostRepository postRepository = new PostRepository(dataFactory);
+		PostRepository postRepository = new PostRepository();
 		Post oldPost = postRepository.findOnePostById(postId);
 		
 		String title = request.getParameter("title");

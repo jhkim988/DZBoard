@@ -21,14 +21,12 @@ public class UpdateMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1849937445826201642L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;utf-8");
+		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();
 		PrintWriter out = response.getWriter();
 		JSONObject jsonIn = new JSONObject(in.readLine());
 		JSONObject jsonOut = new JSONObject();
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository memberRepository = new MemberRepository(dataFactory);
-		System.out.println("HERE");
+		MemberRepository memberRepository = new MemberRepository();
 		String pwd = jsonIn.getString("pwd");
 		String name = jsonIn.getString("name");
 		String email = jsonIn.getString("email");

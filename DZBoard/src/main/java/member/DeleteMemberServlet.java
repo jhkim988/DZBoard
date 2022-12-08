@@ -21,13 +21,13 @@ public class DeleteMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;utf-8");
+		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();
 		PrintWriter out = response.getWriter();
 		JSONObject jsonIn = new JSONObject(in.readLine());
 		JSONObject jsonOut = new JSONObject();
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository memberRepository = new MemberRepository(dataFactory);
+
+		MemberRepository memberRepository = new MemberRepository();
 		
 		HttpSession session = request.getSession();
 		Member member = (Member) session.getAttribute("member");

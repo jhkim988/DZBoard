@@ -25,8 +25,7 @@ public class BoardMainServlet extends HttpServlet {
 		String date = request.getParameter("date");
 		String next = request.getParameter("next");
 		
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		PostRepository postRepository = new PostRepository(dataFactory);
+		PostRepository postRepository = new PostRepository();
 		
 		List<Post> posts = null;
 		if (id == null) {

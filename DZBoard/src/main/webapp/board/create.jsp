@@ -5,24 +5,30 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/translations/ko.js"></script>
+<script type="text/javascript" src="create.js"></script>
 </head>
 <body>
-<form action="/DZBoard/board/createPost">
+<form method="post">
+	<label>제목</label>
+	<input type="text" id="title" ><br/>
 	<label>
-		<input type="text" name="title" placeholder="제목"/>
+		<input type="text" id="category" placeholder="카테고리"/>
 		<br/>
 	</label>
-	<label>
-		<input type="text" name="category" placeholder="카테고리"/>
-		<br/>
-	</label>
-	<label>
-		<textarea placeholder="내용" name="content"></textarea>
-		<br/>
-	</label>
-	<input type="submit" value="등록"/>
-	<input type="reset" value="취소"/>
+	<label>내용</label>
+	<textarea name="content" id="editor"></textarea>
+	
+	<input id="send" type="submit" value="전송">
 </form>
 <a href="/DZBoard/board">뒤로가기</a>
 </body>
+<script>
+	ClassicEditor
+	    .create( document.querySelector( '#editor' ), {language : "ko"} )
+	    .catch( error => {
+	        console.error( error );
+	});
+</script>
 </html>

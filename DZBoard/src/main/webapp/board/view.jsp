@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Douzone Board - ${post.title}</title>
+<script type="text/javascript" src="view.js"></script>
 </head>
 <body>
 <p>글 번호: ${post.id}</p>
@@ -15,8 +16,8 @@
 <p>조회수: ${post.viewcount}</p>
 <p>작성 시간: ${post.createdAt}</p>
 <p>${post.content}</p>
-<p>추천: ${post.good}</p>
-<p>비추천: ${post.bad}</p>
+<p><button id = "goodButton">추천</button> ${post.good}</p>
+<p><button id = "badButton">비추천</button> ${post.bad}</p>
 <a href="/DZBoard/board/updateForm?id=${post.id}">수정</a>
 <a href="/DZBoard/board/deletePost?id=${post.id}">삭제</a>
 <a href="/DZBoard/board">뒤로가기</a>

@@ -1,5 +1,5 @@
 @charset "UTF-8";
 
-#changePwd {
+header, #findIdByPhone, #findIdByEmail, #findIdByPhoneCerti, #findIdByIpinCerti {
 	display: none;
 }

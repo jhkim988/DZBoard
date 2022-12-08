@@ -23,8 +23,7 @@ public class UpdateMemberServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
+		MemberRepository repository = new MemberRepository();
 		Member member = repository.findOneMemberById(id);
 		request.setAttribute("member", member);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin/updateMember.jsp");
@@ -41,8 +40,7 @@ public class UpdateMemberServlet extends HttpServlet {
 		String phone = json.getString("phone");
 		String authority = json.getString("authority");
 		
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		MemberRepository repository = new MemberRepository(dataFactory);
+		MemberRepository repository = new MemberRepository();
 		Member member = repository.findOneMemberById(id);
 		member.setPwd(pwd);
 		member.setName(name);
@@ -56,7 +54,7 @@ public class UpdateMemberServlet extends HttpServlet {
 			json.put("message", "Member Not Found");
 		}
 		
-		response.setContentType("application/json;utf-8");
+		response.setContentType("application/json;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.print(json);
 	}

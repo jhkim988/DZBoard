@@ -18,13 +18,13 @@ public class ViewPostServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int postId = Integer.parseInt(request.getParameter("id"));
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		PostRepository postRepository = new PostRepository(dataFactory);
+		PostRepository postRepository = new PostRepository();
 		Post post = postRepository.findOnePostById(postId);
 		if (post == null) {
 			response.sendRedirect("/board");
 			return;
 		}
+		postRepository.incrementViewCount(postId);
 		request.setAttribute("post", post);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/board/view.jsp");
 		dispatcher.forward(request, response);
