@@ -19,8 +19,7 @@ public class PostGeneratorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DataSource dataFactory = (DataSource) getServletContext().getAttribute("dataFactory");
-		PostRepository postRepository = new PostRepository(dataFactory);
+		PostRepository postRepository = new PostRepository();
 		for (int i = 0; i < 1000; i++) {
 			postRepository.addPost(
 					Post.builder().title("test" + i).content("test" + i).category("테스트").build()

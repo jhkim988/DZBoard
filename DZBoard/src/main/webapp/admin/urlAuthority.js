@@ -11,7 +11,8 @@ const main = () => {
 		}
 	}
 	const makeTrTag = row => `<tr>
-	<td>${row.url}</td>
+	<td><a href='${row.url}'>${row.url}</a></td>
+	<td>${row.note}</td>
 	<td>${row.authority}</td>
 	<td><a href="/DZBoard/admin/updateUrlAuthority?url=${row.url}">수정</a></td>
 	<td><a href="/DZBoard/admin/deleteUrlAuthority?url=${row.url}">삭제</a></td>

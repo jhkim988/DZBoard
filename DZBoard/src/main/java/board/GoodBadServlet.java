@@ -19,7 +19,6 @@ import org.json.JSONObject;
 public class GoodBadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
       
-	// TODO: FILTER
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());

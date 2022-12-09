@@ -23,12 +23,6 @@ public class DeletePostServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Member loginMember = (Member) session.getAttribute("member");
 		
-		// 실패: 로그인 하지 않음
-		if (loginMember == null) {
-			response.sendRedirect("/DZBoard/board/view?id="+id);
-			return;			
-		}
-		
 		PostRepository postRepository = new PostRepository();
 
 		Post post = postRepository.findOnePostById(id);

@@ -101,25 +101,6 @@ const main = () => {
 			<td><a href='/DZBoard/admin/updateMember?id=${member.id}'>수정</a></td>
 			<td><a href='/DZBoard/admin/deleteMember?id=${member.id}'>삭제</a></td>
 		</tr>`;
-	
-	/*
-	const step = [-2, -1, 0, 1, 2]
-	useCursors.forEach((button, idx) => {
-		const req = () => ({
-			type: searchType.value
-			, first: firstQuery.value
-			, second: secondQuery.value
-			, page: step[idx]
-			, limit: 10
-			, asc: step[idx] > 0
-			, hasLast: true
-			, last: step[idx] > 0 ? tbody.firstChild.querySelector("td").textContent : tbody.lastChild.querySelector("td").textContent
-		})
-		button.addEventListener('click', searchEventCallback(req, () => {
-			button.value = currentPage + step[idx];
-		}));
-	});
-	*/
 }
 
 window.onload = main;

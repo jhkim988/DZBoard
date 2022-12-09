@@ -1,4 +1,4 @@
-package board;
+package board.postsearch;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -9,40 +9,35 @@ import jakarta.servlet.http.HttpServletResponse;
 import repository.PostRepository;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.sql.DataSource;
+import board.Post;
 
-@WebServlet("/board")
-public class BoardMainServlet extends HttpServlet {
+@WebServlet("/board/postId")
+public class PostSearchByPostId extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
-		String date = request.getParameter("date");
-		String next = request.getParameter("next");
+		String query = request.getParameter("query");
+		int postId = 0;
+		try {
+			postId = Integer.parseInt(query);
+		} catch (Exception e) {
+			response.sendRedirect(request.getHeader("referer"));
+			return;
+		}
 		
 		PostRepository postRepository = new PostRepository();
-		
-		List<Post> posts = null;
-		
-		if (id == null) {
-			posts = postRepository.listPostHeader();
-		} else {
-			int postId = Integer.parseInt(id);
-			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeader(postId, createdAt, Boolean.valueOf(next));
-		}
-		request.setAttribute("posts", posts);
+		List<Post> posts = Arrays.asList(postRepository.findOnePostById(postId));
 		if (posts.size() == 0) {
 			response.sendRedirect(request.getHeader("referer"));
 			return;
 		}
+		request.setAttribute("posts", posts);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/board/board.jsp");
-		dispatcher.forward(request, response);
+		dispatcher.forward(request, response);		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

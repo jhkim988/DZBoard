@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,12 +30,15 @@ public class MemberRepository {
 
 	private void close() {
 		try {
-			if (rs != null)
+			if (rs != null) {
 				rs.close();
-			if (pstmt != null)
+			}
+			if (pstmt != null) {
 				pstmt.close();
-			if (conn != null)
+			}
+			if (conn != null) {
 				conn.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -68,19 +72,19 @@ public class MemberRepository {
 	}
 	
 	public List<Member> findMembersByCreated(Timestamp from, Timestamp to) {
-		return findMembersByTimestamp("select * from tb_dzboard_member where createdAt between ? and ? order by createdAt asc, id asc limit 10", from, to);
+		return findMembersByTimestamp("select * from tb_dzboard_member where createdAt between ? and ? order by createdAt desc, id asc limit 10", from, to);
 	}
 	
 	public List<Member> findMembersByCreated(Timestamp from, Timestamp to, String lastId, Timestamp lastCraetedAt) {
-		return findMembersByTimestamp("select * from tb_dzboard_member where (createdAt between ? and ?) and (createdAt > ? or (createdAt = ? and id > ?)) order by createdAt asc, id asc limit 10", lastId, from, to, lastCraetedAt, lastCraetedAt);
+		return findMembersByTimestamp("select * from tb_dzboard_member where (createdAt between ? and ?) and (createdAt < ? or (createdAt = ? and id > ?)) order by createdAt desc, id asc limit 10", lastId, from, to, lastCraetedAt, lastCraetedAt);
 	}
 	
 	public List<Member> findMembersByUpdated(Timestamp from, Timestamp to) {
-		return findMembersByTimestamp("select * from tb_dzboard_member where updatedAt between ? and ? order by updatedAt asc, id asc limit 10", from, to);
+		return findMembersByTimestamp("select * from tb_dzboard_member where updatedAt between ? and ? order by updatedAt desc, id asc limit 10", from, to);
 	}
 	
 	public List<Member> findMembersByUpdated(Timestamp from, Timestamp to, String lastId, Timestamp lastUpdatedAt) {
-		return findMembersByTimestamp("select * from tb_dzboard_member where (updatedAt between ? and ?) and (updatedAt > ? or (updatedAt = ? and id > ?)) order by updatedAt asc, id asc limit 10", lastId, from, to, lastUpdatedAt, lastUpdatedAt);
+		return findMembersByTimestamp("select * from tb_dzboard_member where (updatedAt between ? and ?) and (updatedAt < ? or (updatedAt = ? and id > ?)) order by updatedAt desc, id asc limit 10", lastId, from, to, lastUpdatedAt, lastUpdatedAt);
 	}
 
 	public List<Member> findMembersByAuthority(String level) {
@@ -127,21 +131,53 @@ public class MemberRepository {
 		return false;
 	}
 	
-	public boolean deleteMemberById(String id) {
+	public boolean updateUpdatedAt(Member member) {
 		open();
 		try {
-			pstmt = conn.prepareStatement("delete from tb_dzboard_member where id = ?");
-			pstmt.setString(1, id);
+			pstmt = conn.prepareStatement("update tb_dzboard_member set updatedAt = ? where id = ?");
+			pstmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+			pstmt.setString(2, member.getId());
 			return pstmt.executeUpdate() == 1;
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		} finally {
 			close();
 		}
 		return false;
 	}
 	
+	public boolean deleteMemberById(String id) {
+		Member member = findOneMemberById(id);
+		open();
+		try {
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement("delete from tb_dzboard_member where id = ?");
+			pstmt.setString(1, id);
+			int deleteCount = pstmt.executeUpdate();
 
+			pstmt = conn.prepareStatement("insert into tb_dzboard_tmp_member (id, pwd, name, email, phone, createdAt, authority) values (?, ?, ?, ?, ?, ?, ?)");
+			pstmt.setString(1, member.getId());
+			pstmt.setString(2, member.getPwd());
+			pstmt.setString(3, member.getName());
+			pstmt.setString(4, member.getEmail());
+			pstmt.setString(5, member.getPhone());
+			pstmt.setTimestamp(6, member.getCreatedAt());
+			pstmt.setInt(7, member.getAuthority());
+			int moveCount = pstmt.executeUpdate();
+			
+			if (deleteCount != moveCount) {
+				conn.rollback();
+				return false;
+			}
+			conn.commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return false;
+	}
 	
 	public Member findOneMember(String query, String value) {
 		open();

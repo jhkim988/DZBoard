@@ -5,9 +5,11 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import repository.CategoryRepository;
 import repository.GoodBadRepository;
 import repository.MemberRepository;
 import repository.PostRepository;
@@ -26,6 +28,10 @@ public class ServerListener implements ServletContextListener {
     	PostRepository.setDataFactory(dataFactory);
     	UrlAuthRepository.setDataFactory(dataFactory);
     	GoodBadRepository.setDataFactory(dataFactory);
+    	CategoryRepository.setDataFactory(dataFactory);
+    	
+    	ServletContext context = sce.getServletContext();
+    	context.setAttribute("allCategoryList", new CategoryRepository().findAllCategories());
     }
 
     public void contextDestroyed(ServletContextEvent sce)  { 

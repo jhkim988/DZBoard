@@ -15,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 @WebServlet("/admin/viewUrlAuthority")
-public class UpdateUrlAuthority extends HttpServlet {
+public class ViewUrlAuthority extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,7 +27,9 @@ public class UpdateUrlAuthority extends HttpServlet {
 			.forEach(entry -> {
 				JSONObject j = new JSONObject();
 				j.put("url", entry.getKey());
-				j.put("authority", entry.getValue());
+				UrlAuth urlAuth = entry.getValue();
+				j.put("note", urlAuth.getNote());
+				j.put("authority", urlAuth.getAuthority());
 				jsonArr.put(j);
 			});
 		jsonOut.put("data", jsonArr);

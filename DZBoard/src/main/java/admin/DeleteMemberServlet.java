@@ -19,7 +19,7 @@ public class DeleteMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;utf-");
+		response.setContentType("application/json;charset=utf-8");
 		
 		String id = request.getParameter("id");
 		JSONObject json = new JSONObject();
@@ -34,5 +34,4 @@ public class DeleteMemberServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

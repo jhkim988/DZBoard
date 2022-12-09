@@ -41,11 +41,12 @@ public class LoginServlet extends HttpServlet {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "로그인 제한");
 		} else { // login success
+			memberRepository.updateUpdatedAt(member);
+			member = memberRepository.findOneMemberById(member.getId());
 			HttpSession session = request.getSession();
 			session.setAttribute("member", member);
 			jsonResult.put("status", true);
 		}
-		
 		PrintWriter out = response.getWriter();
 		out.print(jsonResult);
 	}

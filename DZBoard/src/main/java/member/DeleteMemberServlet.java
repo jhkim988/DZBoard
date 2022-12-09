@@ -39,6 +39,7 @@ public class DeleteMemberServlet extends HttpServlet {
 			out.print(jsonOut);
 			return;
 		}
+		
 		session.removeAttribute("member");
 		boolean dbSuccess = memberRepository.deleteMemberById(member.getId());
 		jsonOut.put("status", dbSuccess);

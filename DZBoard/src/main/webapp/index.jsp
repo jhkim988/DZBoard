@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board</title>
+<script type="text/javascript" src="index.js"></script>
 </head>
 <body>
 	<c:choose>
@@ -15,7 +16,7 @@
 		<c:if test='${member.authority == 99}'>
 			<a href="/DZBoard/admin/index.html">관리자 페이지</a>
 		</c:if>
-		<a href="/DZBoard/member/logout">로그아웃</a>
+		<button id="logout">로그아웃</button>
 		</c:when>
 		<c:otherwise>
 			<a href="/DZBoard/member/login.html">로그인</a>	

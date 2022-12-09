@@ -11,12 +11,22 @@
   </welcome-file-list>
   <servlet>
     <description></description>
-    <display-name>GoodBadServlet</display-name>
-    <servlet-name>GoodBadServlet</servlet-name>
-    <servlet-class>board.GoodBadServlet</servlet-class>
+    <display-name>DeleteUrlAuthServlet</display-name>
+    <servlet-name>DeleteUrlAuthServlet</servlet-name>
+    <servlet-class>admin.DeleteUrlAuthServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GoodBadServlet</servlet-name>
-    <url-pattern>/GoodBadServlet</url-pattern>
+    <servlet-name>DeleteUrlAuthServlet</servlet-name>
+    <url-pattern>/DeleteUrlAuthServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CreateUrlAuthorityServlet</display-name>
+    <servlet-name>CreateUrlAuthorityServlet</servlet-name>
+    <servlet-class>admin.CreateUrlAuthorityServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateUrlAuthorityServlet</servlet-name>
+    <url-pattern>/CreateUrlAuthorityServlet</url-pattern>
   </servlet-mapping>
 </web-app>

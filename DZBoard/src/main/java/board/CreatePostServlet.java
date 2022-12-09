@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.Member;
+import repository.MemberRepository;
 import repository.PostRepository;
 
 import java.io.BufferedReader;
@@ -39,6 +40,9 @@ public class CreatePostServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		JSONObject jsonOut = new JSONObject();
 		jsonOut.put("status", postRepository.addPost(post, member));
+		MemberRepository memberRepository = new MemberRepository();
+		memberRepository.updateUpdatedAt(member);
+		session.setAttribute("member", memberRepository.findOneMemberById(member.getId()));
 		out.print(jsonOut);
 	}
 

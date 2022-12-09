@@ -1,35 +1,39 @@
-package member;
+package admin;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import repository.UrlAuthRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import org.json.JSONObject;
 
-@WebServlet("/member/logout")
-public class LogoutServlet extends HttpServlet {
+@WebServlet("/admin/createUrlAuth")
+public class CreateUrlAuthorityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-		JSONObject jsonOut = new JSONObject();
+		BufferedReader in = request.getReader();
+		JSONObject jsonIn = new JSONObject(in.readLine());
 		
-		HttpSession session = request.getSession();
-		session.removeAttribute("member");
-		
-		jsonOut.put("status", true);
-		jsonOut.put("message", "로그아웃!");
-		out.print(jsonOut);
+		String url = jsonIn.getString("url");
+		String note = jsonIn.getString("note");
+		int authority = jsonIn.getInt("authority");
+		UrlAuth urlAuth = UrlAuth.builder()
+								.url(url)
+								.note(note)
+								.authority(authority)
+								.build();
+		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
+		urlauthRepository.addUrlAuth(urlAuth);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }
