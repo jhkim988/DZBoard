@@ -53,7 +53,7 @@
 			</form>
 			<a href="/DZBoard/member/updateMember.jsp">회원 정보 수정</a>
 			<a href="/DZBoard/member/deleteMember.jsp">회원 탈퇴</a>
-			<a href="/DZBoard"><button>뒤로 가기</button></a>
+			<a href="/DZBoard/index"><button>뒤로 가기</button></a>
 	</c:when>
 	<c:otherwise>
 	

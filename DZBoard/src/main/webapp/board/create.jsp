@@ -5,10 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Douzone Board 글 작성</title>
+<script type="text/javascript" src="create.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/translations/ko.js"></script>
-<script type="text/javascript" src="create.js"></script>
 </head>
 <body>
 <form method="post">
@@ -18,7 +18,7 @@
 	<label>
 		<select id="category">
 			<c:forEach var='category' items='${categoryList}'>
-				<option value="${category.value}">${category.textContent}</option>
+				<option value="${category.textContent}">${category.textContent}</option>
 			</c:forEach>	
 		</select>
 		<br/>

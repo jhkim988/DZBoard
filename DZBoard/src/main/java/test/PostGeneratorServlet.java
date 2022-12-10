@@ -9,6 +9,7 @@ import member.Member;
 import repository.PostRepository;
 
 import java.io.IOException;
+import java.util.Random;
 
 import javax.sql.DataSource;
 
@@ -19,11 +20,15 @@ public class PostGeneratorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Random rand = new Random();
 		PostRepository postRepository = new PostRepository();
-		for (int i = 0; i < 1000; i++) {
-			postRepository.addPost(
-					Post.builder().title("test" + i).content("test" + i).category("테스트").build()
-					, Member.builder().id("user01").build());
+		for (int i = 0; i < 100; i++) {
+			postRepository.createPost(
+					Post.builder()
+					.title("test" + rand.nextInt(10))
+					.content("test" + rand.nextInt(10))
+					.category("일반").build()
+					, Member.builder().id("user"+rand.nextInt(10)).build());
 		}
 	}
 

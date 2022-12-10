@@ -9,6 +9,7 @@ import member.Member;
 import repository.MemberRepository;
 
 import java.io.IOException;
+import java.util.Random;
 
 import javax.sql.DataSource;
 
@@ -17,15 +18,15 @@ public class MemberGeneratorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Random rand = new Random();
 		MemberRepository repository = new MemberRepository();
-		for (int i = 100; i < 1000; i++) {
-			int rand = (int) (Math.random()*10);
-			repository.addMember(Member.builder()
-					.id("user0"+i)
+		for (int i = 0; i < 50; i++) {
+			repository.createMember(Member.builder()
+					.id("user"+i)
 					.pwd("pwd")
-					.name("자바좋아"+rand)
+					.name("자바좋아"+rand.nextInt(10))
 					.email("java" + i + "@naver.com")
-					.phone("010111100"+i)
+					.phone("0100000000"+i)
 					.build());
 		}
 	}

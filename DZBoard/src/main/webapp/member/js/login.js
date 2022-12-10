@@ -19,7 +19,7 @@ const main = () => {
 		});	
 		const json = await response.json();
 		if (json.status) {
-			location.href = '/DZBoard/';
+			location.href = '/DZBoard/index';
 		} else {
 			alert(`로그인 실패: ${json.message}`);
 		}

@@ -10,27 +10,16 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import repository.CategoryRepository;
-import repository.GoodBadRepository;
-import repository.MemberRepository;
-import repository.PostRepository;
-import repository.UrlAuthRepository;
+import repository.Repository;
 
 @WebListener
 public class ServerListener implements ServletContextListener {
     
-	public ServerListener() {
-    
-    }
-
     public void contextInitialized(ServletContextEvent sce)  { 
-    	DataSource dataFactory = getDataSource();
-    	MemberRepository.setDataFactory(dataFactory);
-    	PostRepository.setDataFactory(dataFactory);
-    	UrlAuthRepository.setDataFactory(dataFactory);
-    	GoodBadRepository.setDataFactory(dataFactory);
-    	CategoryRepository.setDataFactory(dataFactory);
-    	
     	ServletContext context = sce.getServletContext();
+    	DataSource dataFactory = getDataSource();
+    	Repository.setDataFactory(dataFactory);
+    	
     	context.setAttribute("allCategoryList", new CategoryRepository().findAllCategories());
     }
 

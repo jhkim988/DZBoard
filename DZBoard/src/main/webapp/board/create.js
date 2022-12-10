@@ -2,18 +2,16 @@ const main = () => {
 	send.addEventListener("click", async e => {
 		e.preventDefault();
 		const editor = document.querySelector("body > form > div > div.ck.ck-editor__main > div");
-		const requestJSON = {
-			title: title.value
-			, category: category.value
-			, content: editor.innerHTML
-			
-		}
 		const response = await fetch("/DZBoard/board/createPost", {
 			method: 'POST'
 			, headers: {
 				'Content-Type': 'application/json;charset=utf-8'
 			}
-			, body: JSON.stringify(requestJSON)
+			, body: JSON.stringify({
+				title: title.value
+				, category: category.value
+				, content: editor.innerHTML
+		})
 		});
 		const json = await response.json();
 		if (json.status) {

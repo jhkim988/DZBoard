@@ -39,7 +39,7 @@ public class CreatePostServlet extends HttpServlet {
 		PostRepository postRepository = new PostRepository();
 		PrintWriter out = response.getWriter();
 		JSONObject jsonOut = new JSONObject();
-		jsonOut.put("status", postRepository.addPost(post, member));
+		jsonOut.put("status", postRepository.createPost(post, member));
 		MemberRepository memberRepository = new MemberRepository();
 		memberRepository.updateUpdatedAt(member);
 		session.setAttribute("member", memberRepository.findOneMemberById(member.getId()));

@@ -9,8 +9,9 @@
 <script type="text/javascript" src="/DZBoard/board/board.js"></script>
 </head>
 <body>
+	<h1>Douzone Board</h1>
 	<a href="/DZBoard/board/create">글쓰기</a>
-	<a href="/DZBoard">메인화면</a>
+	<a href="/DZBoard/index">메인화면</a>
 	<table>
 		<thead>
 			<tr>

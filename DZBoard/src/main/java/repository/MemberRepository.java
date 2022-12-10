@@ -1,48 +1,16 @@
 package repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import member.Member;
 
 public class MemberRepository {
-	private static DataSource dataFactory;
-
-	private Connection conn;
-	private PreparedStatement pstmt;
+	private Repository repository = new Repository();
 	private ResultSet rs;
-	
-	private void open() {
-		try {
-			conn = dataFactory.getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void close() {
-		try {
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (conn != null) {
-				conn.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public Member findOneMemberById(String id) {
 		return findOneMember("select * from tb_dzboard_member where id = ?", id);
@@ -65,26 +33,39 @@ public class MemberRepository {
 	}
 
 	public List<Member> findMembersByName(String name) {
-		return findMembers("select * from tb_dzboard_member where name = ? order by id limit 10", name);
+		return findMembers(
+				"select * from tb_dzboard_member where name = ? order by id limit 10"
+				, name);
 	}
+	
 	public List<Member> findMembersByName(String name, String last) {
-		return findMembers("select * from tb_dzboard_member where name = ? and id > ? order by id limit 10", name, last);
+		return findMembers(
+				"select * from tb_dzboard_member where name = ? and id > ? order by id limit 10"
+				, name, last);
 	}
 	
 	public List<Member> findMembersByCreated(Timestamp from, Timestamp to) {
-		return findMembersByTimestamp("select * from tb_dzboard_member where createdAt between ? and ? order by createdAt desc, id asc limit 10", from, to);
+		return findMembers(
+				"select * from tb_dzboard_member where createdAt between ? and ? order by createdAt desc, id asc limit 10"
+				, from, to);
 	}
 	
 	public List<Member> findMembersByCreated(Timestamp from, Timestamp to, String lastId, Timestamp lastCraetedAt) {
-		return findMembersByTimestamp("select * from tb_dzboard_member where (createdAt between ? and ?) and (createdAt < ? or (createdAt = ? and id > ?)) order by createdAt desc, id asc limit 10", lastId, from, to, lastCraetedAt, lastCraetedAt);
+		return findMembers(
+				"select * from tb_dzboard_member where (createdAt between ? and ?) and (createdAt < ? or (createdAt = ? and id > ?)) order by createdAt desc, id asc limit 10"
+				, from, to, lastCraetedAt, lastCraetedAt, lastId);
 	}
 	
 	public List<Member> findMembersByUpdated(Timestamp from, Timestamp to) {
-		return findMembersByTimestamp("select * from tb_dzboard_member where updatedAt between ? and ? order by updatedAt desc, id asc limit 10", from, to);
+		return findMembers(
+				"select * from tb_dzboard_member where updatedAt between ? and ? order by updatedAt desc, id asc limit 10"
+				, from, to);
 	}
 	
 	public List<Member> findMembersByUpdated(Timestamp from, Timestamp to, String lastId, Timestamp lastUpdatedAt) {
-		return findMembersByTimestamp("select * from tb_dzboard_member where (updatedAt between ? and ?) and (updatedAt < ? or (updatedAt = ? and id > ?)) order by updatedAt desc, id asc limit 10", lastId, from, to, lastUpdatedAt, lastUpdatedAt);
+		return findMembers(
+				"select * from tb_dzboard_member where (updatedAt between ? and ?) and (updatedAt < ? or (updatedAt = ? and id > ?)) order by updatedAt desc, id asc limit 10"
+				, from, to, lastUpdatedAt, lastUpdatedAt, lastId);
 	}
 
 	public List<Member> findMembersByAuthority(String level) {
@@ -95,124 +76,94 @@ public class MemberRepository {
 		return findMembers("select * from tb_dzboard_member where authority = ? and id > ? order by id asc limit 10", level, last);
 	}
 	
-	public boolean addMember(Member member) {
-		open();
-		try {
-			pstmt = conn.prepareStatement("insert into tb_dzboard_member (id, pwd, name, email, phone) value (?, ?, ?, ?, ?)");
-			pstmt.setString(1, member.getId());
-			pstmt.setString(2, member.getPwd());
-			pstmt.setString(3, member.getName());
-			pstmt.setString(4, member.getEmail());
-			pstmt.setString(5, member.getPhone());
-			return pstmt.executeUpdate() == 1;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return false;
+	public boolean createMember(Member member) {
+		return repository.executeUpdatePreparedStatement(
+				"insert into tb_dzboard_member (id, pwd, name, email, phone) value (?, ?, ?, ?, ?)"
+				, member.getId()
+				, member.getPwd()
+				, member.getName()
+				, member.getEmail()
+				, member.getPhone()) == 1;
 	}
 	
 	public boolean updateMember(Member member) {
-		open();
-		try {
-			pstmt = conn.prepareStatement("update tb_dzboard_member set pwd = ?, name = ?, email = ?, phone = ?, authority = ? where id = ?");
-			pstmt.setString(1, member.getPwd());
-			pstmt.setString(2, member.getName());
-			pstmt.setString(3, member.getEmail());
-			pstmt.setString(4, member.getPhone());
-			pstmt.setInt(5, member.getAuthority());
-			pstmt.setString(6, member.getId());
-			return pstmt.executeUpdate() == 1;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+		return repository.executeUpdatePreparedStatement(
+				"update tb_dzboard_member set pwd = ?, name = ?, email = ?, phone = ?, authority = ? where id = ?"
+				, member.getPwd()
+				, member.getName()
+				, member.getEmail()
+				, member.getPhone()
+				, member.getAuthority()
+				, member.getId()) == 1;
 	}
 	
 	public boolean updateUpdatedAt(Member member) {
-		open();
-		try {
-			pstmt = conn.prepareStatement("update tb_dzboard_member set updatedAt = ? where id = ?");
-			pstmt.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-			pstmt.setString(2, member.getId());
-			return pstmt.executeUpdate() == 1;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return false;
+		return repository.executeUpdatePreparedStatement(
+				"update tb_dzboard_member set updatedAt = ? where id = ?"
+				, Timestamp.valueOf(LocalDateTime.now())
+				, member.getId()) == 1;
 	}
 	
+	// TODO: Change Procedure
 	public boolean deleteMemberById(String id) {
 		Member member = findOneMemberById(id);
-		open();
+		repository.open();
 		try {
-			conn.setAutoCommit(false);
-			pstmt = conn.prepareStatement("delete from tb_dzboard_member where id = ?");
-			pstmt.setString(1, id);
-			int deleteCount = pstmt.executeUpdate();
-
-			pstmt = conn.prepareStatement("insert into tb_dzboard_tmp_member (id, pwd, name, email, phone, createdAt, authority) values (?, ?, ?, ?, ?, ?, ?)");
-			pstmt.setString(1, member.getId());
-			pstmt.setString(2, member.getPwd());
-			pstmt.setString(3, member.getName());
-			pstmt.setString(4, member.getEmail());
-			pstmt.setString(5, member.getPhone());
-			pstmt.setTimestamp(6, member.getCreatedAt());
-			pstmt.setInt(7, member.getAuthority());
-			int moveCount = pstmt.executeUpdate();
-			
+			repository.setAutoCommit(false);
+			int deleteCount = repository.executeUpdatePreparedStatement(
+					"delete from tb_dzboard_member where id = ?"
+					, id);
+			int moveCount = repository.executeUpdatePreparedStatement(
+					"insert into tb_dzboard_tmp_member (id, pwd, name, email, phone, createdAt, authority) values (?, ?, ?, ?, ?, ?, ?)"
+					, member.getId()
+					, member.getPwd()
+					, member.getName()
+					, member.getEmail()
+					, member.getPhone()
+					, member.getCreatedAt()
+					, member.getAuthority());
 			if (deleteCount != moveCount) {
-				conn.rollback();
+				repository.rollback();
 				return false;
 			}
-			conn.commit();
+			repository.commit();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			repository.close();
 		}
 		return false;
 	}
 	
-	public Member findOneMember(String query, String value) {
-		open();
+	public Member findOneMember(String query, Object... params) {
+		repository.open();
 		Member ret = null;
 		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, value);
-			rs = pstmt.executeQuery();
+			rs = repository.executeQuery(query,  params);
 			if (rs.next()) {
 				ret = resultSetToMember();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			repository.close();
 		}
 		return ret;
 	}
 	
-	public List<Member> findMembers(String query, String... value) {
-		open();
+	public List<Member> findMembers(String query, Object... params) {
 		List<Member> ret = new ArrayList<>();
+		repository.open();
 		try {
-			pstmt = conn.prepareStatement(query);
-			for (int i = 0; i < value.length; i++) {
-				pstmt.setString(i+1, value[i]);
-			}
-			rs = pstmt.executeQuery();
+			rs = repository.executeQuery(query, params);
 			while (rs.next()) {
 				ret.add(resultSetToMember());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			repository.close();
 		}
 		return ret;
 	}
@@ -232,69 +183,6 @@ public class MemberRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
-	}
-	
-	public List<Member> findMembersByTimestamp(String query, Timestamp...timestamps) {
-		List<Member> ret = new ArrayList<>();
-		open();
-		try {
-			pstmt = conn.prepareStatement(query);
-			for (int i = 1; i <= timestamps.length; i++) {
-				pstmt.setTimestamp(i, timestamps[i-1]);
-			}
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				ret.add(Member.builder()
-						.id(rs.getString("id"))
-						.pwd(rs.getString("pwd"))
-						.name(rs.getString("name"))
-						.email(rs.getString("email"))
-						.phone(rs.getString("phone"))
-						.createdAt(rs.getTimestamp("createdAt"))
-						.updatedAt(rs.getTimestamp("updatedAt"))
-						.authority(rs.getInt("authority"))
-						.build());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return ret;
-	}
-	
-	public List<Member> findMembersByTimestamp(String query, String lastId, Timestamp...timestamps) {
-		List<Member> ret = new ArrayList<>();
-		open();
-		try {
-			pstmt = conn.prepareStatement(query);
-			for (int i = 1; i <= timestamps.length; i++) {
-				pstmt.setTimestamp(i, timestamps[i-1]);
-			}
-			pstmt.setString(timestamps.length+1, lastId);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				ret.add(Member.builder()
-						.id(rs.getString("id"))
-						.pwd(rs.getString("pwd"))
-						.name(rs.getString("name"))
-						.email(rs.getString("email"))
-						.phone(rs.getString("phone"))
-						.createdAt(rs.getTimestamp("createdAt"))
-						.updatedAt(rs.getTimestamp("updatedAt"))
-						.authority(rs.getInt("authority"))
-						.build());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return ret;
-	}
-	
-	public static void setDataFactory(DataSource dataSource) {
-		dataFactory = dataSource;
+		throw new RuntimeException("Fail: ResultSet -> Member");
 	}
 }

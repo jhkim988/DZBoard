@@ -32,7 +32,7 @@ public class PostSearchByAuthor extends HttpServlet {
 		} else {
 			int postId = Integer.parseInt(id);
 			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeaderOfAuthor(postId, createdAt, Boolean.valueOf(next), query);
+			posts = postRepository.listPostHeaderOfAuthor(query, postId, createdAt, Boolean.valueOf(next));
 		}
 		if (posts.size() == 0) {
 			response.sendRedirect(request.getHeader("referer"));

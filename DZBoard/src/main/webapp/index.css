@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+header {
+	text-align: center;
+}
+#welcome {
+	display: inline-block;
+}
+div {
+	border: 1px solid black;
+}
+
+#chatLink {
+	width: 490px;
+	grid-area: chatLink;
+	height: 180px;
+}
+#boardLink {
+	width: 490px;
+	grid-area: boardLink;
+	height: 180px;
+}
+
+#notice {
+	width: 490px;
+	grid-area: notice;
+}
+
+#qna {
+	width: 490px;
+	grid-area: qna;
+}
+
+#general {
+	width: 980px;
+	grid-area: general;
+}
+
+main {
+	width: 980px;
+	margin: auto;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	grid-template-areas:
+	"chatLink boardLink"
+	"notice qna"
+	"general general";
+}

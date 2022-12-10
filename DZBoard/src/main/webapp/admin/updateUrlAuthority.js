@@ -1,11 +1,6 @@
 const main = () => {
-	addUrlAuth.addEventListener("click", async e => {
-		e.preventDefault();
-		if (url.value == '' || note == '' || authority == '') {
-			alert(`값을 입력해주세요`);
-			return false;
-		}
-		const response = await fetch(`/DZBoard/admin/createUrlAuth`, {
+	updateButton.addEventListener("click", async e => {
+		const response = await fetch(`/DZBoard/admin/updateUrlAuth`, {
 			method: `POST`
 			, headers: {
 				'Content-Type': 'application/json;charset=utf-8'
@@ -16,10 +11,11 @@ const main = () => {
 				, authority: authority.value
 			})
 		});
+		
 		const json = await response.json();
 		alert(json.message);
 		if (json.status) {
-			location.href = `/DZBoard/admin/urlAuthority.html`;
+			location.href = '/DZBoard/admin/urlAuthority.html';
 		}
 	});
 }

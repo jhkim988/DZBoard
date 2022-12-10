@@ -32,7 +32,7 @@ public class PostSearchByTitleServlet extends HttpServlet {
 		} else {
 			int postId = Integer.parseInt(id);
 			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeaderOfTitle(postId, createdAt, Boolean.valueOf(next), query);
+			posts = postRepository.listPostHeaderOfTitle(query, postId, createdAt, Boolean.valueOf(next));
 		}
 		if (posts.size() == 0) {
 			response.sendRedirect(request.getHeader("referer"));

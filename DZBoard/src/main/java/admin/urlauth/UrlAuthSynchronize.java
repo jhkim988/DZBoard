@@ -1,4 +1,4 @@
-package admin;
+package admin.urlauth;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,16 +8,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import repository.UrlAuthRepository;
 
 import java.io.IOException;
+import java.util.Collections;
 
-@WebServlet("/admin/deleteUrlAuthority")
-public class DeleteUrlAuthServlet extends HttpServlet {
+@WebServlet("/admin/urlAuthSynchronize")
+public class UrlAuthSynchronize extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = request.getParameter("url");
 		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
-		urlAuthRepository.deleteUrlAuthByUrl(url);
-		response.sendRedirect(request.getHeader("referer"));
+		getServletContext().setAttribute("urlAuthMap", Collections.synchronizedMap(urlAuthRepository.findAllUrlAuth()));
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

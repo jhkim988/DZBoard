@@ -51,7 +51,7 @@ const main = () => {
 			}
 		};
 		const response = await fetch(`/DZBoard/admin/memberSearch/${searchType.value}?${
-			new URLSearchParams(searchRequestJSON[searchType.value])
+			new URLSearchParams(searchRequestJSON[searchType.value]).toString()
 		}`);
 		if (!response.ok) {
 			alert("네트워크 오류");

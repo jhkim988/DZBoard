@@ -6,7 +6,7 @@ const main = () => {
 			const json = await response.json();
 			if (json.status) {
 				alert(json.message);
-				location.href = `/DZBoard`;
+				location.href = `/DZBoard/index`;
 			}
 		});
 	}

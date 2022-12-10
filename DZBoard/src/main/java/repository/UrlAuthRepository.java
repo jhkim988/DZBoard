@@ -1,49 +1,39 @@
 package repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
-import admin.UrlAuth;
+import admin.urlauth.UrlAuth;
 
 public class UrlAuthRepository {
-	private static DataSource dataFactory;
-	private Connection conn;
-	private PreparedStatement pstmt;
+	private Repository repository = new Repository();
 	private ResultSet rs;
 	
-	private void open() {
+	public UrlAuth findOneUrlAuth(String url) {
+		repository.open();
 		try {
-			conn = dataFactory.getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void close() {
-		try {
-			if (rs != null)
-				rs.close();
-			if (pstmt != null)
-				pstmt.close();
-			if (conn != null)
-				conn.close();
+			rs = repository.executeQuery("select * from tb_dzboard_urlauth where url = ?", url);
+			if (rs.next()) {
+				return UrlAuth.builder()
+						.url(rs.getString("url"))
+						.authority(rs.getInt("authority"))
+						.note(rs.getString("note"))
+						.build();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			repository.close();
 		}
+		return null;
 	}
 	
 	public Map<String, UrlAuth> findAllUrlAuth() {
 		Map<String, UrlAuth> ret = new HashMap<>();
-		open();
+		repository.open();
 		try {
-			pstmt = conn.prepareStatement("select * from tb_dzboard_urlauth");
-			rs = pstmt.executeQuery();
+			rs = repository.executeQuery("select * from tb_dzboard_urlauth");
 			while (rs.next()) {
 				String url = rs.getString("url");
 				int authority = rs.getInt("authority");
@@ -57,37 +47,30 @@ public class UrlAuthRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			repository.close();
 		}
 		return ret;
 	}
 	
 	public boolean createUrlAuth(UrlAuth urlAuth) {
-		open();
-		try {
-			pstmt = conn.prepareStatement("insert into tb_dzboard_")
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
+		return repository.executeUpdatePreparedStatement(
+				"insert into tb_dzboard_urlauth (url, authority, note) values (?, ?, ?)"
+				, urlAuth.getUrl()
+				, urlAuth.getAuthority()
+				, urlAuth.getNote()) == 1;
+	}
+	
+	public boolean updateUrlAuth(UrlAuth newAuth) {
+		return repository.executeUpdatePreparedStatement(
+				"update tb_dzboard_urlauth set authority = ?, note = ? where url = ?"
+				, newAuth.getAuthority()
+				, newAuth.getNote()
+				, newAuth.getUrl()) == 1;
 	}
 	
 	public boolean deleteUrlAuthByUrl(String url) {
-		open();
-		try {
-			pstmt = conn.prepareStatement("delete from tb_dzboard_urlauth where url = ?");
-			pstmt.setString(1, url);
-			return pstmt.executeUpdate() == 1;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return false;
+		return repository.executeUpdatePreparedStatement(
+				"delete from tb_dzboard_urlauth where url = ?"
+				, url) == 1;
  	}
-	
-	public static void setDataFactory(DataSource dataSource) {
-		dataFactory = dataSource;
-	}
 }

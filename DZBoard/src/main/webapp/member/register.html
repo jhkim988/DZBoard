@@ -13,24 +13,24 @@
 		<h2 id="infoTitle">1. 정보 입력</h2>
 		<div id="infoInput">
 			<label>
-				<input type="text" placeholder="이름" id="name" name="name" class='required'/>
+				<input type="text" placeholder="이름" id="name" class='required'/>
 			</label>
 			<label>
-				<input type="text" placeholder="아이디" id="id" name="id" class='required' data-mapping='markid'/>
+				<input type="text" placeholder="아이디" id="id" class='required' data-mapping='markid'/>
 			</label>
 			<mark id="markid"></mark>
 			<label>
-				<input type="password" placeholder="비밀번호" id="pwd" name="pwd" class='required' data-mapping='markpwd'/>
+				<input type="password" placeholder="비밀번호" id="pwd" class='required' data-mapping='markpwd'/>
 			</label>
 			<mark id="markpwd"></mark>
 			
 			<label>
-				<input type="password" placeholder="비밀번호 재입력" id="pwdchk" name="pwdchk" class='required' data-mapping='markpwdchk'/>
+				<input type="password" placeholder="비밀번호 재입력" id="pwdchk" class='required' data-mapping='markpwdchk'/>
 			</label>
 			<mark id="markpwdchk"></mark>
 			
 			<label>
-			<select id="phonefirst" class='required' name="phoneFirst" data-mapping='markphone'>
+			<select id="phonefirst" class='required' data-mapping='markphone'>
 				<option selected>휴대폰 번호 선택</option>
 				<option>010</option>
 				<option>011</option>
@@ -41,21 +41,21 @@
 				<option>019</option>
 			</select>
 			-
-			<input type="number" id="phonemid" class="phone required" name="phoneSecond" data-mapping='markphone'>
+			<input type="number" id="phonemid" class="phone required" data-mapping='markphone'>
 			-
-			<input type="number" id="phonelast" class="phone required" name="phoneThird" data-mapping='markphone'>
+			<input type="number" id="phonelast" class="phone required" data-mapping='markphone'>
 			<mark id="markphone">휴대폰 번호를 입력해주세요</mark>
 			</label>
 			<label >
-			<input id="email" name="email" type="text" placeholder="이메일" class='required' data-mapping='markemail'>
+			<input id="email" type="text" placeholder="이메일" class='required' data-mapping='markemail'>
 			@
-			<input id="emailHost" name="emailHost" type="hidden" class='required' data-mapping='markemail'/>
+			<input id="emailHost" type="hidden" class='required' data-mapping='markemail'/>
 			<select id="emailSelect" data-mapping='markemail'>
 				<option selected>선택</option>
 				<option value="naver.com">naver.com</option>
 				<option value="hanmail.net">hanmail.net</option>
 				<option value="daum.net">daum.net</option>
-				<option value="name.com">nate.com</option>
+				<option value="nate.com">nate.com</option>
 				<option value="gmail.com">gmail.com</option>
 				<option value="hotmail.com">hotmail.com</option>
 				<option value="emailManual">직접입력</option>

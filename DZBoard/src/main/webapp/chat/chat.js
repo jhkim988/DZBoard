@@ -24,7 +24,6 @@ const main = async () => {
 			document.querySelectorAll('.entranceButton')
 				.forEach(btn => btn.addEventListener('click',
 					e => {
-						console.log(e.target);
 						entranceChatRoom(e, e.target.dataset.chatroomname)
 					}));
 		} else {
@@ -38,9 +37,9 @@ const main = async () => {
 			webSocket.close();
 		}
 		chatHistory.innerHTML = '';
-		webSocket = new WebSocket(`ws://localhost:8880/DZBoard/chat/webSocket/${chatRoomName}`);
+		webSocket = new WebSocket(`ws://localhost:8080/DZBoard/chat/webSocket/${chatRoomName}`);
 		webSocket.onerror = message => {
-			alert(message);
+			alert(message.data);
 		}
 		webSocket.onmessage = message => {
 			chatRoomListView();

@@ -1,41 +1,40 @@
 package server;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpFilter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import member.Member;
-import repository.UrlAuthRepository;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.http.HttpRequest;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
 
-import admin.UrlAuth;
+import admin.urlauth.UrlAuth;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import member.Member;
+import repository.UrlAuthRepository;
 
 @WebFilter("/*")
-public class AuthorityFilter extends HttpFilter implements Filter {
+public class AuthorityFilter implements Filter {
 	private static final long serialVersionUID = -6174276011884338962L;
-
-	private Map<String, UrlAuth> urlAuth;
-
+	private ServletContext context;
+	private UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
+	
+	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		setEncoding(httpRequest, httpResponse);
+
+		Map<String, UrlAuth> urlAuth = (Map<String, UrlAuth>) context.getAttribute("urlAuthMap");
 		
 		String requestURI = httpRequest.getRequestURI();
 		System.out.println("Filter: " + requestURI);
@@ -62,13 +61,10 @@ public class AuthorityFilter extends HttpFilter implements Filter {
 		chain.doFilter(request, response);
 	}
 
+	@Override
 	public void init(FilterConfig fConfig) throws ServletException {
-		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
-		urlAuth = Collections.synchronizedMap(urlAuthRepository.findAllUrlAuth());
-	}
-
-	public Map<String, UrlAuth> getUrlAuthMap() {
-		return urlAuth;
+		context = fConfig.getServletContext();
+		context.setAttribute("urlAuthMap", Collections.synchronizedMap(urlAuthRepository.findAllUrlAuth()));
 	}
 
 	private boolean isLogined(HttpServletRequest request) {

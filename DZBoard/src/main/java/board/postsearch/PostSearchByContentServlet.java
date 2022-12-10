@@ -32,7 +32,7 @@ public class PostSearchByContentServlet extends HttpServlet {
 		} else {
 			int postId = Integer.parseInt(id);
 			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeaderOfContent(postId, createdAt, Boolean.valueOf(next), query);
+			posts = postRepository.listPostHeaderOfContent(query, postId, createdAt, Boolean.valueOf(next));
 		}
 		if (posts.size() == 0) {
 			System.out.println("ZERO:");
