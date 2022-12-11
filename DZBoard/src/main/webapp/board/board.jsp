@@ -6,13 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board - 게시판</title>
+<link rel="stylesheet" href="/DZBoard/board/board.css" />
 <script type="text/javascript" src="/DZBoard/board/board.js"></script>
 </head>
 <body>
-	<h1>Douzone Board</h1>
-	<a href="/DZBoard/board/create">글쓰기</a>
-	<a href="/DZBoard/index">메인화면</a>
-	<table>
+	<h1><a href="/DZBoard/index">Douzone Board</a></h1>
+	<table id="board">
 		<thead>
 			<tr>
 				<th>글번호</th>
@@ -34,18 +33,18 @@
 			<c:forEach var='post' items='${posts}'>
 				<tr>
 					<td class='id'>${post.id}</td>
-					<td>${post.category}</td>
-					<td><a href="/DZBoard/board/view?id=${post.id}">${post.title}</a></td>
-					<td>${post.author}</td>
-					<td>${post.viewcount}</td>
-					<td>${post.good}</td>
-					<td>${post.bad}</td>
+					<td class='category'>${post.category}</td>
+					<td class='title'><a href="/DZBoard/board/view?id=${post.id}">${post.title}</a></td>
+					<td class='author'>${post.author}</td>
+					<td class='viewcount'>${post.viewcount}</td>
+					<td class='good'>${post.good}</td>
+					<td class='bad'>${post.bad}</td>
 					<td class='createdAt'>${post.createdAt}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	<form>
+	<div id="search">
 		<label>
 			<select id="searchType">
 				<option value="all">전체 보기</option>
@@ -61,8 +60,14 @@
 			<input id="query" type="text" placeholder="검색어">
 		</label>
 		<input id="searchButton" type="submit" value="검색"/>
-	</form>
-	<a id="prev" href="">이전</a>
-	<a id="next" href="">다음</a>
+	</div>
+	
+	<div id="left">
+		<a id="prev" href="">이전</a>
+		<a id="next" href="">다음</a>
+	</div>
+	<div id="right">
+		<a href="/DZBoard/board/create">글쓰기</a>
+	</div>
 </body>
 </html>

@@ -10,7 +10,7 @@
 </head>
 <body>
 	<header>
-		<h1 id=title>Douzone Board</h1>
+		<div id="member">
 		<c:choose>
 			<c:when test='${member != null}'>
 				<p id="welcome">${member.name} 님 안녕하세요</p>
@@ -24,10 +24,14 @@
 				<a href="/DZBoard/member/login.html">로그인</a>
 			</c:otherwise>
 		</c:choose>
+		</div>
+		<h1 id=title>Douzone Board</h1>
 	</header>
+	<nav>
+		<a href="/DZBoard/chat/chat.html">채팅 바로가기</a>
+		<a href="/DZBoard/board">게시판 바로가기</a>
+	</nav>
 	<main>
-		<div id="chatLink"><a href="/DZBoard/chat/chat.html">채팅 바로가기</a></div>
-		<div id="boardLink"><a href="/DZBoard/board">게시판 바로가기</a></div>
 		<div id="notice">
 			공지사항 <a href="/DZBoard/board/category?query=공지">[더보기]</a>
 			<ul>

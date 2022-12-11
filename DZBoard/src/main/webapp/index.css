@@ -1,24 +1,35 @@
 @charset "UTF-8";
 
 header {
+	text-align: right;
+}
+h1 {
 	text-align: center;
+}
+#member {
+	border: none;
 }
 #welcome {
 	display: inline-block;
 }
-div {
-	border: 1px solid black;
+
+nav {
+	background: #79EDFF;
+	width: 980px;
+	margin: auto;
+	text-align:center;
 }
 
-#chatLink {
-	width: 490px;
-	grid-area: chatLink;
-	height: 180px;
+button {
+	background: none;
+	border: none;
 }
-#boardLink {
-	width: 490px;
-	grid-area: boardLink;
-	height: 180px;
+a {
+	text-decoration: none;
+	color: black;
+}
+div {
+	border: 1px solid black;
 }
 
 #notice {
@@ -41,9 +52,8 @@ main {
 	margin: auto;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: repeat(3, 1fr);
+	grid-template-rows: repeat(2, 1fr);
 	grid-template-areas:
-	"chatLink boardLink"
 	"notice qna"
 	"general general";
 }

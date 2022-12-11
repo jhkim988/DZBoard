@@ -8,9 +8,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.Member;
+import repository.CategoryRepository;
 import repository.PostRepository;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -23,22 +26,26 @@ public class UpdateFormServlet extends HttpServlet {
 		Member loginMember = (Member) session.getAttribute("member");
 		int postId = Integer.parseInt(request.getParameter("id"));
 		
+		request.setAttribute("categoryList", getCategoryList(loginMember.getAuthority()));
+		
 		PostRepository postRepository = new PostRepository();
 		Post oldPost = postRepository.findOnePostById(postId);
 		if (oldPost.isSameAuthor(loginMember)) {
-			request.setAttribute("id", postId);
+			request.setAttribute("oldPost", oldPost);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/board/update.jsp");
 			dispatcher.forward(request, response);
 			return;
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private List<Category> getCategoryList(int authority) {
+		@SuppressWarnings("unchecked")
+		List<Category> allCategories = (List<Category>) getServletContext().getAttribute("allCategoryList");
+		return allCategories.stream().filter(category -> category.getAuthority() <= authority).collect(Collectors.toList());
 	}
 
 }

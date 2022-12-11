@@ -65,7 +65,6 @@ const main = () => {
 			json.data.forEach(x => data.push(makeTRTag(x)));
 			tbody.innerHTML = data.join('');			
 			more.dataset.request = json.more;
-			console.log(json.more);
 		} else {
 			more.dataset.request = '';
 		}
@@ -75,7 +74,7 @@ const main = () => {
 	searchButton.addEventListener("click", searchCallback);
 	
 	more.addEventListener("click", async e => {
-		if (more.dataset.request == '') return;
+		if (more.dataset.request === '') return;
 		const response = await fetch(`/DZBoard/admin/memberSearch/${searchType.value}?${more.dataset.request}`);
 		const json = await response.json();
 		console.log(json);

@@ -24,10 +24,12 @@ public class AllMemberServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
+		JSONObject jsonOut = new JSONObject();
+		JSONArray jsonArr = new JSONArray();
 		
 		String last = request.getParameter("last");
+
 		MemberRepository repository = new MemberRepository();
-		
 		List<Member> list = null;
 		if (last == null) {
 			list = repository.findMembersAll();
@@ -35,15 +37,17 @@ public class AllMemberServlet extends HttpServlet {
 			list = repository.findMembersAll(last);
 		}
 		
-		JSONObject jsonOut = new JSONObject();
-		JSONArray jsonArr = new JSONArray();
+		
 		list.forEach(x -> jsonArr.put(x.toJSONObject()));
 		jsonOut.put("status", true);
 		jsonOut.put("data", jsonArr);
 		if (list.size() > 0) {
 			Member lastMember = list.get(list.size()-1);
 			jsonOut.put("more", urlSearchParams(lastMember));
+		} else {
+			jsonOut.put("more", "");
 		}
+		
 		out.print(jsonOut);
 	}
 

@@ -1,0 +1,36 @@
+h1 {
+	text-align: center;
+}
+#board {
+	margin: 0 auto;
+}
+
+thead > tr > th {
+	border-bottom: 3px solid black;
+}
+table {
+	text-align: center;
+}
+#search {
+	text-align: center;	
+}
+
+#left {
+	text-align:center;
+}
+
+#right {
+	text-align: right;
+}
+
+.title {
+	width: 300px;
+	height: 40px;
+	text-align: center;
+}
+.category {
+	width: 80px;
+}
+.author {
+	width: 80px;
+}
