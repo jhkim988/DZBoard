@@ -19,7 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 @WebServlet("/admin/memberSearch/allMember")
-public class AllMemberServlet extends HttpServlet {
+public class AllMemberSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

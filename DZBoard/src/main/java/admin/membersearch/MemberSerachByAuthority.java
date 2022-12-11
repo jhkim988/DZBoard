@@ -44,6 +44,8 @@ public class MemberSerachByAuthority extends HttpServlet {
 		if (list.size() > 0) {
 			Member lastMember = list.get(list.size()-1);
 			jsonOut.put("more", urlSearchParams(lastMember));
+		} else {
+			jsonOut.put("more", "");
 		}
 		out.print(jsonOut);
 	}
