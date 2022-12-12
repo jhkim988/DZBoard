@@ -36,7 +36,7 @@
 			공지사항 <a href="/DZBoard/board/category?query=공지">[더보기]</a>
 			<ul>
 				<c:forEach var="notice" items="${notices}">
-					<li>${notice.title}</li>
+					<li><a href="/DZBoard/board/view?id=${notice.id}">${notice.title}</a></li>
 				</c:forEach>
 			</ul>
 		</div>
@@ -44,7 +44,7 @@
 			Q&A <a href="/DZBoard/board/category?query=Q%26A">[더보기]</a>
 			<ul>
 				<c:forEach var="qna" items="${qnas}">
-					<li>${qna.title}</li>
+					<li><a href="/DZBoard/board/view?id=${qna.id}">${qna.title}</a></li>
 				</c:forEach>
 			</ul>
 		</div>
@@ -52,7 +52,7 @@
 			일반 게시판 <a href="/DZBoard/board/category?query=일반">[더보기]</a>
 			<ul>
 				<c:forEach var="general" items="${generals}">
-					<li>${general.title}</li>
+					<li><a href="/DZBoard/board/view?id=${general.id}">${general.title}</a></li>
 				</c:forEach>
 			</ul>
 		</div>

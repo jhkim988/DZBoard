@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
-<script type="text/javascript" src="memberListView.js"></script>
+<link rel="stylesheet" href="./css/memberListView.css"/>
+<script type="text/javascript" src="./js/memberListView.js"></script>
 <title>관리자 - 회원 검색</title>
 </head>
 <body>

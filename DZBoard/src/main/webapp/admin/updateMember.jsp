@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 - 회원 정보 수정</title>
-<script type="text/javascript" src="./updateMember.js"></script>
+<script type="text/javascript" src="./js/updateMember.js"></script>
 </head>
 <body>
 	<table>

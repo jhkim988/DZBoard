@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+#title {
+	width: 80%;
+	height: 40px;
+	padding: 5px;
+	padding-left: 10px;
+}
+
+#category {
+	height: 40px;
+}
+body > form > div > div.ck.ck-editor__main > div {
+	height: 400px;
+}

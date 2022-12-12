@@ -11,7 +11,7 @@ const main = () => {
 				title: title.value
 				, category: category.value
 				, content: editor.innerHTML
-		})
+			})
 		});
 		const json = await response.json();
 		if (json.status) {

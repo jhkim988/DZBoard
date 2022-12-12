@@ -15,6 +15,11 @@ table {
 	text-align: center;	
 }
 
+footer {
+	width: 980px;
+	margin: auto;
+}
+
 #left {
 	text-align:center;
 }
@@ -33,4 +38,12 @@ table {
 }
 .author {
 	width: 80px;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+#prev, #next, #write {
+	border: 1px solid black;
 }

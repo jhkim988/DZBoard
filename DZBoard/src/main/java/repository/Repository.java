@@ -5,15 +5,31 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
 public class Repository {
 	private static DataSource dataFactory;
+	private static Map<String, String> sqls = Collections.synchronizedMap(new HashMap<>());
+
 	private Connection conn;
 	private PreparedStatement pstmt;
+	private CallableStatement cstmt;
 	private ResultSet rs;
 
+	
+	public static String put(String name, String sql) {
+		return sqls.put(name, sql);
+	}
+	public static String getSQL(String name) {
+		return sqls.get(name);
+	}
+	
 	void open() {
 		try {
 			conn = dataFactory.getConnection();
@@ -26,6 +42,9 @@ public class Repository {
 		try {
 			if (rs != null) {
 				rs.close();
+			}
+			if (cstmt != null) {
+				cstmt.close();
 			}
 			if (pstmt != null) {
 				pstmt.close();
@@ -54,14 +73,6 @@ public class Repository {
 		}
 	}
 
-	void setAutoCommit(boolean autoCommit) {
-		try {
-			conn.setAutoCommit(autoCommit);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	int executeUpdatePreparedStatement(String query, Object... params) {
 		open();
 		try {
@@ -86,6 +97,10 @@ public class Repository {
 		return rs = pstmt.executeQuery();
 	}
 
+	CallableStatement prepareCall(String query) throws SQLException {
+		return cstmt = conn.prepareCall(query);
+	}
+	
 	public static void setDataFactory(DataSource dataSource) {
 		dataFactory = dataSource;
 	}

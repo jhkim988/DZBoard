@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board - 게시판</title>
-<link rel="stylesheet" href="/DZBoard/board/board.css" />
-<script type="text/javascript" src="/DZBoard/board/board.js"></script>
+<link rel="stylesheet" href="/DZBoard/board/css/board.css" />
+<script type="text/javascript" src="./board/js/board.js"></script>
 </head>
 <body>
 	<h1><a href="/DZBoard/index">Douzone Board</a></h1>
@@ -25,9 +25,6 @@
 			</tr>
 		</thead>
 		<tbody id="notice">
-			<c:forEach var='notice' items='${notices}'>
-				
-			</c:forEach>
 		</tbody>
 		<tbody id="mainBoard">
 			<c:forEach var='post' items='${posts}'>
@@ -61,13 +58,14 @@
 		</label>
 		<input id="searchButton" type="submit" value="검색"/>
 	</div>
-	
-	<div id="left">
-		<a id="prev" href="">이전</a>
-		<a id="next" href="">다음</a>
-	</div>
-	<div id="right">
-		<a href="/DZBoard/board/create">글쓰기</a>
-	</div>
+	<footer>
+		<div id="left">
+			<a id="prev" href="">이전</a>
+			<a id="next" href="">다음</a>
+		</div>
+		<div id="right">
+			<a id="write" href="/DZBoard/board/create">글쓰기</a>
+		</div>
+	</footer>
 </body>
 </html>

@@ -6,7 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board 글 작성</title>
-<script type="text/javascript" src="create.js"></script>
+<link rel="stylesheet" href="/DZBoard/board/css/create.css"/>
+<script type="text/javascript" src="/DZBoard/board/js/postform.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/translations/ko.js"></script>
 </head>

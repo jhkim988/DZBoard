@@ -1,5 +1,6 @@
 package repository;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -104,30 +105,14 @@ public class MemberRepository {
 				, member.getId()) == 1;
 	}
 	
-	// TODO: Change Procedure
 	public boolean deleteMemberById(String id) {
-		Member member = findOneMemberById(id);
 		repository.open();
 		try {
-			repository.setAutoCommit(false);
-			int deleteCount = repository.executeUpdatePreparedStatement(
-					"delete from tb_dzboard_member where id = ?"
-					, id);
-			int moveCount = repository.executeUpdatePreparedStatement(
-					"insert into tb_dzboard_tmp_member (id, pwd, name, email, phone, createdAt, authority) values (?, ?, ?, ?, ?, ?, ?)"
-					, member.getId()
-					, member.getPwd()
-					, member.getName()
-					, member.getEmail()
-					, member.getPhone()
-					, member.getCreatedAt()
-					, member.getAuthority());
-			if (deleteCount != moveCount) {
-				repository.rollback();
-				return false;
-			}
-			repository.commit();
-			return true;
+			CallableStatement cstmt = repository.prepareCall("{call pc_dzboard_deleteMember(?, ?)}");
+			cstmt.setString(1, id);
+			cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
+			cstmt.execute();
+			return cstmt.getInt(2) == 1;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

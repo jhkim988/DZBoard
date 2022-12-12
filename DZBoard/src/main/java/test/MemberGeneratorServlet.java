@@ -25,7 +25,7 @@ public class MemberGeneratorServlet extends HttpServlet {
 					.id("user"+i)
 					.pwd("pwd")
 					.name("자바좋아"+rand.nextInt(10))
-					.email("java" + i + "@naver.com")
+					.email("java" + i + "@google.com")
 					.phone("0100000000"+i)
 					.build());
 		}

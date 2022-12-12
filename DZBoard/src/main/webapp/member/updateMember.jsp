@@ -5,59 +5,52 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>DZBoard 회원 정보 수정</title>
+<title>Douzone Board 회원 정보 수정</title>
 <script type="text/javascript" src="./js/updateMember.js"></script>
+<link rel="stylesheet" href="./css/updateMember.css"/>
 </head>
 <body>
-	<c:choose>
-		<c:when test='${member != null}'>
-			<form>
-				<label>
-					아이디: <input type="text" value="${member.id}" readonly/>
-				</label>
-				<br/>
-
-				<label>
-					비밀번호: <input id="pwd" type="password" value='${member.pwd}'/>
-				</label>
-				<br/>
-
-				<label>
-					이름: <input id="name" type="text" value='${member.name}'/>
-				</label>
-				<br/>
-
-				<label>
-					이메일: <input id="email" type="text" value='${member.email}'/>
-				</label>
-				<br/>	
-				
-				<label>
-					연락처: <input id="phone" type="text" value='${member.phone}'/>
-				</label>
-				<br/>
-				
-				<label>
-					회원 가입 일자: <input type="text" value='${member.createdAt}' readonly />
-				</label>
-				<br/>
-				
-				<label>
-					최근 활동 일자: <input type="text" value='${member.updatedAt}' readonly />
-				</label>
-				<br/>
-				
-				<label>
-					권한: <input type="text" value='${member.authority}' readonly />
-				</label>
-				<br/>
-				<input id="updateButton" type="submit" value="수정"/>
-			</form>
-			<a href="/DZBoard/member/viewMember.jsp"><button>뒤로 가기</button></a>
-		</c:when>
-		<c:otherwise>
-			<h1>권한 없음</h1>
-		</c:otherwise>
-	</c:choose>
+	<table>
+		<tr>
+			<td class="key">아이디:</td>
+			<td class="value" id="id">${member.id}</td>
+		</tr>
+		<tr>
+			<td class="key">비밀번호:</td>
+			<td class="value"><input id="pwd" type="password"/></td>
+		</tr>
+		<tr>
+			<td class="key">비밀번호 확인:</td>
+			<td class="value"><input id="pwdchk" type="password"/></td>
+		</tr>
+		<tr>
+			<td class="key">이름:</td>
+			<td class="value"><input id="name" type="text" value="${member.name}"/></td>
+		</tr>
+		<tr>
+			<td class="key">이메일:</td>
+			<td class="value"><input id="email" type="text" value="${member.email}"/></td>
+		</tr>
+		<tr>
+			<td class="key">연락처:</td>
+			<td class="value"><input id="phone" type="text" value="${member.phone}"/></td>
+		</tr>
+		<tr>
+			<td class="key">회원 가입 일자:</td>
+			<td class="value">${member.createdAt}</td>
+		</tr>
+		<tr>
+			<td class="key">최근 활동 일자:</td>
+			<td class="value">${member.updatedAt}</td>
+		</tr>
+		<tr>
+			<td class="key">권한:</td>
+			<td class="value">${member.authority}</td>
+		</tr>
+	</table>
+	<footer>
+		<button id="updateButton">수정</button>
+		<a href="/DZBoard/member/viewMember.jsp">뒤로 가기</a>
+	</footer>
 </body>
 </html>

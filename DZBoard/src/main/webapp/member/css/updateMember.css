@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+table {
+	width: 490px;
+	margin: auto;
+}
+
+input {
+	border: none;
+}
+
+.key {
+	width: 100px;
+}
+.value {
+	width: 200px;
+	color: #aaa;
+}
+
+td {
+	border: 1px solid black;
+}
+
+footer {
+	text-align: center;
+}

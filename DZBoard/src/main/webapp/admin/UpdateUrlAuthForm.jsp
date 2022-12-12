@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board - 관리자 페이지 - URL 권한 수정</title>
-<script type="text/javascript" src="updateUrlAuthority.js"></script>
+<script type="text/javascript" src="./js/updateUrlAuthority.js"></script>
 </head>
 <body>
 	<table>

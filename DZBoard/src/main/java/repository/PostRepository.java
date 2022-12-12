@@ -1,5 +1,6 @@
 package repository;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -146,34 +147,16 @@ public class PostRepository {
 				, member.getId(), post.getTitle(), post.getContent(), post.getCategory(), post.getGood()) == 1;
 	}
 	
-	// TODO: Change Procedure
 	public boolean deletePost(Post post) {
 		repository.open();
 		try {
-			repository.setAutoCommit(false);
-			int deleteCount = repository.executeUpdatePreparedStatement(
-					"delete from tb_dzboard_board where id = ?"
-					, post.getId());
-
-			int moveCount = repository.executeUpdatePreparedStatement(
-					"insert into tb_dzboard_tmp_board (id, author, title, content, createdAt, category, viewcount, good, bad) values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-					, post.getId()
-					, post.getAuthor()
-					, post.getTitle()
-					, post.getContent()
-					, post.getCreatedAt()
-					, post.getCategory()
-					, post.getViewcount()
-					, post.getGood()
-					, post.getBad());
-			if (deleteCount != moveCount) {
-				repository.rollback();
-				return false;
-			}
-			repository.commit();
-			return true;
+			CallableStatement cstmt = repository.prepareCall("{call pc_dzboard_deletePost(?, ?)}");
+			cstmt.setInt(1, post.getId());
+			cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
+			cstmt.execute();
+			return cstmt.getInt(2) == 1;
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			repository.close();
 		}
