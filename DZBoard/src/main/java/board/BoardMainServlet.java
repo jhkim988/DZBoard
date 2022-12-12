@@ -36,6 +36,10 @@ public class BoardMainServlet extends HttpServlet {
 			Timestamp createdAt = Timestamp.valueOf(date);
 			posts = postRepository.listPostHeader(postId, createdAt, Boolean.valueOf(next));
 		}
+		if (posts.size() == 0) {
+			response.sendRedirect(request.getHeader("referer"));
+			return;
+		}
 		request.setAttribute("posts", posts);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/board/board.jsp");
 		dispatcher.forward(request, response);
