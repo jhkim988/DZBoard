@@ -136,8 +136,14 @@ public class PostRepository {
 	
 	public boolean createPost(Post post, Member member) {
 		return repository.executeUpdatePreparedStatement(
-				"insert into tb_dzboard_board (author, title, content, category) value (?, ?, ?, ?)", member.getId(),
-				post.getTitle(), post.getContent(), post.getCategory()) == 1;
+				"insert into tb_dzboard_board (author, title, content, category) value (?, ?, ?, ?)"
+				, member.getId(), post.getTitle(), post.getContent(), post.getCategory()) == 1;
+	}
+	
+	public boolean createTestPost(Post post, Member member) {
+		return repository.executeUpdatePreparedStatement(
+				"insert into tb_dzboard_board (author, title, content, category, good) values (?, ?, ?, ?, ?)"
+				, member.getId(), post.getTitle(), post.getContent(), post.getCategory(), post.getGood()) == 1;
 	}
 	
 	// TODO: Change Procedure

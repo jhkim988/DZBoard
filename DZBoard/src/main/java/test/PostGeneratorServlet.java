@@ -23,12 +23,16 @@ public class PostGeneratorServlet extends HttpServlet {
 		Random rand = new Random();
 		PostRepository postRepository = new PostRepository();
 		for (int i = 0; i < 100; i++) {
-			postRepository.createPost(
+			postRepository.createTestPost(
 					Post.builder()
-					.title("test" + rand.nextInt(10))
-					.content("test" + rand.nextInt(10))
-					.category("일반").build()
-					, Member.builder().id("user"+rand.nextInt(10)).build());
+					.title("추천 글 테스트!" + rand.nextInt(10))
+					.content("랜덤으로 추천 수를 할당했습니다.")
+					.category("공지")
+					.good(rand.nextInt(100))
+					.build()
+					, Member.builder()
+					.id("user"+rand.nextInt(10))
+					.build());
 		}
 	}
 
