@@ -12,8 +12,8 @@
 <script type="text/javascript" src="/DZBoard/board/js/update.js"></script>
 </head>
 <body>
-<form method="post">
-	<input type="hidden" name="id" value="${id}"/>
+<form>
+	<input type="hidden" id="id" value="${oldPost.id}"/>
 	<label>
 		<input type="text" id="title" placeholder="글제목" value="${oldPost.title}">
 	</label>	
@@ -33,8 +33,12 @@
 <a href="/DZBoard/board">뒤로가기</a>
 </body>
 <script>
+	let editor;
 	ClassicEditor
 	    .create( document.querySelector( '#editor' ), {language : "ko"} )
+	    .then( newEditor => {
+	        editor = newEditor;
+	    } )
 	    .catch( error => {
 	        console.error( error );
 	});

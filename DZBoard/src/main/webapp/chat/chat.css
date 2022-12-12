@@ -12,3 +12,43 @@ a {
 	text-decoration: none;
 	color: black;
 }
+
+#chatRoom {
+	margin: auto;
+	grid-area: "chatRoomList"
+}
+
+#chatRoomList {
+	margin: auto;
+}
+
+th, td {
+	border: 1px solid #ccc;
+}
+#chatRoomFooter {
+	margin: auto;
+}
+
+#chatMain {
+	margin: auto;
+	grid-area: "chatMain"
+}
+
+#chatHistory {
+	margin: auto;
+	grid-area: "chatHistory";
+}
+
+.chatRoomName {
+	width: 200px;
+}
+
+body {
+	display: grid;
+	grid-template-rows: 1;
+	grid-template-columns: 2;
+	grid-template-areas:
+	"chatRoomList chatMain";
+	
+	width: 980px;
+}

@@ -16,7 +16,7 @@ const main = () => {
 		const json = await response.json();
 		if (json.status) {
 			alert("탈퇴 성공");
-			location.href = "/DZBoard"
+			location.href = "/DZBoard/index";
 		} else {
 			alert(json.message);
 		}

@@ -1,32 +1,31 @@
-package index;
+package member;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import repository.PostRepository;
-
 import java.io.IOException;
-import java.util.List;
 
-import board.Post;
-
-@WebServlet("/index")
-public class IndexServlet extends HttpServlet {
+@WebServlet("/member/loginForm")
+public class LoginFormServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PostRepository postRepository = new PostRepository();
-		List<Post> notices = postRepository.listCategoryHeader("공지");
-		List<Post> qnas = postRepository.listCategoryHeader("Q&A");
-		List<Post> generals = postRepository.listCategoryHeader("일반");
-		request.setAttribute("notices", notices);
-		request.setAttribute("qnas", qnas);
-		request.setAttribute("generals", generals);
+		String id = null;
+		for (Cookie cookie: request.getCookies()) {
+			if ("id".equals(cookie.getName())) {
+				id = cookie.getValue();
+			}
+		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/home.jsp");
+		if (id != null) {
+			request.setAttribute("cookie_id", id);
+		}
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/member/login.jsp");
 		dispatcher.forward(request, response);
 	}
 

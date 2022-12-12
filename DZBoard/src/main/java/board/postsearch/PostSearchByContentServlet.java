@@ -35,7 +35,6 @@ public class PostSearchByContentServlet extends HttpServlet {
 			posts = postRepository.listPostHeaderOfContent(query, postId, createdAt, Boolean.valueOf(next));
 		}
 		if (posts.size() == 0) {
-			System.out.println("ZERO:");
 			response.sendRedirect(request.getHeader("referer"));
 			return;
 		}

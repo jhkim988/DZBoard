@@ -3,8 +3,8 @@ const main = async () => {
 
 	const createTrTag = chatInfo =>
 		`<tr>
-	<td>${chatInfo.name}</td>
-	<td>${chatInfo.size}</td>
+	<td class="chatRoomName" >${chatInfo.name}</td>
+	<td class="chatRoomSize" >${chatInfo.size}</td>
 	<td>
 		<button class='entranceButton' data-chatroomname='${chatInfo.name}' >
 				입장
@@ -20,7 +20,7 @@ const main = async () => {
 			json.data
 				.map(chatInfo => createTrTag(chatInfo))
 				.forEach(tag => data.push(tag));
-			chatRoomList.innerHTML = data.join('');
+			chatRoomListBody.innerHTML = data.join('');
 			document.querySelectorAll('.entranceButton')
 				.forEach(btn => btn.addEventListener('click',
 					e => {
@@ -36,16 +36,22 @@ const main = async () => {
 		if (webSocket != null) {
 			webSocket.close();
 		}
+		if (member.value == '') {
+			alert("이름을 입력해주세요");
+			return;
+		}
 		chatHistory.innerHTML = '';
-		webSocket = new WebSocket(`ws://localhost:8080/DZBoard/chat/webSocket/${chatRoomName}`);
+		webSocket = new WebSocket(`ws://localhost:8880/DZBoard/chat/webSocket/${chatRoomName}`);
 		webSocket.onerror = message => {
-			alert(message.data);
 		}
 		webSocket.onmessage = message => {
 			chatRoomListView();
 			chatHistory.innerHTML += `<div class='other'>${message.data}</div>`
 		}
-		webSocket.onopen = chatRoomListView;
+		webSocket.onopen = () => {
+			webSocket.send(JSON.stringify({sender: member.value, message: `${member.value} 님이 입장하셨습니다.`}));
+			chatRoomListView();
+		}
 		webSocket.onclose = () => {
 			chatRoomListView;
 			chatHistory.innerHTML = '';
@@ -70,6 +76,7 @@ const main = async () => {
 	disconnect.addEventListener("click", e => {
 		e.preventDefault();
 		if (webSocket != null) {
+			webSocket.send(JSON.stringify({sender: member.value, message: `${member.value} 님이 퇴장하셨습니다.`}));
 			webSocket.close();
 			webSocket = null;
 		}

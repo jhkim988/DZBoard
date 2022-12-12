@@ -28,7 +28,6 @@ public class ChatSocket {
 		}
 		List<Session> sessionUsers = chatRooms.get(chatRoomName);
 		sessionUsers.add(userSession);
-		sessionUsers.forEach(session -> sendMessage(session, "입장하셨습니다."));
 	}
 	
 	@OnMessage
@@ -44,7 +43,6 @@ public class ChatSocket {
 	public void handleClose(@PathParam("chatRoomName") String chatRoomName, Session userSession) {
 		List<Session> sessionUsers = chatRooms.get(chatRoomName);
 		sessionUsers.remove(userSession);
-		sessionUsers.forEach(session -> sendMessage(session, "퇴장하셨습니다."));
 		if (sessionUsers.isEmpty()) {
 			chatRooms.remove(chatRoomName);
 		}

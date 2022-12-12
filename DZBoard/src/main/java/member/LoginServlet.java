@@ -2,6 +2,7 @@ package member;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ public class LoginServlet extends HttpServlet {
 		
 		String id = jsonInput.getString("id");
 		String pwd = jsonInput.getString("pwd");
+		boolean remember = jsonInput.getBoolean("remember");
 		
 		MemberRepository memberRepository = new MemberRepository();
 		Member member = memberRepository.findOneMemberById(id);
@@ -41,6 +43,10 @@ public class LoginServlet extends HttpServlet {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "로그인 제한");
 		} else { // login success
+			if (remember) {
+				response.addCookie(new Cookie("id", member.getId()));
+			}
+
 			memberRepository.updateUpdatedAt(member);
 			member = memberRepository.findOneMemberById(member.getId());
 			HttpSession session = request.getSession();

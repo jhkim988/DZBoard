@@ -36,7 +36,7 @@ const main = () => {
 
 	const findPostsByTitle = () => {
 		const childs = getFirstLastChild();
-		const queryValue = encodingURIComponent(new URLSearchParams(location.search).get("query"));
+		const queryValue = encodeURIComponent(new URLSearchParams(location.search).get("query"));
 		prevAnchor.href = `/DZBoard/board/title?query=${queryValue}&id=${childs.firstPostId}&date=${childs.firstCreatedAt}&next=${false}`;
 		nextAnchor.href = `/DZBoard/board/title?query=${queryValue}&id=${childs.lastPostId}&date=${childs.lastCreatedAt}&next=${true}`;
 	}

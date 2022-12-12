@@ -31,7 +31,6 @@ public class PostRepository {
 	}
 
 	public List<Post> listPostHeaderOfCategory(String category) {
-		System.out.println("category: " + category);
 		return findPosts("select * from tb_dzboard_board where category = ? order by createdAt desc, id desc limit 10"
 				, category);
 	}

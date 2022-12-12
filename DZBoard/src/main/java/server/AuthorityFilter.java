@@ -43,7 +43,7 @@ public class AuthorityFilter implements Filter {
 				if (isJSONRequest(httpRequest)) { 
 					postResponse(httpResponse, false, "로그인이 필요한 서비스입니다.");
 				} else {
-					httpResponse.sendRedirect("/DZBoard/member/login.html");
+					httpResponse.sendRedirect("/DZBoard/member/loginForm");
 				}
 				return;
 			}

@@ -8,7 +8,8 @@ const main = () => {
 
 	const phoneObserver = {
 		list: [phonefirst, phonemid, phonelast]
-		, update: async (style, attr) => phoneObserver.list.forEach(x => x.style[attr] = style[attr])
+		, update: (style, attr) => 
+			phoneObserver.list.forEach(x => x.style[attr] = style[attr])
 	}
 
 	const email = document.querySelector("#email");
@@ -214,13 +215,13 @@ const main = () => {
 		const json = await response.json();
 		alert(json.message);
 		if (json.status) {
-			location.href = `/DZBoard/member/login.html`;
+			location.href = `/DZBoard/member/loginForm`;
 		}
 	});
 
 	cancel.addEventListener("click", e => {
 		e.preventDefault();
-		location.href = "/DZBoard/member/login.html";
+		location.href = "/DZBoard/member/loginForm";
 	});
 }
 

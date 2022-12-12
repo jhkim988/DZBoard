@@ -7,29 +7,33 @@
 <link rel="stylesheet" href="chat.css" />
 </head>
 <body>
-	<table>
+	<div id="chatRoom">
+	<table id="chatRoomList">
 		<thead>
 			<tr>
-				<th>채팅방</th>
-				<th>인원수</th>
+				<th class="chatRoomName">채팅방</th>
+				<th class="chatRoomSize">인원수</th>
 				<th><button id="chatRoomListViewReload">목록 갱신</button></th>
 			</tr>
 		</thead>
-		<tbody id="chatRoomList">
+		<tbody id="chatRoomListBody">
 		</tbody>
 	</table>
-	<form>
+	<form id="chatRoomFooter">
 		<label> <input type="text" id="chatRoomName"
 			placeholder="채팅방 이름" />
 		</label>
 		<button id="connect">생성</button>
 		<button id="disconnect">퇴장</button>
 	</form>
+	</div>
+	<div id="chatMain">
 	<form>
 		<label> <input type="text" id="member" placeholder="이름" />
 		</label> <label> <input type="text" id="message" placeholder="채팅" />
 		</label> <input type="submit" id="send" type="button" value="채팅" />
 	</form>
 	<main id="chatHistory"></main>
+	</div>
 </body>
 </html>

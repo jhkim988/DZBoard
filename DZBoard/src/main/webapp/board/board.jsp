@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Douzone Board - 게시판</title>
 <link rel="stylesheet" href="/DZBoard/board/css/board.css" />
-<script type="text/javascript" src="./board/js/board.js"></script>
+<script type="text/javascript" src="/DZBoard/board/js/board.js"></script>
 </head>
 <body>
 	<h1><a href="/DZBoard/index">Douzone Board</a></h1>

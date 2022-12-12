@@ -5,6 +5,7 @@ const main = () => {
 	const getValue = () => ({
 		id: id.value
 		, pwd: pwd.value
+		, remember: remember.checked
 	});
 	
 	const loginButton = document.querySelector("#loginButton");
@@ -17,6 +18,7 @@ const main = () => {
 			}
 			, body: JSON.stringify(getValue())
 		});	
+		console.log(getValue);
 		const json = await response.json();
 		if (json.status) {
 			location.href = '/DZBoard/index';

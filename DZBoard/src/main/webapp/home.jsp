@@ -5,8 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board</title>
-<link rel="stylesheet" href="index.css" />
-<script type="text/javascript" src="index.js"></script>
+<link rel="stylesheet" href="home.css" />
+<script type="text/javascript" src="home.js"></script>
 </head>
 <body>
 	<header>
@@ -21,7 +21,7 @@
 				<button id="logout">로그아웃</button>
 			</c:when>
 			<c:otherwise>
-				<a href="/DZBoard/member/login.html">로그인</a>
+				<a href="/DZBoard/member/loginForm">로그인</a>
 			</c:otherwise>
 		</c:choose>
 		</div>
