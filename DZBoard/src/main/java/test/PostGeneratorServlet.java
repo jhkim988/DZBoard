@@ -22,13 +22,12 @@ public class PostGeneratorServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Random rand = new Random();
 		PostRepository postRepository = new PostRepository();
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 100000; i++) {
 			postRepository.createTestPost(
 					Post.builder()
-					.title("추천 글 테스트!" + rand.nextInt(10))
-					.content("랜덤으로 추천 수를 할당했습니다.")
-					.category("공지")
-					.good(rand.nextInt(100))
+					.title("페이징 테스트" + rand.nextInt(10))
+					.content("글을 엄청 많이 써보자")
+					.category("일반")
 					.build()
 					, Member.builder()
 					.id("user"+rand.nextInt(10))
