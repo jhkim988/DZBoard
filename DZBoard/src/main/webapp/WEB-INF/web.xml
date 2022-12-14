@@ -5,7 +5,14 @@
     <error-code>404</error-code>
     <location>/index</location>
   </error-page>
-  <session-config>
-  	<session-timeout>1</session-timeout>
-  </session-config>
+  <servlet>
+    <description></description>
+    <display-name>DownloadServlet</display-name>
+    <servlet-name>DownloadServlet</servlet-name>
+    <servlet-class>board.file.DownloadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DownloadServlet</servlet-name>
+    <url-pattern>/DownloadServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

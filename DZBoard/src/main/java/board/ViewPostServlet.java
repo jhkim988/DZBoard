@@ -7,10 +7,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.PostRepository;
+import repository.UploadedFileRepository;
 
 import java.io.IOException;
 
 import javax.sql.DataSource;
+
+import board.file.UploadedFile;
 
 @WebServlet("/board/view")
 public class ViewPostServlet extends HttpServlet {
@@ -24,8 +27,11 @@ public class ViewPostServlet extends HttpServlet {
 			response.sendRedirect("/board");
 			return;
 		}
+		
+		UploadedFileRepository uploadedFileRepository = new UploadedFileRepository();
 		postRepository.incrementViewCount(postId);
 		request.setAttribute("post", post);
+		request.setAttribute("uploadedFiles", uploadedFileRepository.listByPostId(postId));
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/board/view.jsp");
 		dispatcher.forward(request, response);
 	}

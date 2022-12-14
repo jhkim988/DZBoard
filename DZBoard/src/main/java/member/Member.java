@@ -13,7 +13,7 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
-public class Member implements HttpSessionBindingListener {
+public class Member {
 	private String id;
 	private String pwd;
 	private String name;
@@ -34,15 +34,5 @@ public class Member implements HttpSessionBindingListener {
 		json.put("updatedAt", updatedAt.toString());
 		json.put("authority", authority);
 		return json;
-	}
-	
-	@Override
-	public void valueBound(HttpSessionBindingEvent event) {
-		System.out.println("Login!");
-	}
-	
-	@Override
-	public void valueUnbound(HttpSessionBindingEvent event) {
-		System.out.println("Logout!");
 	}
 }

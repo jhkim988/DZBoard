@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -12,12 +11,12 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/translations/ko.js"></script>
 </head>
 <body>
-<form method="post">
+<form id="createPostForm" method="post">
 	<label>
-		<input type="text" id="title" placeholder="글제목">
+		<input type="text" id="title" name="title" placeholder="글제목">
 	</label>	
 	<label>
-		<select id="category">
+		<select id="category" name="category">
 			<c:forEach var='category' items='${categoryList}'>
 				<option value="${category.textContent}">${category.textContent}</option>
 			</c:forEach>	
@@ -25,8 +24,10 @@
 		<br/>
 	</label>
 	<label>내용</label>
-	<textarea name="content" id="editor"></textarea>
-	
+	<textarea id="editor" name="content"></textarea>
+	<label>
+		<input type="file" id="file" name="file"/>
+	</label>
 	<input id="send" type="submit" value="전송">
 </form>
 <a href="/DZBoard/board">뒤로가기</a>

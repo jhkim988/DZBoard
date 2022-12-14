@@ -15,20 +15,11 @@ import javax.sql.DataSource;
 
 public class Repository {
 	private static DataSource dataFactory;
-	private static Map<String, String> sqls = Collections.synchronizedMap(new HashMap<>());
 
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private CallableStatement cstmt;
 	private ResultSet rs;
-
-	
-	public static String put(String name, String sql) {
-		return sqls.put(name, sql);
-	}
-	public static String getSQL(String name) {
-		return sqls.get(name);
-	}
 	
 	void open() {
 		try {
@@ -57,6 +48,14 @@ public class Repository {
 		}
 	}
 
+	void setAutoCommit(boolean autoCommit) {
+		try {
+			conn.setAutoCommit(autoCommit);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	void commit() {
 		try {
 			conn.commit();
@@ -89,6 +88,14 @@ public class Repository {
 		return -1;
 	}
 
+	int executeUpdate(String query, Object...params) throws SQLException {
+		pstmt = conn.prepareStatement(query);
+		for (int i = 0; i < params.length; i++) {
+			pstmt.setObject(i+1, params[i]);
+		}
+		return pstmt.executeUpdate();
+	}
+	
 	ResultSet executeQuery(String query, Object... params) throws SQLException {
 		pstmt = conn.prepareStatement(query);
 		for (int i = 0; i < params.length; i++) {

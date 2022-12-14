@@ -134,10 +134,34 @@ public class PostRepository {
 		return null;
 	}
 	
-	public boolean createPost(Post post, Member member) {
+	public int createPost(Post post, Member member) {
+		repository.open();
+		repository.setAutoCommit(false);
+		try {
+			int executeUpdate = repository.executeUpdate(
+					"insert tb_dzboard_board (author, title, content, category) value (?, ?, ?, ?)"
+					, member.getId(), post.getTitle(), post.getContent(), post.getCategory());
+			if (executeUpdate != 1) {
+				repository.rollback();
+				return -1;
+			}
+			rs = repository.executeQuery("select last_insert_id() from tb_dzboard_board");
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			repository.commit();
+			repository.close();
+		}
+/*
 		return repository.executeUpdatePreparedStatement(
 				"insert into tb_dzboard_board (author, title, content, category) value (?, ?, ?, ?)"
 				, member.getId(), post.getTitle(), post.getContent(), post.getCategory()) == 1;
+*/
+		return -1;
 	}
 	
 	public boolean createTestPost(Post post, Member member) {

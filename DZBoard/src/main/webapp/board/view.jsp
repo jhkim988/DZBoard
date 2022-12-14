@@ -17,6 +17,11 @@
 <p>조회수: ${post.viewcount}</p>
 <p>작성 시간: ${post.createdAt}</p>
 <p>${post.content}</p>
+<ul>
+	<c:forEach var="file" items="${uploadedFiles}">
+		<li>${file.org_name} <a href="/DZBoard/board/download?f_id=${file.f_id}">다운로드</button></li>
+	</c:forEach>
+</ul>
 <p><button id = "goodButton">추천</button> ${post.good}</p>
 <p><button id = "badButton">비추천</button> ${post.bad}</p>
 <a href="/DZBoard/board/updateForm?id=${post.id}">수정</a>
