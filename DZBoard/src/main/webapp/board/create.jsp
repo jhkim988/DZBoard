@@ -25,9 +25,12 @@
 	</label>
 	<label>내용</label>
 	<textarea id="editor" name="content"></textarea>
+	<div id="fileUploads">
 	<label>
 		<input type="file" id="file" name="file"/>
+		<button id="fileInputCancel">X</button>
 	</label>
+	</div>
 	<input id="send" type="submit" value="전송">
 </form>
 <a href="/DZBoard/board">뒤로가기</a>

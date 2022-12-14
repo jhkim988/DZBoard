@@ -13,3 +13,7 @@
 body > form > div > div.ck.ck-editor__main > div {
 	height: 400px;
 }
+
+#fileInputCancel {
+	display: none;
+}
