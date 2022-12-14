@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import org.json.JSONObject;
 
+import jakarta.servlet.http.HttpSessionBindingEvent;
+import jakarta.servlet.http.HttpSessionBindingListener;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -11,7 +13,7 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
-public class Member {
+public class Member implements HttpSessionBindingListener {
 	private String id;
 	private String pwd;
 	private String name;
@@ -32,5 +34,15 @@ public class Member {
 		json.put("updatedAt", updatedAt.toString());
 		json.put("authority", authority);
 		return json;
+	}
+	
+	@Override
+	public void valueBound(HttpSessionBindingEvent event) {
+		System.out.println("Login!");
+	}
+	
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent event) {
+		System.out.println("Logout!");
 	}
 }
