@@ -5,9 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="./css/login.css"/>
+<link rel="stylesheet" href="/DZBoard/resources/member/css/login.css"/>
 <title>DZBoard 로그인</title>
-<script type="text/javascript" src="./js/login.js"></script>
+<script type="text/javascript" src="/DZBoard/resources/member/js/login.js"></script>
 </head>
 <body>
 <h1>로그인</h1>
@@ -24,9 +24,9 @@
 				<input id="remember" class="bottom" type="checkbox">
 					아이디 저장
 			</label>
-			<a href="/DZBoard/pages/member/findId.html" class="button bottom">아이디 찾기</a>
-			<a href="/DZBoard/pages/member/findPwd.html" class="button bottom">비밀번호 찾기</a>
-			<a href="/DZBoard/pages/member/register.html" class="button bottom">회원가입</a>
+			<a href="/DZBoard/resources/member/findId.html" class="button bottom">아이디 찾기</a>
+			<a href="/DZBoard/resources/member/findPwd.html" class="button bottom">비밀번호 찾기</a>
+			<a href="/DZBoard/resources/member/register.html" class="button bottom">회원가입</a>
 		</footer>
 	</form>
 </body>

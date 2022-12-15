@@ -26,7 +26,7 @@ public class LoginFormAction implements Action {
 			request.setAttribute("cookie_id", id);
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/member/login.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/resources/member/login.jsp");
 		dispatcher.forward(request, response);
 	}
 }

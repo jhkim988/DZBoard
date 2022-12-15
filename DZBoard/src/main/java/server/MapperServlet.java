@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-@WebServlet("/*")
+@WebServlet("/app/*")
 public class MapperServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -19,11 +19,15 @@ public class MapperServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		Map<String, Class<? extends Action>> actionMap = (Map<String, Class<? extends Action>>) getServletContext().getAttribute("actionMap");
 		Class<? extends Action> cls = actionMap.get(key);
-		try {
-			cls.getDeclaredConstructor().newInstance().execute(request, response);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException | ServletException | IOException e) {
-			e.printStackTrace();
+		if (cls != null) {
+			try {
+				cls.getDeclaredConstructor().newInstance().execute(request, response);
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+					| NoSuchMethodException | SecurityException | ServletException | IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("cls is null");
 		}
 	}
 

@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board 회원 정보 수정</title>
-<script type="text/javascript" src="./js/updateMember.js"></script>
-<link rel="stylesheet" href="./css/updateMember.css"/>
+<script type="text/javascript" src="/DZBoard/resources/member/js/updateMember.js"></script>
+<link rel="stylesheet" href="/DZBoard/resources/member/css/updateMember.css"/>
 </head>
 <body>
 	<table>
@@ -50,7 +50,7 @@
 	</table>
 	<footer>
 		<button id="updateButton">수정</button>
-		<a href="/DZBoard/pages/member/viewMember.jsp">뒤로 가기</a>
+		<a href="/DZBoard/resources/member/viewMember.jsp">뒤로 가기</a>
 	</footer>
 </body>
 </html>

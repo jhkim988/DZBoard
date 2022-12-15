@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board - ${post.title}</title>
-<script type="text/javascript" src="/DZBoard/board/js/view.js"></script>
-<link rel="stylesheet" href="/DZBoard/board/css/postform.css"/>
+<script type="text/javascript" src="/DZBoard/resources/board/js/view.js"></script>
+<link rel="stylesheet" href="/DZBoard/resources/board/css/postform.css"/>
 </head>
 <body>
 <p>글 번호: ${post.id}</p>

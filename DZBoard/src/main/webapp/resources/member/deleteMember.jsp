@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board 회원 탈퇴</title>
-<script type="text/javascript" src="./js/deleteMember.js"></script>
+<script type="text/javascript" src="/DZBoard/resources/member/js/deleteMember.js"></script>
 </head>
 <body>
 	<c:choose>
@@ -17,7 +17,7 @@
 				</label>
 				<input id="deleteButton" type="submit" value="삭제"/>			
 			</form>
-			<a href="/DZBoard/pages/member/viewMember.jsp"><button>뒤로 가기</button></a>
+			<a href="/DZBoard/resources/member/viewMember.jsp"><button>뒤로 가기</button></a>
 		</c:when>
 		<c:otherwise>
 			<h1>권한 없음</h1>

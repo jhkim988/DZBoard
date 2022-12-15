@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 정보: ${member.name} 님</title>
-<link rel="stylesheet" href="./css/viewMember.css">
+<link rel="stylesheet" href="/DZBoad/css/member/viewMember.css">
 </head>
 <body>
 	<table>
@@ -40,8 +40,8 @@
 		</tr>
 	</table>
 	<footer>
-		<a href="/DZBoard/pages/member/updateMember.jsp">회원 정보 수정</a>
-		<a href="/DZBoard/pages/member/deleteMember.jsp">회원 탈퇴</a>
+		<a href="/DZBoard/resources/member/updateMember.jsp">회원 정보 수정</a>
+		<a href="/DZBoard/resources/member/deleteMember.jsp">회원 탈퇴</a>
 		<a href="/DZBoard/index">뒤로 가기</a>
 	</footer>
 </body>

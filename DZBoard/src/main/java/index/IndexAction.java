@@ -21,7 +21,7 @@ public class IndexAction implements Action {
 		request.setAttribute("notices", notices);
 		request.setAttribute("qnas", qnas);
 		request.setAttribute("generals", generals);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/resources/home.jsp");
 		dispatcher.forward(request, response);
 	}
 

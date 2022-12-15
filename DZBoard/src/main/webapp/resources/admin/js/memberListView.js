@@ -50,7 +50,7 @@ const main = () => {
 				level: firstQuery.value
 			}
 		};
-		const response = await fetch(`/DZBoard/pages/admin/memberSearch/${searchType.value}?${
+		const response = await fetch(`/DZBoard/admin/memberSearch/${searchType.value}?${
 			new URLSearchParams(searchRequestJSON[searchType.value]).toString()
 		}`);
 		if (!response.ok) {

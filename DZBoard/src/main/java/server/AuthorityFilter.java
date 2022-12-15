@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONObject;
 
@@ -33,11 +35,20 @@ public class AuthorityFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		setEncoding(httpRequest, httpResponse);
+		String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+		System.out.println("Filter: " + path);
+		if (path.startsWith("/resources/")) {
+			chain.doFilter(httpRequest, httpResponse);
+			return;
+		}
+		
+		
+		
 
 		Map<String, UrlAuth> urlAuth = (Map<String, UrlAuth>) context.getAttribute("urlAuthMap");
 		
 		String requestURI = httpRequest.getRequestURI();
-		System.out.println("Filter: " + requestURI);
+		
 		if (urlAuth.containsKey(requestURI)) {
 			if (!isLogined(httpRequest)) {
 				if (isJSONRequest(httpRequest)) { 
@@ -58,7 +69,8 @@ public class AuthorityFilter implements Filter {
 				return;
 			}
 		}
-		chain.doFilter(request, response);
+		
+		httpRequest.getRequestDispatcher("/app" + path).forward(httpRequest, httpResponse);
 	}
 
 	@Override

@@ -5,10 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Douzone Board - 게시글 수정</title>
-<link rel="stylesheet" href="/DZBoard/board/css/postform.css"/>
 <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/translations/ko.js"></script>
-<script type="text/javascript" src="/DZBoard/board/js/update.js"></script>
+<link rel="stylesheet" href="/DZBoard/resources/board/css/postform.css"/>
+<script type="text/javascript" src="/DZBoard/resources/board/js/update.js"></script>
 </head>
 <body>
 <form>
