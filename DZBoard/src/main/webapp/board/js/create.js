@@ -4,17 +4,20 @@ const main = () => {
 	const fileInputCancel = document.querySelector("#fileInputCancel");
 		
 	const fileChangeEventCallback = e => {
-		console.log(e.target.parentElement);
 		const fileInputCancel = e.target.parentElement.querySelector(".fileInputCancel");
+		const prev = e.target.dataset.prev;
+		console.log(prev);
 		if (e.target.value == '') {
 			fileInputCancel.style.display = 'none';
 			if (fileUploads.childElementCount > 1) {
-				alert("HERE");
 				fileUploads.removeChild(e.target);				
 			}
-		} else {
+		} else if (prev == '') {
 			fileInputCancel.style.display = 'inline-block';	
+			e.target.dataset.prev = e.target.value;
 			fileUploads.appendChild(createFileInput());
+		} else {
+			e.target.dataset.prev = e.target.value;
 		}
 	}
 	
@@ -25,6 +28,7 @@ const main = () => {
 		e.target.parentElement.remove(e.target);	
 	}
 	
+	// TODO: Use clone node
 	const createFileInput = () => {
 		const label = document.createElement("label");
 		
@@ -33,6 +37,7 @@ const main = () => {
 		input.name = "file";
 		input.setAttribute("class", "file");
 		input.addEventListener("change", fileChangeEventCallback);
+		input.dataset.prev = '';
 		label.appendChild(input);
 		
 		const button = document.createElement("button");

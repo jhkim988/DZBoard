@@ -27,7 +27,7 @@
 	<textarea id="editor" name="content"></textarea>
 	<div id="fileUploads">
 	<label>
-		<input type="file" id="file" class="file" name="file"/>
+		<input type="file" id="file" class="file" name="file" data-prev=''/>
 		<button id="fileInputCancel" class="fileInputCancel">X</button>
 	</label>
 	</div>

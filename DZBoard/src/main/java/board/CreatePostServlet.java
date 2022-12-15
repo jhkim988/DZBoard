@@ -68,7 +68,6 @@ public class CreatePostServlet extends HttpServlet {
 		MemberRepository memberRepository = new MemberRepository();
 		memberRepository.updateUpdatedAt(member);
 		session.setAttribute("member", memberRepository.findOneMemberById(member.getId()));
-		out.print(jsonOut);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
