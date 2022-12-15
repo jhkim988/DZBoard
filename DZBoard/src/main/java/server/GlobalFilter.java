@@ -26,7 +26,6 @@ import repository.UrlAuthRepository;
 
 @WebFilter("/*")
 public class GlobalFilter implements Filter {
-	private static final long serialVersionUID = -6174276011884338962L;
 	private ServletContext context;
 	private UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
 	
@@ -37,7 +36,7 @@ public class GlobalFilter implements Filter {
 		setEncoding(httpRequest, httpResponse);
 		String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		System.out.println("Filter: " + path);
-		if (path.startsWith("/resources/")) {
+		if (path.startsWith("/resources/")) { // TODO: JSP Authority Check
 			chain.doFilter(httpRequest, httpResponse);
 			return;
 		}

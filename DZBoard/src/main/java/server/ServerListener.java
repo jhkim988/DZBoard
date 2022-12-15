@@ -1,6 +1,10 @@
 package server;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import admin.DeleteMemberAction;
 import admin.membersearch.AllMemberSearchAction;
 import admin.membersearch.MemberSearchByCreatedAtAction;
 import admin.membersearch.MemberSearchByEmailAction;
@@ -56,6 +61,8 @@ public class ServerListener implements ServletContextListener {
     	actionMap.put("/admin/memberSearch/phone", MemberSearchByPhoneAction.class);
     	actionMap.put("/admin/memberSearch/updatedAt", MemberSearchByUpdatedAtAction.class);
     	actionMap.put("/admin/memberSearch/authority", MemberSerachByAuthorityAction.class);
+    	actionMap.put("/admin/deleteMember", DeleteMemberAction.class);
+    	
     	return actionMap;
     }
     

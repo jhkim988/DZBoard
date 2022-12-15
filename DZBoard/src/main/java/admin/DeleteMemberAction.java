@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.MemberRepository;
+import server.Action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,10 +16,10 @@ import javax.sql.DataSource;
 import org.json.JSONObject;
 
 @WebServlet("/admin/deleteMember")
-public class DeleteMemberServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class DeleteMemberAction implements Action {
        
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;charset=utf-8");
 		
 		String id = request.getParameter("id");
@@ -29,9 +30,5 @@ public class DeleteMemberServlet extends HttpServlet {
 		json.put("status", repository.deleteMemberById(id));
 		out.print(json);
 		response.sendRedirect(request.getHeader("referer"));
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 }
