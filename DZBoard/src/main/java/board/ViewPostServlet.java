@@ -32,7 +32,7 @@ public class ViewPostServlet extends HttpServlet {
 		postRepository.incrementViewCount(postId);
 		request.setAttribute("post", post);
 		request.setAttribute("uploadedFiles", uploadedFileRepository.listByPostId(postId));
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/board/view.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/board/view.jsp");
 		dispatcher.forward(request, response);
 	}
 

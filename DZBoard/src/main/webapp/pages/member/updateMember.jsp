@@ -50,7 +50,7 @@
 	</table>
 	<footer>
 		<button id="updateButton">수정</button>
-		<a href="/DZBoard/member/viewMember.jsp">뒤로 가기</a>
+		<a href="/DZBoard/pages/member/viewMember.jsp">뒤로 가기</a>
 	</footer>
 </body>
 </html>

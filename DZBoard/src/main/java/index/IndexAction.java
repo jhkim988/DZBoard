@@ -1,23 +1,19 @@
 package index;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import repository.PostRepository;
-
 import java.io.IOException;
 import java.util.List;
 
 import board.Post;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import repository.PostRepository;
+import server.Action;
 
-@WebServlet("/index")
-public class IndexServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+public class IndexAction implements Action {
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PostRepository postRepository = new PostRepository();
 		List<Post> notices = postRepository.listCategoryHeader("공지");
 		List<Post> qnas = postRepository.listCategoryHeader("Q&A");
@@ -25,13 +21,8 @@ public class IndexServlet extends HttpServlet {
 		request.setAttribute("notices", notices);
 		request.setAttribute("qnas", qnas);
 		request.setAttribute("generals", generals);
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/home.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp");
 		dispatcher.forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

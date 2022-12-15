@@ -40,8 +40,8 @@
 		</tr>
 	</table>
 	<footer>
-		<a href="/DZBoard/member/updateMember.jsp">회원 정보 수정</a>
-		<a href="/DZBoard/member/deleteMember.jsp">회원 탈퇴</a>
+		<a href="/DZBoard/pages/member/updateMember.jsp">회원 정보 수정</a>
+		<a href="/DZBoard/pages/member/deleteMember.jsp">회원 탈퇴</a>
 		<a href="/DZBoard/index">뒤로 가기</a>
 	</footer>
 </body>

@@ -17,7 +17,7 @@
 				</label>
 				<input id="deleteButton" type="submit" value="삭제"/>			
 			</form>
-			<a href="/DZBoard/member/viewMember.jsp"><button>뒤로 가기</button></a>
+			<a href="/DZBoard/pages/member/viewMember.jsp"><button>뒤로 가기</button></a>
 		</c:when>
 		<c:otherwise>
 			<h1>권한 없음</h1>

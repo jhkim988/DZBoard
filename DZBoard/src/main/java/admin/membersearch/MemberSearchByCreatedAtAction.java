@@ -7,9 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import member.Member;
 import repository.MemberRepository;
+import server.Action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -18,27 +20,37 @@ import javax.sql.DataSource;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-@WebServlet("/admin/memberSearch/updatedAt")
-public class MemberSearchByUpdatedAt extends HttpServlet {
-	private static final long serialVersionUID = 3636873689938218543L;
+public class MemberSearchByCreatedAtAction implements Action {
+	
+	private String urlSearchParams(Timestamp from, Timestamp to, Member lastMember) {
+		return new StringBuilder("from=")
+				.append(from)
+				.append("&to=")
+				.append(to)
+				.append("&last=")
+				.append(lastMember.getId())
+				.append("&lastCreatedAt=")
+				.append(lastMember.getCreatedAt())
+				.toString();
+	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		
 		Timestamp from = Timestamp.valueOf(request.getParameter("from"));
 		Timestamp to = Timestamp.valueOf(request.getParameter("to"));
 		String last = request.getParameter("last");
-		
-		Timestamp lastUpdatedAt = null;
-		if (request.getParameter("lastUpdatedAt") != null) {
-			lastUpdatedAt = Timestamp.valueOf(request.getParameter("lastUpdatedAt"));
+		Timestamp lastCreatedAt = null;
+		if (request.getParameter("lastCreatedAt") != null) {
+			lastCreatedAt = Timestamp.valueOf(request.getParameter("lastCreatedAt"));
 		}
+		
 		MemberRepository repository = new MemberRepository();
 		List<Member> list = null;
 		if (last == null) {
-			list = repository.findMembersByUpdated(from, to);
+			list = repository.findMembersByCreated(from, to);
 		} else {
-			list = repository.findMembersByUpdated(from, to, last, lastUpdatedAt);
+			list = repository.findMembersByCreated(from, to, last, lastCreatedAt);
 		}
 		
 		JSONObject jsonOut = new JSONObject();
@@ -53,22 +65,5 @@ public class MemberSearchByUpdatedAt extends HttpServlet {
 			jsonOut.put("more", "");
 		}
 		out.print(jsonOut);
-		
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
-	private String urlSearchParams(Timestamp from, Timestamp to, Member lastMember) {
-		return new StringBuilder("from=")
-				.append(from)
-				.append("&to=")
-				.append(to)
-				.append("&last=")
-				.append(lastMember.getId())
-				.append("&lastUpdatedAt=")
-				.append(lastMember.getUpdatedAt())
-				.toString();
 	}
 }

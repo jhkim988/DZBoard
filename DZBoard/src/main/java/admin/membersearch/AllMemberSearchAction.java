@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import member.Member;
 import repository.MemberRepository;
+import server.Action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,11 +19,10 @@ import javax.sql.DataSource;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-@WebServlet("/admin/memberSearch/allMember")
-public class AllMemberSearchServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+public class AllMemberSearchAction implements Action {
+	
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		JSONObject jsonOut = new JSONObject();
 		JSONArray jsonArr = new JSONArray();
@@ -49,10 +49,6 @@ public class AllMemberSearchServlet extends HttpServlet {
 		}
 		
 		out.print(jsonOut);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 	
 	private String urlSearchParams(Member lastMember) {

@@ -3,16 +3,10 @@
   <display-name>DZBoard</display-name>
   <error-page>
     <error-code>404</error-code>
-    <location>/index</location>
+    <location>/index/</location>
   </error-page>
-  <servlet>
-    <description></description>
-    <display-name>DownloadServlet</display-name>
-    <servlet-name>DownloadServlet</servlet-name>
-    <servlet-class>board.file.DownloadServlet</servlet-class>
-  </servlet>
   <servlet-mapping>
-    <servlet-name>DownloadServlet</servlet-name>
-    <url-pattern>/DownloadServlet</url-pattern>
+    <servlet-name>jsp</servlet-name>
+    <url-pattern>/pages/*</url-pattern>
   </servlet-mapping>
 </web-app>

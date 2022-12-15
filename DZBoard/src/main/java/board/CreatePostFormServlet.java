@@ -22,7 +22,7 @@ public class CreatePostFormServlet extends HttpServlet {
 		List<Category> categoryList = getCategoryList(member.getAuthority());
 		request.setAttribute("categoryList", categoryList);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/board/create.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/board/create.jsp");
 		dispatcher.forward(request, response);
 	}
 

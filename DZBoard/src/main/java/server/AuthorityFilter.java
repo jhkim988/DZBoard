@@ -53,7 +53,7 @@ public class AuthorityFilter implements Filter {
 				if (isJSONRequest(httpRequest)) {
 					postResponse(httpResponse, false, "권한 제한");
 				} else {
-					httpResponse.sendRedirect("/DZBoard/error/accessDenied.html");
+					httpResponse.sendRedirect("/DZBoard/pages/error/accessDenied.html");
 				}
 				return;
 			}

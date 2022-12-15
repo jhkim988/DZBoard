@@ -50,7 +50,7 @@ const main = () => {
 				level: firstQuery.value
 			}
 		};
-		const response = await fetch(`/DZBoard/admin/memberSearch/${searchType.value}?${
+		const response = await fetch(`/DZBoard/pages/admin/memberSearch/${searchType.value}?${
 			new URLSearchParams(searchRequestJSON[searchType.value]).toString()
 		}`);
 		if (!response.ok) {
@@ -77,7 +77,6 @@ const main = () => {
 		if (more.dataset.request === '') return;
 		const response = await fetch(`/DZBoard/admin/memberSearch/${searchType.value}?${more.dataset.request}`);
 		const json = await response.json();
-		console.log(json);
 		if (json.status) {
 			const data = [];
 			json.data.forEach(x => data.push(makeTRTag(x)));
@@ -97,7 +96,7 @@ const main = () => {
 			<td class='createdAt'>${member.createdAt}</td>
 			<td class='updatedAt'>${member.updatedAt}</td>
 			<td class='authority'>${member.authority}</td>
-			<td><a href='/DZBoard/admin/updateMember?id=${member.id}'>수정</a></td>
+			<td><a href='/DZBoard/admin/updateMemberForm?id=${member.id}'>수정</a></td>
 			<td><a href='/DZBoard/admin/deleteMember?id=${member.id}'>삭제</a></td>
 		</tr>`;
 }

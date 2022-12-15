@@ -23,7 +23,7 @@ const main = () => {
 		});
 		const json = await response.json();
 		if (json.status) {
-			location.href = '/DZBoard/admin/memberListView.jsp';
+			location.href = '/DZBoard/pages/admin/memberListView.jsp';
 		} else {
 			alert(`네트워크 오류: ${json.message}`);
 		}

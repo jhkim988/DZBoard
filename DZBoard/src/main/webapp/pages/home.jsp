@@ -14,9 +14,9 @@
 		<c:choose>
 			<c:when test='${member != null}'>
 				<p id="welcome">${member.name} 님 안녕하세요</p>
-				<a href="/DZBoard/member/viewMember.jsp">회원 정보</a>
+				<a href="/DZBoard/pages/member/viewMember.jsp">회원 정보</a>
 				<c:if test='${member.authority == 99}'>
-					<a href="/DZBoard/admin/index.html">관리자 페이지</a>
+					<a href="/DZBoard/pages/admin/index.html">관리자 페이지</a>
 				</c:if>
 				<button id="logout">로그아웃</button>
 			</c:when>
@@ -28,7 +28,7 @@
 		<h1 id=title>Douzone Board</h1>
 	</header>
 	<nav>
-		<a href="/DZBoard/chat/chat.html">채팅 바로가기</a>
+		<a href="/DZBoard/pages/chat/chat.html">채팅 바로가기</a>
 		<a href="/DZBoard/board">게시판 바로가기</a>
 	</nav>
 	<main>

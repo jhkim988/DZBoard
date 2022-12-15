@@ -32,7 +32,7 @@ public class UpdateFormServlet extends HttpServlet {
 		Post oldPost = postRepository.findOnePostById(postId);
 		if (oldPost.isSameAuthor(loginMember)) {
 			request.setAttribute("oldPost", oldPost);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/board/update.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/board/update.jsp");
 			dispatcher.forward(request, response);
 			return;
 		}

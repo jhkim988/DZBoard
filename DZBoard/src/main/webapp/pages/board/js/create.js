@@ -6,7 +6,6 @@ const main = () => {
 	const fileChangeEventCallback = e => {
 		const fileInputCancel = e.target.parentElement.querySelector(".fileInputCancel");
 		const prev = e.target.dataset.prev;
-		console.log(prev);
 		if (e.target.value == '') {
 			fileInputCancel.style.display = 'none';
 			if (fileUploads.childElementCount > 1) {

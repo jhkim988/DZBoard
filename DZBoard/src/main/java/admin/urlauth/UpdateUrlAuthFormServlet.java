@@ -23,7 +23,7 @@ public class UpdateUrlAuthFormServlet extends HttpServlet {
 		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
 		UrlAuth urlAuth = urlAuthRepository.findOneUrlAuth(url);
 		request.setAttribute("urlAuth", urlAuth);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/UpdateUrlAuthForm.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/admin/UpdateUrlAuthForm.jsp");
 		dispatcher.forward(request, response);
 	}
 

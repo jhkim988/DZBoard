@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import member.Member;
 import repository.MemberRepository;
+import server.Action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,11 +18,19 @@ import javax.sql.DataSource;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-@WebServlet("/admin/memberSearch/name")
-public class MemberSearchByNameServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+@WebServlet()
+public class MemberSearchByNameAction implements Action {
+
+	private String urlSearchParams(Member lastMember) {
+		return new StringBuilder("name=")
+				.append(lastMember.getName())
+				.append("&last=")
+				.append(lastMember.getId())
+				.toString();
+	}
+
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		
 		String name = request.getParameter("name");
@@ -48,17 +57,6 @@ public class MemberSearchByNameServlet extends HttpServlet {
 			jsonOut.put("more", "");
 		}
 		out.print(jsonOut);
-	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
-	private String urlSearchParams(Member lastMember) {
-		return new StringBuilder("name=")
-				.append(lastMember.getName())
-				.append("&last=")
-				.append(lastMember.getId())
-				.toString();
 	}
 }

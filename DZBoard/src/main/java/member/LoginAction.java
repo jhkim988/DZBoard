@@ -1,27 +1,23 @@
 package member;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import repository.MemberRepository;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.sql.DataSource;
-
 import org.json.JSONObject;
 
-@WebServlet("/member/login")
-public class LoginServlet extends HttpServlet {
-	private static final long serialVersionUID = 2950492920898863375L;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import member.Member;
+import repository.MemberRepository;
+import server.Action;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+public class LoginAction implements Action {
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonInput = new JSONObject(in.readLine());
 		
@@ -56,9 +52,4 @@ public class LoginServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.print(jsonResult);
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

@@ -41,7 +41,7 @@ public class BoardMainServlet extends HttpServlet {
 			return;
 		}
 		request.setAttribute("posts", posts);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/board/board.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/board/board.jsp");
 		dispatcher.forward(request, response);
 	}
 

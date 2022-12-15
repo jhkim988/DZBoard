@@ -24,9 +24,9 @@
 				<input id="remember" class="bottom" type="checkbox">
 					아이디 저장
 			</label>
-			<a href="/DZBoard/member/findId.html" class="button bottom">아이디 찾기</a>
-			<a href="/DZBoard/member/findPwd.html" class="button bottom">비밀번호 찾기</a>
-			<a href="/DZBoard/member/register.html" class="button bottom">회원가입</a>
+			<a href="/DZBoard/pages/member/findId.html" class="button bottom">아이디 찾기</a>
+			<a href="/DZBoard/pages/member/findPwd.html" class="button bottom">비밀번호 찾기</a>
+			<a href="/DZBoard/pages/member/register.html" class="button bottom">회원가입</a>
 		</footer>
 	</form>
 </body>
