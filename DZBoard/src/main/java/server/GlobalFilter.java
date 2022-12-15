@@ -25,7 +25,7 @@ import member.Member;
 import repository.UrlAuthRepository;
 
 @WebFilter("/*")
-public class AuthorityFilter implements Filter {
+public class GlobalFilter implements Filter {
 	private static final long serialVersionUID = -6174276011884338962L;
 	private ServletContext context;
 	private UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
@@ -42,9 +42,7 @@ public class AuthorityFilter implements Filter {
 			return;
 		}
 		
-		
-		
-
+		@SuppressWarnings("unchecked")
 		Map<String, UrlAuth> urlAuth = (Map<String, UrlAuth>) context.getAttribute("urlAuthMap");
 		
 		String requestURI = httpRequest.getRequestURI();
