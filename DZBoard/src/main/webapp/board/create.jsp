@@ -27,8 +27,8 @@
 	<textarea id="editor" name="content"></textarea>
 	<div id="fileUploads">
 	<label>
-		<input type="file" id="file" name="file"/>
-		<button id="fileInputCancel">X</button>
+		<input type="file" id="file" class="file" name="file"/>
+		<button id="fileInputCancel" class="fileInputCancel">X</button>
 	</label>
 	</div>
 	<input id="send" type="submit" value="전송">

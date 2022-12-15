@@ -33,7 +33,7 @@ public class DownloadServlet extends HttpServlet {
 		InputStream fis = new FileInputStream(new File(uploadedFile.getReal_name()));
 		OutputStream out = response.getOutputStream();
 		int readSize = 0;
-		byte[] buff = new byte[4096];
+		byte[] buff = new byte[bufSize];
 		while (true) {
 			readSize = fis.read(buff);
 			if (readSize <= 0) break;

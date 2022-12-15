@@ -4,27 +4,45 @@ const main = () => {
 	const fileInputCancel = document.querySelector("#fileInputCancel");
 		
 	const fileChangeEventCallback = e => {
-		console.log(e.target.value);
+		console.log(e.target.parentElement);
+		const fileInputCancel = e.target.parentElement.querySelector(".fileInputCancel");
 		if (e.target.value == '') {
 			fileInputCancel.style.display = 'none';
 			if (fileUploads.childElementCount > 1) {
+				alert("HERE");
 				fileUploads.removeChild(e.target);				
 			}
 		} else {
 			fileInputCancel.style.display = 'inline-block';	
-			fileUploads.innerHTML += `
-<label>
-	<input type="file" name="file onchange='fileChangeEventCallback(this)'"/>
-	<button onclick='fileUploadCancelEventCallback(this)'>X</button>			
-</label>
-`;
+			fileUploads.appendChild(createFileInput());
 		}
 	}
 	
 	const fileUploadCancelEventCallback = e => {
 		e.preventDefault();
-		fileInput.value = '';
-		e.target.style.display = 'none';
+		const fileInput = e.target.parentElement.querySelector(".file")
+		e.target.parentElement.remove(fileInput);
+		e.target.parentElement.remove(e.target);	
+	}
+	
+	const createFileInput = () => {
+		const label = document.createElement("label");
+		
+		const input = document.createElement("input");
+		input.type = "file";
+		input.name = "file";
+		input.setAttribute("class", "file");
+		input.addEventListener("change", fileChangeEventCallback);
+		label.appendChild(input);
+		
+		const button = document.createElement("button");
+		button.textContent = "X";
+		button.setAttribute("class", "fileInputCancel");
+		button.style.display = "none";
+		button.addEventListener("click", fileUploadCancelEventCallback);
+		label.appendChild(button);
+		
+		return label;
 	}
 	
 	fileInput.addEventListener("change", fileChangeEventCallback);

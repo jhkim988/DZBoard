@@ -29,10 +29,12 @@ public class CreatePostServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
+		JSONObject jsonOut = new JSONObject();
+		
 		HttpSession session = request.getSession();
 		Member member = (Member) session.getAttribute("member");
 		
-		InputStream in = request.getInputStream();
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setRepository(new File("c:\\upload"));
 		ServletFileUpload upload = new ServletFileUpload(factory);
@@ -51,34 +53,17 @@ public class CreatePostServlet extends HttpServlet {
 		PostRepository postRepository = new PostRepository();
 		int postId = postRepository.createPost(post, member);
 		
-		if (postId == -1) {
-			// 실패
+		if (postId < 0) {
+			out.print(jsonOut(false, "게시글 저장 실패!"));
+			return;
 		}
 		
 		if (items.containsKey("file")) {
-			FileItem fileItem = items.get("file").get(0);
-			String real_name = "c:\\upload\\" + System.nanoTime();
-			String org_name = fileItem.getName();
-			UploadedFile uploadedFile = UploadedFile.builder()
-					.post_id(postId)
-					.org_name(org_name)
-					.real_name(real_name)
-					.content_type(fileItem.getContentType())
-					.content_length(fileItem.getSize())
-					.build();
-			UploadedFileRepository uploadedFileRepository = new UploadedFileRepository();
-			uploadedFileRepository.insertUploadedFile(uploadedFile);
-			try {
-				fileItem.write(new File(real_name));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			boolean success = items.get("file").stream()
+				.filter(fileItem -> fileItem.getSize() > 0)
+				.allMatch(fileItem -> storeFile(fileItem, postId));
+			out.print(jsonOut(success, success ? "성공!" : "파일 저장 실패!"));
 		}
-		
-		
-		PrintWriter out = response.getWriter();
-		JSONObject jsonOut = new JSONObject();
-		jsonOut.put("status", true);
 
 		MemberRepository memberRepository = new MemberRepository();
 		memberRepository.updateUpdatedAt(member);
@@ -90,4 +75,29 @@ public class CreatePostServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
+	private boolean storeFile(FileItem fileItem, int postId) {
+		String real_name = "c:\\upload\\" + System.nanoTime();
+		String org_name = fileItem.getName();
+		UploadedFile uploadedFile = UploadedFile.builder()
+				.post_id(postId)
+				.org_name(org_name)
+				.real_name(real_name)
+				.content_type(fileItem.getContentType())
+				.content_length(fileItem.getSize())
+				.build();
+		UploadedFileRepository uploadedFileRepository = new UploadedFileRepository();
+		uploadedFileRepository.insertUploadedFile(uploadedFile);
+		try {
+			fileItem.write(new File(real_name));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+	}	
+	private JSONObject jsonOut(boolean status, String message) {
+		JSONObject jsonOut = new JSONObject();
+		jsonOut.put("status", status);
+		jsonOut.put("message", message);
+		return jsonOut;
+	}
 }

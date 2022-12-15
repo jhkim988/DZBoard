@@ -19,7 +19,7 @@
 <p>${post.content}</p>
 <ul>
 	<c:forEach var="file" items="${uploadedFiles}">
-		<li>${file.org_name} <a href="/DZBoard/board/download?f_id=${file.f_id}">다운로드</button></li>
+		<li>${file.org_name} <a href="/DZBoard/board/download?f_id=${file.f_id}">다운로드</a></li>
 	</c:forEach>
 </ul>
 <p><button id = "goodButton">추천</button> ${post.good}</p>
