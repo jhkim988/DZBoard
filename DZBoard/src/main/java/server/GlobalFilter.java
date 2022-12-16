@@ -45,7 +45,7 @@ public class GlobalFilter implements Filter {
 		Map<String, UrlAuth> urlAuth = (Map<String, UrlAuth>) context.getAttribute("urlAuthMap");
 		
 		String requestURI = httpRequest.getRequestURI();
-		
+		System.out.println("requestURI: " + requestURI);
 		if (urlAuth.containsKey(requestURI)) {
 			if (!isLogined(httpRequest)) {
 				if (isJSONRequest(httpRequest)) { 

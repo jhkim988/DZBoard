@@ -1,5 +1,7 @@
 package server;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -7,31 +9,77 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
-@WebServlet("/app/*")
+import org.json.JSONObject;
+
+// @WebServlet("/app/*")
 public class MapperServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String key = request.getPathInfo();
-		System.out.println("key: " + key);
-		@SuppressWarnings("unchecked")
-		Map<String, Class<? extends Action>> actionMap = (Map<String, Class<? extends Action>>) getServletContext().getAttribute("actionMap");
-		Class<? extends Action> cls = actionMap.get(key);
-		if (cls != null) {
-			try {
-				cls.getDeclaredConstructor().newInstance().execute(request, response);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-					| NoSuchMethodException | SecurityException | ServletException | IOException e) {
-				e.printStackTrace();
+	private static final long serialVersionUID = 8104507226903949015L;
+	
+	private Map<String, Object> classNameToObjectMap = new HashMap<>();
+	private Map<String, Object> objectMap = new HashMap<>();
+	private Map<String, Method> methodMap = new HashMap<>();
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		String actionNames = config.getInitParameter("actionNames");
+		Objects.requireNonNull(actionNames);
+		String[] actionInfos = actionNames.split("\n");
+		try {
+			for (String line : actionInfos) {
+				line = line.trim();
+				System.out.println("line: " + line);
+				String[] actionInfo = line.split(":");
+				Class<?> cls = Class.forName(actionInfo[1]);
+				if (!classNameToObjectMap.containsKey(actionInfo[1])) {
+					Object object = cls.getDeclaredConstructor().newInstance();
+					classNameToObjectMap.put(actionInfo[1], object);
+					objectMap.put(actionInfo[0], object);
+				} else {
+					objectMap.put(actionInfo[0], classNameToObjectMap.get(actionInfo[1]));
+				}
+				Method method = cls.getMethod(actionInfo[2], HttpServletRequest.class, HttpServletResponse.class);
+				methodMap.put(actionInfo[0], method);
 			}
-		} else {
-			System.out.println("cls is null");
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String key = request.getPathInfo();
+		Objects.requireNonNull(key);
+		System.out.println("key: " + key);
+
+		Object obj = objectMap.get(key);
+		Method method = methodMap.get(key);
+
+		Objects.requireNonNull(obj);
+		Objects.requireNonNull(method);
+		try {
+			Object ret = method.invoke(obj, request, response);
+			if (method.getReturnType() == String.class) {
+				RequestDispatcher dispatcher = request.getRequestDispatcher((String) ret);
+				dispatcher.forward(request, response);
+			} else if (method.getReturnType() == JSONObject.class) {
+				response.setContentType("application/json;charset=utf-8");
+				response.getWriter().print((JSONObject) ret);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

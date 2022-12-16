@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-@WebServlet("/admin/memberSearch/updatedAt")
+//@WebServlet("/admin/memberSearch/updatedAt")
 public class MemberSearchByUpdatedAtAction implements Action {
 
 	private String urlSearchParams(Timestamp from, Timestamp to, Member lastMember) {

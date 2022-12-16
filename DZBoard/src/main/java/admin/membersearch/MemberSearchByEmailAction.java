@@ -19,7 +19,6 @@ import javax.sql.DataSource;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-@WebServlet()
 public class MemberSearchByEmailAction implements Action {
 
 	@Override

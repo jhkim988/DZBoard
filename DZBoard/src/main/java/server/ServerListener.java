@@ -1,7 +1,11 @@
 package server;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -40,30 +44,11 @@ public class ServerListener implements ServletContextListener {
     	DataSource dataFactory = getDataSource();
     	Repository.setDataFactory(dataFactory);
     	
-    	context.setAttribute("actionMap", initializeActionMap());
     	context.setAttribute("allCategoryList", new CategoryRepository().findAllCategories());
     }
 
     public void contextDestroyed(ServletContextEvent sce)  { 
 
-    }
-	
-    private Map<String, Class<? extends Action>> initializeActionMap() {
-    	Map<String, Class<? extends Action>> actionMap = Collections.synchronizedMap(new HashMap<>());
-    	actionMap.put("/index", IndexAction.class);
-    	actionMap.put("/member/login", LoginAction.class);
-    	actionMap.put("/member/loginForm", LoginFormAction.class);
-    	actionMap.put("/admin/memberSearch/allMember", AllMemberSearchAction.class);
-    	actionMap.put("/admin/memberSearch/createdAt", MemberSearchByCreatedAtAction.class);
-    	actionMap.put("/admin/memberSearch/email", MemberSearchByEmailAction.class);
-    	actionMap.put("/admin/memberSearch/id", MemberSearchByIdAction.class);
-    	actionMap.put("/admin/memberSearch/name", MemberSearchByNameAction.class);
-    	actionMap.put("/admin/memberSearch/phone", MemberSearchByPhoneAction.class);
-    	actionMap.put("/admin/memberSearch/updatedAt", MemberSearchByUpdatedAtAction.class);
-    	actionMap.put("/admin/memberSearch/authority", MemberSerachByAuthorityAction.class);
-    	actionMap.put("/admin/deleteMember", DeleteMemberAction.class);
-    	
-    	return actionMap;
     }
     
     private DataSource getDataSource() {

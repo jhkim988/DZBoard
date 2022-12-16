@@ -18,7 +18,6 @@ import javax.sql.DataSource;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-@WebServlet()
 public class MemberSerachByAuthorityAction implements Action {
 
 	private String urlSearchParams(Member lastMember) {

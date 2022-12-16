@@ -23,24 +23,24 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td>${ member.id }</td>
-				<td>${ member.pwd }</td>
-				<td>${ member.name }</td>
-				<td>${ member.email }</td>
-				<td>${ member.phone }</td>
-				<td>${ member.createdAt }</td>
-				<td>${ member.updatedAt }</td>
-				<td>${ member.authority }</td>
+				<td>${ manage_member.id }</td>
+				<td>${ manage_member.pwd }</td>
+				<td>${ manage_member.name }</td>
+				<td>${ manage_member.email }</td>
+				<td>${ manage_member.phone }</td>
+				<td>${ manage_member.createdAt }</td>
+				<td>${ manage_member.updatedAt }</td>
+				<td>${ manage_member.authority }</td>
 			</tr>
 			<tr>
-				<td>${ member.id }</td>
-				<td><input type="text" id="pwd" value='${member.pwd}'/></td>
-				<td><input type="text" id="name" value='${member.name}'/></td>
-				<td><input type="text" id="email" value='${member.email}'/></td>
-				<td><input type="text" id="phone" value='${member.phone}'/></td>
-				<td>${ member.createdAt }</td>
-				<td>${ member.updatedAt }</td>
-				<td><input type="number" id="authority" value='${member.authority}'/></td>
+				<td>${ manage_member.id }</td>
+				<td><input type="text" id="pwd" value='${manage_member.pwd}'/></td>
+				<td><input type="text" id="name" value='${manage_member.name}'/></td>
+				<td><input type="text" id="email" value='${manage_member.email}'/></td>
+				<td><input type="text" id="phone" value='${manage_member.phone}'/></td>
+				<td>${ manage_member.createdAt }</td>
+				<td>${ manage_member.updatedAt }</td>
+				<td><input type="number" id="authority" value='${manage_member.authority}'/></td>
 			</tr>
 		</tbody>
 	</table>

@@ -9,4 +9,36 @@
 		<error-code>404</error-code>
 		<location>/index</location>
 	</error-page>
+	<servlet>
+		<description>mapperServlet</description>
+		<display-name>mapper</display-name>
+		<servlet-name>mapper</servlet-name>
+		<servlet-class>server.MapperServlet</servlet-class>
+	
+		<init-param>
+			<param-name>actionNames</param-name>
+			<param-value>
+				/index:index.IndexAction:index
+    			/member/login:member.LoginAction:execute
+    			/member/loginForm:member.LoginFormAction:execute
+    			/admin/memberSearch/allMember:admin.MemberSearch:searchAll
+  			  	/admin/memberSearch/createdAt:admin.MemberSearch:searchByCreatedAt
+		    	/admin/memberSearch/email:admin.MemberSearch:searchByEmail
+		    	/admin/memberSearch/id:admin.MemberSearch:searchById
+		    	/admin/memberSearch/name:admin.MemberSearch:searchByName
+		    	/admin/memberSearch/phone:admin.MemberSearch:searchByPhone
+		    	/admin/memberSearch/updatedAt:admin.MemberSearch:searchByUpdatedAt
+ 			   	/admin/memberSearch/authority:admin.MemberSearch:searchByAuthority
+		    	/admin/deleteMember:admin.MemberManage:deleteMember
+		    	/admin/updateMemberForm:admin.MemberManage:updateMemberForm
+		    	/admin/updateMember:admin.MemberManage:updateMember
+				/admin/createUrlAuth:admin.UrlAuth:createUrlAuth
+			</param-value>
+		</init-param>
+		
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mapper</servlet-name>
+		<url-pattern>/app/*</url-pattern>
+	</servlet-mapping>
 </web-app>
