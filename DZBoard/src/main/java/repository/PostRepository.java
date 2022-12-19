@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import board.Post;
-import member.Member;
+import entities.Member;
+import entities.Post;
 
 public class PostRepository {
 	private Repository repository = new Repository();
@@ -134,13 +134,14 @@ public class PostRepository {
 		return null;
 	}
 	
+	// TODO: 쿼리 수정
 	public int createPost(Post post, Member member) {
 		repository.open();
 		repository.setAutoCommit(false);
 		try {
 			int executeUpdate = repository.executeUpdate(
-					"insert tb_dzboard_board (author, title, content, category) value (?, ?, ?, ?)"
-					, member.getId(), post.getTitle(), post.getContent(), post.getCategory());
+					"insert tb_dzboard_board (author, parent, title, content, category) value (?, ?, ?, ?, ?)"
+					, member.getId(), 1, post.getTitle(), post.getContent(), post.getCategory());
 			if (executeUpdate != 1) {
 				repository.rollback();
 				return -1;

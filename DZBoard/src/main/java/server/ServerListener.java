@@ -19,14 +19,14 @@ public class ServerListener implements ServletContextListener {
     	ServletContext context = sce.getServletContext();
     	DataSource dataFactory = getDataSource();
     	Repository.setDataFactory(dataFactory);
-    	
+    	Utility.setServletContext(context);
     	context.setAttribute("allCategoryList", new CategoryRepository().findAllCategories());
     }
 
     public void contextDestroyed(ServletContextEvent sce)  { 
 
     }
-	
+    
     private DataSource getDataSource() {
 		try {
 			Context context = new InitialContext();

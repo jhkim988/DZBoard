@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import member.Member;
+import entities.Member;
 
 public class MemberRepository {
 	private Repository repository = new Repository();

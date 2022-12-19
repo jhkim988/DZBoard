@@ -5,13 +5,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import member.Member;
 import repository.MemberRepository;
 
 import java.io.IOException;
 import java.util.Random;
 
 import javax.sql.DataSource;
+
+import entities.Member;
 
 @WebServlet("/generateMember")
 public class MemberGeneratorServlet extends HttpServlet {

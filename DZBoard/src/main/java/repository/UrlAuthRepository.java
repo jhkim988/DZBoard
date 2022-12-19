@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import admin.urlauth.UrlAuth;
+import entities.UrlAuth;
 
 public class UrlAuthRepository {
 	private Repository repository = new Repository();

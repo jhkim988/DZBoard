@@ -5,7 +5,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import member.Member;
 import repository.PostRepository;
 
 import java.io.IOException;
@@ -13,7 +12,8 @@ import java.util.Random;
 
 import javax.sql.DataSource;
 
-import board.Post;
+import entities.Member;
+import entities.Post;
 
 @WebServlet("/generatePost")
 public class PostGeneratorServlet extends HttpServlet {
