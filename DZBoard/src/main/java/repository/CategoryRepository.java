@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import board.Category;
+import entities.Category;
 
 public class CategoryRepository {
 	private Repository repository = new Repository();

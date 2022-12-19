@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import board.file.UploadedFile;
+import entities.UploadedFile;
 
 public class UploadedFileRepository {
 	private Repository repository = new Repository();

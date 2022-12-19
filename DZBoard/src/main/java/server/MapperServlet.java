@@ -34,7 +34,6 @@ public class MapperServlet extends HttpServlet {
 		try {
 			for (String line : actionInfos) {
 				line = line.trim();
-				System.out.println("line: " + line);
 				String[] actionInfo = line.split(":");
 				Class<?> cls = Class.forName(actionInfo[1]);
 				if (!classNameToObjectMap.containsKey(actionInfo[1])) {
@@ -62,12 +61,20 @@ public class MapperServlet extends HttpServlet {
 		Object obj = objectMap.get(key);
 		Method method = methodMap.get(key);
 
-		Objects.requireNonNull(obj);
-		Objects.requireNonNull(method);
+		try {
+			Objects.requireNonNull(obj);
+			Objects.requireNonNull(method);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			response.sendRedirect("/DZBoard/index");
+			return;
+		}
 		try {
 			Object ret = method.invoke(obj, request, response);
-			if (method.getReturnType() == String.class) {
-				RequestDispatcher dispatcher = request.getRequestDispatcher((String) ret);
+			if (response.isCommitted()) {
+				return;
+			} else if (method.getReturnType() == String.class) {
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF" + (String) ret);
 				dispatcher.forward(request, response);
 			} else if (method.getReturnType() == JSONObject.class) {
 				response.setContentType("application/json;charset=utf-8");

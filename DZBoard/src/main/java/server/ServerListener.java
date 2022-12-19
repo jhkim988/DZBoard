@@ -1,38 +1,14 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import admin.DeleteMemberAction;
-import admin.membersearch.AllMemberSearchAction;
-import admin.membersearch.MemberSearchByCreatedAtAction;
-import admin.membersearch.MemberSearchByEmailAction;
-import admin.membersearch.MemberSearchByIdAction;
-import admin.membersearch.MemberSearchByNameAction;
-import admin.membersearch.MemberSearchByPhoneAction;
-import admin.membersearch.MemberSearchByUpdatedAtAction;
-import admin.membersearch.MemberSerachByAuthorityAction;
-import index.IndexAction;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import member.LoginAction;
-import member.LoginFormAction;
 import repository.CategoryRepository;
 import repository.Repository;
 
@@ -43,7 +19,7 @@ public class ServerListener implements ServletContextListener {
     	ServletContext context = sce.getServletContext();
     	DataSource dataFactory = getDataSource();
     	Repository.setDataFactory(dataFactory);
-    	
+    	Utility.setServletContext(context);
     	context.setAttribute("allCategoryList", new CategoryRepository().findAllCategories());
     }
 

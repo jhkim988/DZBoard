@@ -10,10 +10,12 @@ import java.util.Set;
 
 import org.json.JSONObject;
 
-import admin.urlauth.UrlAuth;
+import entities.Member;
+import entities.UrlAuth;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -21,7 +23,6 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import member.Member;
 import repository.UrlAuthRepository;
 
 @WebFilter("/*")
@@ -37,13 +38,15 @@ public class GlobalFilter implements Filter {
 		String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		System.out.println("Filter: " + path);
 		if (path.startsWith("/resources/")) { // TODO: JSP Authority Check
-			chain.doFilter(httpRequest, httpResponse);
+			RequestDispatcher dispatcher = httpRequest.getRequestDispatcher("/WEB-INF" + path);
+			dispatcher.forward(httpRequest, httpResponse);
 			return;
 		}
 		
 		@SuppressWarnings("unchecked")
 		Map<String, UrlAuth> urlAuth = (Map<String, UrlAuth>) context.getAttribute("urlAuthMap");
 		
+		// TODO: 로직 변경에 따른 권한 확인 다시 설정해야함
 		String requestURI = httpRequest.getRequestURI();
 		System.out.println("requestURI: " + requestURI);
 		if (urlAuth.containsKey(requestURI)) {
@@ -61,7 +64,7 @@ public class GlobalFilter implements Filter {
 				if (isJSONRequest(httpRequest)) {
 					postResponse(httpResponse, false, "권한 제한");
 				} else {
-					httpResponse.sendRedirect("/DZBoard/pages/error/accessDenied.html");
+					httpResponse.sendRedirect("/WEB-INF/resources/error/accessDenied.html");
 				}
 				return;
 			}

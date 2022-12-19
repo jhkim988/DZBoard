@@ -5,10 +5,10 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
+import entities.Member;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import member.Member;
 import repository.MemberRepository;
 
 public class MemberManage {
@@ -17,7 +17,8 @@ public class MemberManage {
 		String id = request.getParameter("id");
 		MemberRepository repository = new MemberRepository();
 		repository.deleteMemberById(id);
-		return request.getHeader("referer");
+		response.sendRedirect(request.getHeader("referer"));
+		return "";
 	}
 	
 	public String  updateMemberForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

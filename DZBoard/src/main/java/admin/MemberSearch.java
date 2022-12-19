@@ -1,7 +1,6 @@
 package admin;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,10 +11,10 @@ import java.util.Objects;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import entities.Member;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import member.Member;
 import repository.MemberRepository;
 
 public class MemberSearch {
@@ -92,9 +91,7 @@ public class MemberSearch {
 		return jsonOut;
 	}
 	
-	public void searchById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-
+	public JSONObject searchById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = Objects.requireNonNull(request.getParameter("id"));
 		MemberRepository repository = new MemberRepository();
 
@@ -107,7 +104,7 @@ public class MemberSearch {
 		list.forEach(x -> jsonArr.put(x.toJSONObject()));
 		jsonOut.put("status", true);
 		jsonOut.put("data", jsonArr);
-		out.print(jsonOut);
+		return jsonOut;
 	}
 	
 	public JSONObject searchByName(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

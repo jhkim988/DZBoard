@@ -3,13 +3,11 @@ package index;
 import java.io.IOException;
 import java.util.List;
 
-import board.Post;
-import jakarta.servlet.RequestDispatcher;
+import entities.Post;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.PostRepository;
-import server.Action;
 
 public class IndexAction {
 
