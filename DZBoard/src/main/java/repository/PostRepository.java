@@ -134,34 +134,23 @@ public class PostRepository {
 		return null;
 	}
 	
-	// TODO: 쿼리 수정
 	public int createPost(Post post, Member member) {
 		repository.open();
-		repository.setAutoCommit(false);
 		try {
-			int executeUpdate = repository.executeUpdate(
-					"insert tb_dzboard_board (author, parent, title, content, category) value (?, ?, ?, ?, ?)"
-					, member.getId(), 1, post.getTitle(), post.getContent(), post.getCategory());
-			if (executeUpdate != 1) {
-				repository.rollback();
-				return -1;
-			}
-			rs = repository.executeQuery("select last_insert_id() from tb_dzboard_board");
-			if (rs.next()) {
-				return rs.getInt(1);
-			}
-			
+			CallableStatement cstmt = repository.prepareCall("{call pc_dzboard_insertPost(?, ?, ?, ?, ?)}");
+			cstmt.setString(1, member.getId());
+			cstmt.setString(2,  post.getTitle());
+			cstmt.setString(3,  post.getContent());
+			cstmt.setString(4,  post.getCategory());
+			cstmt.registerOutParameter(5, java.sql.Types.INTEGER);
+			cstmt.execute();
+			int ret = cstmt.getInt(5);
+			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			repository.commit();
 			repository.close();
 		}
-/*
-		return repository.executeUpdatePreparedStatement(
-				"insert into tb_dzboard_board (author, title, content, category) value (?, ?, ?, ?)"
-				, member.getId(), post.getTitle(), post.getContent(), post.getCategory()) == 1;
-*/
 		return -1;
 	}
 	

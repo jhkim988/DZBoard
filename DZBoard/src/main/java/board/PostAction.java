@@ -56,7 +56,7 @@ public class PostAction {
 
 		PostRepository postRepository = new PostRepository();
 		int postId = postRepository.createPost(post, member);
-		
+		System.out.println("postId: " + postId);
 		if (postId < 0) {
 			return jsonOut(false, "게시글 저장 실패!");
 		}
@@ -226,6 +226,14 @@ public class PostAction {
 		
 		MemberRepository memberRepository = new MemberRepository();
 		Member author = memberRepository.findOneMemberById(post.getAuthor());
+		
+		if (author == null) {
+			if (loginMember.getAuthority() == 99) {
+				postRepository.deletePost(post);
+				return true;
+			}
+			return false;
+		}
 		
 		if (author.getAuthority() < loginMember.getAuthority() || post.isSameAuthor(loginMember)) {
 			return postRepository.deletePost(post);

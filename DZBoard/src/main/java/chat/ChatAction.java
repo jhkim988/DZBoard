@@ -17,7 +17,7 @@ public class ChatAction {
 		return "/resources/chat/chat.html";
 	}
 	
-	public JSONObject doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public JSONObject chatRoomList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, List<Session>> chatRooms = ChatSocket.getChatRooms();
 		JSONObject jsonOut = new JSONObject();
 		JSONArray jsonArr = new JSONArray();
