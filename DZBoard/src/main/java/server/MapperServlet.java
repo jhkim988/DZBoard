@@ -7,9 +7,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,7 +21,6 @@ import java.util.Set;
 
 import org.json.JSONObject;
 
-// @WebServlet("/app/*")
 public class MapperServlet extends HttpServlet {
 	private static final long serialVersionUID = 8104507226903949015L;
 	
@@ -28,6 +30,7 @@ public class MapperServlet extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
+		System.out.println(config.getServletContext().getResourcePaths("/WEB-INF/classes"));
 		String actionNames = config.getInitParameter("actionNames");
 		Objects.requireNonNull(actionNames);
 		String[] actionInfos = actionNames.split("\n");
@@ -75,6 +78,7 @@ public class MapperServlet extends HttpServlet {
 				return;
 			} else if (method.getReturnType() == String.class) {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF" + (String) ret);
+				System.out.println("/WEB-INF" + (String) ret);
 				dispatcher.forward(request, response);
 			} else if (method.getReturnType() == JSONObject.class) {
 				response.setContentType("application/json;charset=utf-8");
@@ -89,5 +93,4 @@ public class MapperServlet extends HttpServlet {
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

@@ -17,17 +17,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import repository.MemberRepository;
+import server.Action;
+import server.RequestMapping;
 
+@Action
 public class MemberAction {
 	
+	@RequestMapping("/member/viewMember")
 	public String viewMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return "/resources/member/viewMember.jsp";
 	}
 	
+	@RequestMapping("/member/deleteMemberForm")
 	public String deleteMemberForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return "/resources/member/deleteMember.jsp";
 	}
 	
+	@RequestMapping("/member/deleteMember")
 	public JSONObject deleteMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();
@@ -55,6 +61,7 @@ public class MemberAction {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/member/dupMemberCheck")
 	public JSONObject dupMemberCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();
@@ -88,10 +95,12 @@ public class MemberAction {
 		return jsonResult;
 	}
 	
+	@RequestMapping("/member/findIdForm")
 	public String findIdForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return "/resources/member/findId.html";
 	}
 	
+	@RequestMapping("/member/findId")
 	public JSONObject findId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();
@@ -132,10 +141,12 @@ public class MemberAction {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/member/findPwdForm")
 	public String findPwdForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return "/resources/member/findPwd.html";
 	}
 	
+	@RequestMapping("/member/findPwd")
 	public JSONObject findPwd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
@@ -175,6 +186,7 @@ public class MemberAction {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/member/login")
 	public JSONObject login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonInput = new JSONObject(in.readLine());
@@ -210,6 +222,7 @@ public class MemberAction {
 		return jsonResult;
 	}
 	
+	@RequestMapping("/member/loginForm")
 	public String loginForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = null;
 		for (Cookie cookie: request.getCookies()) {
@@ -223,6 +236,7 @@ public class MemberAction {
 		return "/resources/member/login.jsp";
 	}
 	
+	@RequestMapping("/member/logout")
 	public JSONObject logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject jsonOut = new JSONObject();
 		
@@ -234,12 +248,14 @@ public class MemberAction {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/member/registerForm")
 	public String registerForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return "/resources/member/register.html";
 	}
 	
 	private static final List<String> keys = Arrays.asList("name", "id", "pwd", "pwdchk", "email", "emailHost", "phonefirst", "phonemid", "phonelast");
 	private final Map<String, String> info = new HashMap<>();
+	@RequestMapping("/member/register")
 	public JSONObject register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
@@ -278,10 +294,12 @@ public class MemberAction {
 
 	}
 	
+	@RequestMapping("/member/updateMemberForm")
 	public String updateMemberForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return "/resources/member/updateMember.jsp";
 	}
 	
+	@RequestMapping("/member/updateMember")
 	public JSONObject updateMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();

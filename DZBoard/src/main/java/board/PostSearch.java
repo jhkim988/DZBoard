@@ -13,26 +13,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.PostRepository;
+import server.Action;
+import server.RequestMapping;
 
+@Action
 public class PostSearch {
-
-	private JSONObject toJSON(boolean status, String message) {
-		JSONObject ret = new JSONObject();
-		ret.put("status", status);
-		ret.put("message", message);
-		return ret;
-	}
 	
-	private JSONObject getResultJSON(HttpServletRequest request, HttpServletResponse response, List<Post> posts, int total) throws ServletException, IOException {
-		JSONArray jsonArr = new JSONArray();
-		posts.forEach(post -> jsonArr.put(post.headertoJSON()));
-		JSONObject jsonOut = new JSONObject();
-		jsonOut.put("status", posts.size() > 0);
-		jsonOut.put("data", jsonArr);
-		jsonOut.put("total", total);
-		return jsonOut;
-	}
-	
+	@RequestMapping("/board/all")
 	public JSONObject searchAll(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
@@ -46,6 +33,7 @@ public class PostSearch {
 		return getResultJSON(request, response, list, total);
 	}
 
+	@RequestMapping("/board/author")
 	public JSONObject searchByAuthor(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
@@ -59,7 +47,8 @@ public class PostSearch {
 		int total = repository.countPostByAuthor(author);
 		return getResultJSON(request, response, list, total);
 	}
-
+	
+	@RequestMapping("/board/category")
 	public JSONObject searchByCategory(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
@@ -74,6 +63,7 @@ public class PostSearch {
 		return getResultJSON(request, response, list, total);
 	}
 
+	@RequestMapping("/board/content")
 	public JSONObject searchByContent(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
@@ -88,6 +78,7 @@ public class PostSearch {
 		return getResultJSON(request, response, list, total);
 	}
 
+	@RequestMapping("/board/good")
 	public JSONObject searchByGood(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
@@ -101,6 +92,7 @@ public class PostSearch {
 		return getResultJSON(request, response, list, total);
 	}
 
+	@RequestMapping("/board/postId")
 	public JSONObject searchByPostId(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
@@ -117,7 +109,8 @@ public class PostSearch {
 		if (post != null) list.add(post);
 		return getResultJSON(request, response, list, 1);
 	}
-
+	
+	@RequestMapping("/board/title")
 	public JSONObject searchByTitle(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
@@ -129,5 +122,22 @@ public class PostSearch {
 		List<Post> list = repository.listPostHeaderOfTitle(offset, pageSize, title);
 		int total = repository.countPostByTitle(title);
 		return getResultJSON(request, response, list, total);
+	}
+	
+	private JSONObject toJSON(boolean status, String message) {
+		JSONObject ret = new JSONObject();
+		ret.put("status", status);
+		ret.put("message", message);
+		return ret;
+	}
+	
+	private JSONObject getResultJSON(HttpServletRequest request, HttpServletResponse response, List<Post> posts, int total) throws ServletException, IOException {
+		JSONArray jsonArr = new JSONArray();
+		posts.forEach(post -> jsonArr.put(post.headertoJSON()));
+		JSONObject jsonOut = new JSONObject();
+		jsonOut.put("status", posts.size() > 0);
+		jsonOut.put("data", jsonArr);
+		jsonOut.put("total", total);
+		return jsonOut;
 	}
 }

@@ -8,9 +8,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.PostRepository;
+import server.Action;
+import server.RequestMapping;
 
+@Action
 public class IndexAction {
-
+	
+	@RequestMapping("/index")
 	public String index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PostRepository postRepository = new PostRepository();
 		List<Post> notices = postRepository.listCategoryHeader("공지");
@@ -21,5 +25,4 @@ public class IndexAction {
 		request.setAttribute("generals", generals);
 		return "/resources/home.jsp";
 	}
-
 }

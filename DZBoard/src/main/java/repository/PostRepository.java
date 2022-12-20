@@ -129,6 +129,27 @@ public class PostRepository {
 		return -1;
 	}
 	
+	public int createReplyPost(Post post, Member member) {
+		repository.open();
+		try {
+			CallableStatement cstmt = repository.prepareCall("{call pc_dzboard_insertReplyPost(?, ?, ?, ?, ?, ?)}");
+			cstmt.setInt(1, post.getParent());
+			cstmt.setString(2, member.getId());
+			cstmt.setString(3,  post.getTitle());
+			cstmt.setString(4,  post.getContent());
+			cstmt.setString(5,  post.getCategory());
+			cstmt.registerOutParameter(6, java.sql.Types.INTEGER);
+			cstmt.execute();
+			int ret = cstmt.getInt(6);
+			return ret;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			repository.close();
+		}
+		return -1;
+	}
+	
 	public boolean createTestPost(Post post, Member member) {
 		return repository.executeUpdatePreparedStatement(
 				"insert into tb_dzboard_board (parent, author, title, content, category, good) values (?, ?, ?, ?, ?, ?)"

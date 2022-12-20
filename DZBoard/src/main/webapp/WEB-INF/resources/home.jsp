@@ -28,7 +28,7 @@
 		<h1 id=title>Douzone Board</h1>
 	</header>
 	<nav>
-		<a href="/DZBoard/chat/">채팅 바로가기</a>
+		<a href="/DZBoard/chat">채팅 바로가기</a>
 		<a href="/DZBoard/board">게시판 바로가기</a>
 	</nav>
 	<main>

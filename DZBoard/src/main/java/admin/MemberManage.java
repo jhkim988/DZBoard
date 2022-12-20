@@ -10,8 +10,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.MemberRepository;
+import server.Action;
+import server.RequestMapping;
 
+@Action
 public class MemberManage {
+	
+	@RequestMapping("/admin/deleteMember")
 	public String deleteMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;charset=utf-8");
 		String id = request.getParameter("id");
@@ -21,6 +26,7 @@ public class MemberManage {
 		return "";
 	}
 	
+	@RequestMapping("/admin/updateMemberForm")
 	public String  updateMemberForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		MemberRepository repository = new MemberRepository();
@@ -29,6 +35,7 @@ public class MemberManage {
 		return "/resources/admin/updateMember.jsp";
 	}
 	
+	@RequestMapping("/admin/updateMember")
 	public JSONObject updateMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject json = new JSONObject(in.readLine());

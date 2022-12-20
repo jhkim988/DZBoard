@@ -11,10 +11,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.UploadedFileRepository;
+import server.Action;
+import server.RequestMapping;
 
+@Action
 public class DownloadFile {
 	private static final int bufSize = 4096;
 	
+	@RequestMapping("/board/download")
 	public void download(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		long f_id = Long.valueOf(request.getParameter("f_id"));
 		

@@ -92,6 +92,25 @@ START TRANSACTION;
 	UPDATE tb_dzboard_board SET parent = lastId WHERE id = lastId;
 COMMIT;
 END
+/* 프로시저: 답글 작성 */
+BEGIN
+DECLARE exit handler FOR NOT FOUND
+	begin
+		ROLLBACK;
+		SET lastId = -1;
+	END;
+	
+DECLARE exit handler FOR SQLEXCEPTION
+	begin
+		ROLLBACK;
+		SET lastId = -1;
+	END;
+SET lastId = -1;
+START TRANSACTION;
+	INSERT into tb_dzboard_board (`parent`, `author`, `title`, `content`, `category`) VALUE (parent, author, title, content, category);
+	SET lastId = LAST_INSERT_ID();
+COMMIT;
+END
 
 /* 테이블 생성: Board 테이블 */
 CREATE TABLE `tb_dzboard_board` (
