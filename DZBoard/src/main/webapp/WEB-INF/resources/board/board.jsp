@@ -7,10 +7,13 @@
 <meta charset="UTF-8">
 <title>Douzone Board - 게시판</title>
 <link rel="stylesheet" href="/DZBoard/resources/board/css/board.css" />
-<script type="text/javascript" src="/DZBoard/resources/board/js/board.js"></script>
+<script type="text/javascript"
+	src="/DZBoard/resources/board/js/board.js"></script>
 </head>
 <body>
-	<h1><a href="/DZBoard/index">Douzone Board</a></h1>
+	<h1>
+		<a href="/DZBoard/index">Douzone Board</a>
+	</h1>
 	<table id="board">
 		<thead>
 			<tr>
@@ -27,23 +30,20 @@
 		<tbody id="notice">
 		</tbody>
 		<tbody id="mainBoard">
-			<c:forEach var='post' items='${posts}'>
-				<tr>
-					<td class='id'>${post.id}</td>
-					<td class='category'>${post.category}</td>
-					<td class='title'><a href="/DZBoard/board/view?id=${post.id}">${post.title}</a></td>
-					<td class='author'>${post.author}</td>
-					<td class='viewcount'>${post.viewcount}</td>
-					<td class='good'>${post.good}</td>
-					<td class='bad'>${post.bad}</td>
-					<td class='createdAt'>${post.createdAt}</td>
-				</tr>
-			</c:forEach>
+			<tr id="postRow" style="display: none">
+				<td class='id'></td>
+				<td class='category'></td>
+				<td class='title'><a href=""></a></td>
+				<td class='author'></td>
+				<td class='viewcount'></td>
+				<td class='good'></td>
+				<td class='bad'></td>
+				<td class='createdAt'></td>
+			</tr>
 		</tbody>
 	</table>
 	<div id="search">
-		<label>
-			<select id="searchType">
+		<label> <select id="searchType">
 				<option value="all">전체 보기</option>
 				<option value="postId">글 번호</option>
 				<option value="category">카테고리</option>
@@ -51,17 +51,28 @@
 				<option value="author">작성자</option>
 				<option value="content">내용</option>
 				<option value="good">추천 수</option>
-			</select>
-		</label>
-		<label>
-			<input id="query" type="text" placeholder="검색어">
-		</label>
-		<input id="searchButton" type="submit" value="검색"/>
+		</select>
+		</label> <label> <input id="query" type="text" placeholder="검색어">
+		</label> <input id="searchButton" type="submit" value="검색" />
 	</div>
 	<footer>
 		<div id="left">
-			<a id="prev" href="">이전</a>
-			<a id="next" href="">다음</a>
+			<button id="firstPage">처음</button>
+			<button id="prevSet">&lt;</button>
+			<div id="pageButtons" style='display: inline-block'>
+				<button data-page='1'>1</button>
+				<button data-page='2'>2</button>
+				<button data-page='3'>3</button>
+				<button data-page='4'>4</button>
+				<button data-page='5'>5</button>
+				<button data-page='6'>6</button>
+				<button data-page='7'>7</button>
+				<button data-page='8'>8</button>
+				<button data-page='9'>9</button>
+				<button data-page='10'>10</button>
+			</div>
+			<button id="nextSet">&gt;</button>
+			<button id="lastPage">마지막</button>
 		</div>
 		<div id="right">
 			<a id="write" href="/DZBoard/board/create">글쓰기</a>

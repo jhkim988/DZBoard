@@ -27,7 +27,6 @@ const main = () => {
 		e.target.parentElement.remove(e.target);	
 	}
 	
-	// TODO: Use clone node
 	const createFileInput = () => {
 		const label = document.createElement("label");
 		

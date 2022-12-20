@@ -26,6 +26,9 @@
 <p><button id = "badButton">비추천</button> ${post.bad}</p>
 <a href="/DZBoard/board/updateForm?id=${post.id}">수정</a>
 <a href="/DZBoard/board/deletePost?id=${post.id}">삭제</a>
+<c:if test="${post.id == post.parent}">
+	<a href="/DZBoard/board/replyForm?parent=${post.parent}">답글쓰기</a>
+</c:if>
 <a href="/DZBoard/board">뒤로가기</a>
 </body>
 </html>

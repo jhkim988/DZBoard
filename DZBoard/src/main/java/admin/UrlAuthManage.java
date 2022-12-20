@@ -12,9 +12,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.UrlAuthRepository;
+import server.Action;
+import server.RequestMapping;
 import server.Utility;
 
+@Action
 public class UrlAuthManage {
+	
+	@RequestMapping("/admin/createUrlAuth")
 	public JSONObject createUrlAuth(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
@@ -43,6 +48,7 @@ public class UrlAuthManage {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/deleteUrlAuth")
 	public JSONObject deleteUrlAuth(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
@@ -64,6 +70,7 @@ public class UrlAuthManage {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/updateUrlAuthForm")
 	public String updateUrlAuthForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = request.getParameter("url");
 		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
@@ -72,6 +79,7 @@ public class UrlAuthManage {
 		return "/resources/admin/UpdateUrlAuthForm.jsp";
 	}
 	
+	@RequestMapping("/admin/updateUrlAuth:admin")
 	public JSONObject updateUrlAuth(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
@@ -100,6 +108,7 @@ public class UrlAuthManage {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/synchronizeUrlAuth")
 	public String synchronizeUrlAuth(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
 		Utility.getServletContext().setAttribute("urlAuthMap", Collections.synchronizedMap(urlAuthRepository.findAllUrlAuth()));
@@ -107,6 +116,7 @@ public class UrlAuthManage {
 		return "";
 	}
 	
+	@RequestMapping("/admin/viewUrlAuth")
 	public JSONObject viewUrlAuth(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
 		JSONObject jsonOut = new JSONObject();
@@ -125,6 +135,7 @@ public class UrlAuthManage {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/addUrlAuthorityForm")
 	public String addUrlAuthorityForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return "/resources/admin/addUrlAuthorityForm.html";
 	}

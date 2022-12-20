@@ -11,13 +11,19 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.websocket.Session;
+import server.Action;
+import server.RequestMapping;
 
+@Action
 public class ChatAction {
+	
+	@RequestMapping("/chat")
 	public String index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		return "/resources/chat/chat.html";
 	}
 	
-	public JSONObject doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@RequestMapping("/chat/chatRoomList")
+	public JSONObject chatRoomList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String, List<Session>> chatRooms = ChatSocket.getChatRooms();
 		JSONObject jsonOut = new JSONObject();
 		JSONArray jsonArr = new JSONArray();

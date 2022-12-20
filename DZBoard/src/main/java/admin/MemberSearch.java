@@ -16,9 +16,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.MemberRepository;
+import server.Action;
+import server.RequestMapping;
 
+@Action
 public class MemberSearch {
 	
+	@RequestMapping("/admin/memberSearch/allMember")
 	public JSONObject searchAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String last = request.getParameter("last");
 
@@ -42,6 +46,7 @@ public class MemberSearch {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/memberSearch/createdAt")
 	public JSONObject searchByCreatedAt(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Timestamp from = Timestamp.valueOf(Objects.requireNonNull(request.getParameter("from")));
 		Timestamp to = Timestamp.valueOf(Objects.requireNonNull(request.getParameter("to")));
@@ -75,6 +80,7 @@ public class MemberSearch {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/memberSearch/email")
 	public JSONObject searchByEmail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = Objects.requireNonNull(request.getParameter("email"));
 		MemberRepository repository = new MemberRepository();
@@ -91,6 +97,7 @@ public class MemberSearch {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/memberSearch/id")
 	public JSONObject searchById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = Objects.requireNonNull(request.getParameter("id"));
 		MemberRepository repository = new MemberRepository();
@@ -107,6 +114,7 @@ public class MemberSearch {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/memberSearch/name")
 	public JSONObject searchByName(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = Objects.requireNonNull(request.getParameter("name"));
 		String last = request.getParameter("last");
@@ -132,6 +140,7 @@ public class MemberSearch {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/memberSearch/phone")
 	public JSONObject searchByPhone(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String phone = Objects.requireNonNull(request.getParameter("phone"));
 		MemberRepository repository = new MemberRepository();
@@ -148,6 +157,7 @@ public class MemberSearch {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/memberSearch/updatedAt")
 	public JSONObject searchByUpdatedAt (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Timestamp from = Objects.requireNonNull(Timestamp.valueOf(request.getParameter("from")));
 		Timestamp to = Objects.requireNonNull(Timestamp.valueOf(request.getParameter("to")));
@@ -180,6 +190,7 @@ public class MemberSearch {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/admin/memberSearch/authority")
 	public JSONObject searchByAuthority(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String level = Objects.requireNonNull(request.getParameter("level"));
 		String last = request.getParameter("last");

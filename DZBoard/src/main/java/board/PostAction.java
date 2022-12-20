@@ -24,10 +24,19 @@ import repository.GoodBadRepository;
 import repository.MemberRepository;
 import repository.PostRepository;
 import repository.UploadedFileRepository;
+import server.Action;
+import server.RequestMapping;
 import server.Utility;
 
+@Action
 public class PostAction {
 	
+	@RequestMapping("/board")
+	public String boardMain(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return "/resources/board/board.jsp";
+	}
+	
+	@RequestMapping("/board/create")
 	public String createForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("member");
 		List<Category> categoryList = getCategoryList(member.getAuthority());
@@ -35,6 +44,7 @@ public class PostAction {
 		return "/resources/board/create.jsp";
 	}
 	
+	@RequestMapping("/board/createPost")
 	public JSONObject createPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Member member = (Member) session.getAttribute("member");
@@ -47,25 +57,30 @@ public class PostAction {
 		String title = items.get("title").get(0).getString("UTF-8");
 		String category = items.get("category").get(0).getString("UTF-8");
 		String content = items.get("content").get(0).getString("UTF-8");
+		String parent = items.get("parent") == null ? null : items.get("parent").get(0).getString("UTF-8");
 		
 		Post post = Post.builder()
 				.title(title)
 				.content(content)
 				.category(category)
 				.build();
+		if (parent != null) {
+			post.setParent(Integer.parseInt(parent));
+		}
 
 		PostRepository postRepository = new PostRepository();
-		int postId = postRepository.createPost(post, member);
-		
+		int postId = parent == null
+				? postRepository.createPost(post, member)
+				: postRepository.createReplyPost(post, member);
+		System.out.println("postId: " + postId);
 		if (postId < 0) {
 			return jsonOut(false, "게시글 저장 실패!");
 		}
-
+		
 		MemberRepository memberRepository = new MemberRepository();
 		memberRepository.updateUpdatedAt(member);
 		session.setAttribute("member", memberRepository.findOneMemberById(member.getId()));
 
-		
 		if (items.containsKey("file")) {
 			boolean success = items.get("file").stream()
 				.filter(fileItem -> fileItem.getSize() > 0)
@@ -75,6 +90,24 @@ public class PostAction {
 		return jsonOut(true, "성공!");
 	}
 	
+	@RequestMapping("/board/replyForm")
+	public String replyForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int parentId = Integer.parseInt(request.getParameter("parent"));
+		PostRepository postRepository = new PostRepository();
+		Post parentPost = postRepository.findOnePostById(parentId);
+		request.setAttribute("parentPost", parentPost);
+		
+		UploadedFileRepository fileRepository = new UploadedFileRepository();
+		List<UploadedFile> uploadedFiles = fileRepository.listByPostId(parentId);
+		request.setAttribute("uploadedFiles", uploadedFiles);
+		
+		Member member = (Member) request.getSession().getAttribute("member");
+		List<Category> categoryList = getCategoryList(member.getAuthority());
+		request.setAttribute("categoryList", categoryList);
+		return "/resources/board/replyForm.jsp";
+	}
+	
+	@RequestMapping("/board/deletePost")
 	public String deletePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		
@@ -89,6 +122,7 @@ public class PostAction {
 		return "";
 	}
 	
+	@RequestMapping("/board/goodBad")
 	public JSONObject goodBad(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
@@ -119,6 +153,7 @@ public class PostAction {
 		return jsonOut;
 	}
 	
+	@RequestMapping("/board/updateForm")
 	public String updatePostForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Member loginMember = (Member) session.getAttribute("member");
@@ -135,6 +170,7 @@ public class PostAction {
 		return request.getHeader("referer");
 	}
 	
+	@RequestMapping("/board/updatePost")
 	public JSONObject updatePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
@@ -169,6 +205,7 @@ public class PostAction {
 		return json;
 	}
 	
+	@RequestMapping("/board/view")
 	public String viewPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int postId = Integer.parseInt(request.getParameter("id"));
 		PostRepository postRepository = new PostRepository();
@@ -226,6 +263,14 @@ public class PostAction {
 		
 		MemberRepository memberRepository = new MemberRepository();
 		Member author = memberRepository.findOneMemberById(post.getAuthor());
+		
+		if (author == null) {
+			if (loginMember.getAuthority() == 99) {
+				postRepository.deletePost(post);
+				return true;
+			}
+			return false;
+		}
 		
 		if (author.getAuthority() < loginMember.getAuthority() || post.isSameAuthor(loginMember)) {
 			return postRepository.deletePost(post);

@@ -60,6 +60,58 @@ COMMIT;
 SET result = 1;
 END
 
+/* 프로시저: 글 작성 */
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pc_dzboard_insertPost`(
+	IN `author` VARCHAR(50),
+	IN `title` VARCHAR(50),
+	IN `content` VARCHAR(50),
+	IN `category` VARCHAR(50),
+	OUT `lastId` INT
+)
+LANGUAGE SQL
+NOT DETERMINISTIC
+CONTAINS SQL
+SQL SECURITY DEFINER
+COMMENT ''
+BEGIN
+DECLARE exit handler FOR NOT FOUND
+	begin
+		ROLLBACK;
+		SET lastId = -1;
+	END;
+	
+DECLARE exit handler FOR SQLEXCEPTION
+	begin
+		ROLLBACK;
+		SET lastId = -1;
+	END;
+SET lastId = -1;
+START TRANSACTION;
+	INSERT into tb_dzboard_board (`author`, `title`, `content`, `category`) VALUE (author, title, content, category);
+	SET lastId = LAST_INSERT_ID();
+	UPDATE tb_dzboard_board SET parent = lastId WHERE id = lastId;
+COMMIT;
+END
+/* 프로시저: 답글 작성 */
+BEGIN
+DECLARE exit handler FOR NOT FOUND
+	begin
+		ROLLBACK;
+		SET lastId = -1;
+	END;
+	
+DECLARE exit handler FOR SQLEXCEPTION
+	begin
+		ROLLBACK;
+		SET lastId = -1;
+	END;
+SET lastId = -1;
+START TRANSACTION;
+	INSERT into tb_dzboard_board (`parent`, `author`, `title`, `content`, `category`) VALUE (parent, author, title, content, category);
+	SET lastId = LAST_INSERT_ID();
+COMMIT;
+END
+
 /* 테이블 생성: Board 테이블 */
 CREATE TABLE `tb_dzboard_board` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,

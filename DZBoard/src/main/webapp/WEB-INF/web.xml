@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="https://jakarta.ee/xml/ns/jakartaee"
-	xmlns:web="http://xmlns.jcp.org/xml/ns/javaee"
-	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	id="WebApp_ID" version="5.0">
-	<display-name>DZBoard</display-name>
-	<error-page>
-		<error-code>404</error-code>
-		<location>/index</location>
-	</error-page>
-	<servlet>
-		<description>mapperServlet</description>
-		<display-name>mapper</display-name>
-		<servlet-name>mapper</servlet-name>
-		<servlet-class>server.MapperServlet</servlet-class>
-		<init-param>
-			<param-name>actionNames</param-name>
-			<param-value>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="5.0">
+  <display-name>DZBoard</display-name>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/index</location>
+  </error-page>
+  <!-- 
+  <servlet>
+    <description>mapperServlet</description>
+    <display-name>mapper</display-name>
+    <servlet-name>mapper</servlet-name>
+    <servlet-class>server.MapperServlet</servlet-class>
+    <init-param>
+      <param-name>actionNames</param-name>
+      <param-value>
 				/index:index.IndexAction:index
     			/admin/index:index.AdminIndex:index
     			/admin/memberListView:index.AdminIndex:memberListView
@@ -40,7 +37,8 @@
 				/admin/synchronizeUrlAuth:admin.UrlAuthManage:synchronizeUrlAuth
 				/admin/viewUrlAuth:admin.UrlAuthManage:viewUrlAuth
 				/board/download:board.DownloadFile:download
-				/board:board.PostSearch:searchAll
+				/board:board.PostAction:boardMain
+				/board/all:board.PostSearch:searchAll
 				/board/author:board.PostSearch:searchByAuthor
 				/board/category:board.PostSearch:searchByCategory
 				/board/content:board.PostSearch:searchByContent
@@ -54,8 +52,7 @@
 				/board/updateForm:board.PostAction:updatePostForm
 				/board/updatePost:board.PostAction:updatePost
 				/board/view:board.PostAction:viewPost
-				/member/login:member.MemberAction:login
-    			/member/loginForm:member.MemberAction:loginForm
+				/board/replyForm:board.PostAction:replyForm
 				/member/viewMember:member.MemberAction:viewMember
 				/member/deleteMemberForm:member.MemberAction:deleteMemberForm
 				/member/deleteMember:member.MemberAction:deleteMember
@@ -73,11 +70,15 @@
 				/member/updateMember:member.MemberAction:updateMember
 				/chat:chat.ChatAction:index
 				/chat/chatRoomList:chat.ChatAction:chatRoomList
+				/generateMember:test.TestGenerator:memberGenerator
+				/generatePost:test.TestGenerator:postGenerator
 			</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>mapper</servlet-name>
-		<url-pattern>/app/*</url-pattern>
-	</servlet-mapping>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mapper</servlet-name>
+    <url-pattern>/app/*</url-pattern>
+  </servlet-mapping>
+  
+   -->
 </web-app>
