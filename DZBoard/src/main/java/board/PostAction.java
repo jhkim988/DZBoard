@@ -28,6 +28,10 @@ import server.Utility;
 
 public class PostAction {
 	
+	public String boardMain(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return "/resources/board/board.jsp";
+	}
+	
 	public String createForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("member");
 		List<Category> categoryList = getCategoryList(member.getAuthority());

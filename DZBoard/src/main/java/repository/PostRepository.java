@@ -3,9 +3,7 @@ package repository;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import entities.Member;
@@ -19,76 +17,61 @@ public class PostRepository {
 		return findPosts("select * from tb_dzboard_board where category = ? order by createdAt desc, id desc limit 5", category);
 	}
 	
-	public List<Post> listPostHeader() {
-		return findPosts("select * from tb_dzboard_board order by createdAt desc, id desc limit 10");
+	public List<Post> listPostHeader(int pageNo, int pageSize) {
+		return findPosts("select * from tb_dzboard_board as fullsearch join (select id from tb_dzboard_board order by parent desc, id asc limit ?, ?) as covering on fullsearch.id = covering.id"
+				, pageNo, pageSize);
+// 성능 비교!		
+//		return findPosts("select * from tb_dzboard_board order by parent desc, id asc limit ?, ?", pageNo, pageSize);
 	}
 
-	public List<Post> listPostHeader(int postId, Timestamp createdAt, Boolean next) {
-		return paging(next
-				, "select * from tb_dzboard_board where createdAt < ? or (createdAt = ? and id < ?) order by createdAt desc, id desc limit 10"
-				, "select * from tb_dzboard_board where createdAt > ? or (createdAt = ? and id > ?) order by createdAt asc, id asc limit 10"
-				, createdAt, createdAt, postId);
+	public int countPost() {
+		return count("select count(*) from tb_dzboard_board");
+	}
+	
+	public List<Post> listPostHeaderOfCategory(int pageNo, int pageSize, String category) {
+		return findPosts("select * from tb_dzboard_board as fullsearch join (select id from tb_dzboard_board where category = ? order by parent desc, id asc limit ?, ?) as covering on fullsearch.id = covering.id"
+				, category, pageNo, pageSize);
+	}
+	
+	public int countPostByCategory(String category) {
+		return count("select count(*) from tb_dzboard_board where category = ?", category);
 	}
 
-	public List<Post> listPostHeaderOfCategory(String category) {
-		return findPosts("select * from tb_dzboard_board where category = ? order by createdAt desc, id desc limit 10"
-				, category);
+	public List<Post> listPostHeaderOfTitle(int pageNo, int pageSize, String title) {
+		return findPosts("select * from tb_dzboard_board as fullsearch join (select id from tb_dzboard_board where title like concat('%', ?, '%') order by parent desc, id asc limit ?, ?) as covering on fullsearch.id = covering.id"
+				, title, pageNo, pageSize);
+	}
+	
+	public int countPostByTitle(String title) {
+		return count("select count(*) from tb_dzboard_board where title like concat('%', ?, '%')", title);
+	}
+	
+	public List<Post> listPostHeaderOfContent(int pageNo, int pageSize, String content) {
+		return findPosts("select * from tb_dzboard_board where content like concat('%', ?, '%') limit ?, ?"
+				, content, pageNo, pageSize);
 	}
 
-	public List<Post> listPostHeaderOfCategory(String category, int postId, Timestamp createdAt, Boolean next) {
-		return paging(next
-				, "select * from tb_dzboard_board where category = ? and (createdAt < ? or (createdAt = ? and id < ?)) order by createdAt desc, id desc limit 10"
-				, "select * from tb_dzboard_board where category = ? and (createdAt > ? or (createdAt = ? and id > ?)) order by createdAt asc, id asc limit 10"
-				, category, createdAt, createdAt, postId);
+	public int countPostByContent(String content) {
+		return count("select count(*) from tb_dzboard_board where content like concat('%', ?, '%') order by parent desc, id asc", content);
+	}
+	
+	public List<Post> listPostHeaderOfAuthor(int pageNo, int pageSize, String author) {
+		return findPosts("select * from tb_dzboard_board as fullsearch join (select id from tb_dzboard_board where author = ? order by parent desc, id asc limit ?, ?) as covering on fullsearch.id = covering.id"
+				, author, pageNo, pageSize);
 	}
 
-	public List<Post> listPostHeaderOfTitle(String title) {
-		return findPosts("select * from tb_dzboard_board where title like ? order by createdAt desc, id desc limit 10"
-				, surroundLikeWildCard(title));
+	public int countPostByAuthor(String author) {
+		return count("select count(*) from tb_dzboard_board where author = ?", author);
 	}
-
-	public List<Post> listPostHeaderOfTitle(String title, int postId, Timestamp createdAt, Boolean next) {
-		return paging(next
-				, "select * from tb_dzboard_board where title like ? and (createdAt < ? or (createdAt = ? and id < ?)) order by createdAt desc, id desc limit 10"
-				, "select * from tb_dzboard_board where title like ? and (createdAt > ? or (createdAt = ? and id > ?)) order by createdAt asc, id asc limit 10"
-				, surroundLikeWildCard(title), createdAt, createdAt, postId);
-	}
-
-	public List<Post> listPostHeaderOfAuthor(String author) {
-		return findPosts("select * from tb_dzboard_board where author like ? order by createdAt desc, id desc limit 10"
-				, surroundLikeWildCard(author));
-	}
-
-	public List<Post> listPostHeaderOfAuthor(String author, int postId, Timestamp createdAt, Boolean next) {
-		return paging(next
-				, "select * from tb_dzboard_board where author like ? and (createdAt < ? or (createdAt = ? and id < ?)) order by createdAt desc, id desc limit 10"
-				, "select * from tb_dzboard_board where author like ? and (createdAt > ? or (createdAt = ? and id > ?)) order by createdAt asc, id asc limit 10"
-				, surroundLikeWildCard(author), createdAt, createdAt, postId);
-	}
-
-	public List<Post> listPostHeaderOfContent(String content) {
-		return findPosts("select * from tb_dzboard_board where content like ? order by createdAt desc, id desc limit 10"
-				, surroundLikeWildCard(content));
-	}
-
-	public List<Post> listPostHeaderOfContent(String content, int postId, Timestamp createdAt, Boolean next) {
-		return paging(next
-				, "select * from tb_dzboard_board where content like ? and (createdAt < ? or (createdAt = ? and id < ?)) order by createdAt desc, id desc limit 10"
-				, "select * from tb_dzboard_board where content like ? and (createdAt > ? or (createdAt = ? and id > ?)) order by createdAt asc, id asc limit 10"
-				, surroundLikeWildCard(content), createdAt, createdAt, postId);
-	}
-
-	public List<Post> listPostHeaderOfGood(int good) {
+	
+	public List<Post> listPostHeaderOfGood(int pageNo, int pageSize, int good) {
 		return findPosts(
-				"select * from tb_dzboard_board where good >= ? order by createdAt desc, id desc limit 10"
-				, good);
+				"select * from tb_dzboard_board as fullsearch join (select id from tb_dzboard_board where good >= ? order by parent desc, id asc desc limit ?, ?) as covering on fullsearch.id = covering.id"
+				, good, pageNo, pageSize);
 	}
 
-	public List<Post> listPostHeaderOfGood(int good, int postId, Timestamp createdAt, Boolean next) {
-		return paging(next
-				, "select * from tb_dzboard_board where good >= ? and (createdAt < ? or (createdAt = ? and id < ?)) order by createdAt desc, id desc limit 10"
-				, "select * from tb_dzboard_board where good >= ? and (createdAt > ? or (createdAt = ? and id > ?)) order by createdAt asc, id asc limit 10"
-				, good, createdAt, createdAt, postId);
+	public int countPostByGood(int good) {
+		return count("select count(*) from tb_dzboard_board where good >= ?", good);
 	}
 	
 	public List<Post> findPosts(String query, Object... params) {
@@ -103,14 +86,6 @@ public class PostRepository {
 			e.printStackTrace();
 		} finally {
 			repository.close();
-		}
-		return ret;
-	}
-	
-	public List<Post> paging(boolean next, String nextQuery, String prevQuery, Object... params) {
-		List<Post> ret = next ? findPosts(nextQuery, params) : findPosts(prevQuery, params);
-		if (!next) {
-			Collections.reverse(ret);
 		}
 		return ret;
 	}
@@ -156,8 +131,8 @@ public class PostRepository {
 	
 	public boolean createTestPost(Post post, Member member) {
 		return repository.executeUpdatePreparedStatement(
-				"insert into tb_dzboard_board (author, title, content, category, good) values (?, ?, ?, ?, ?)"
-				, member.getId(), post.getTitle(), post.getContent(), post.getCategory(), post.getGood()) == 1;
+				"insert into tb_dzboard_board (parent, author, title, content, category, good) values (?, ?, ?, ?, ?, ?)"
+				, post.getParent(), member.getId(), post.getTitle(), post.getContent(), post.getCategory(), post.getGood()) == 1;
 	}
 	
 	public boolean deletePost(Post post) {
@@ -205,9 +180,16 @@ public class PostRepository {
 
 	private Post resultSetToHeader() {
 		try {
-			Post ret = Post.builder().id(rs.getInt("id")).author(rs.getString("author")).title(rs.getString("title"))
-					.content(rs.getString("content")).createdAt(rs.getTimestamp("createdAt"))
-					.category(rs.getString("category")).viewcount(rs.getInt("viewcount")).good(rs.getInt("good"))
+			Post ret = Post.builder()
+					.id(rs.getInt("id"))
+					.parent(rs.getInt("parent"))
+					.author(rs.getString("author"))
+					.title(rs.getString("title"))
+					.content(rs.getString("content"))
+					.createdAt(rs.getTimestamp("createdAt"))
+					.category(rs.getString("category"))
+					.viewcount(rs.getInt("viewcount"))
+					.good(rs.getInt("good"))
 					.bad(rs.getInt("bad")).build();
 			if (ret != null)
 				return ret;
@@ -216,8 +198,18 @@ public class PostRepository {
 		}
 		throw new RuntimeException("SQL Result Set Exception");
 	}
-
-	private String surroundLikeWildCard(String str) {
-		return new StringBuilder("%").append(str).append("%").toString();
+	
+	private int count(String query, Object...params) {
+		repository.open();
+		try {
+			ResultSet rs = repository.executeQuery(query, params);
+			rs.next();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			repository.close();
+		}
+		return -1;
 	}
 }

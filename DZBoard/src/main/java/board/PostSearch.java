@@ -1,9 +1,12 @@
 package board;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import entities.Post;
 import jakarta.servlet.ServletException;
@@ -12,180 +15,119 @@ import jakarta.servlet.http.HttpServletResponse;
 import repository.PostRepository;
 
 public class PostSearch {
-	
-	// TODO: 답변형 기능 추가에 따른 쿼리 수정 필요!
-	public String searchAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
-		String date = request.getParameter("date");
-		String next = request.getParameter("next");
-		
-		PostRepository postRepository = new PostRepository();
-		
-		List<Post> posts = null;
-		
-		if (id == null) {
-			posts = postRepository.listPostHeader();
-		} else {
-			int postId = Integer.parseInt(id);
-			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeader(postId, createdAt, Boolean.valueOf(next));
-		}
-		if (posts.size() == 0) {
-			response.sendRedirect(request.getHeader("referer"));
-			return "";
-		}
-		request.setAttribute("posts", posts);
-		return "/resources/board/board.jsp";
+
+	private JSONObject toJSON(boolean status, String message) {
+		JSONObject ret = new JSONObject();
+		ret.put("status", status);
+		ret.put("message", message);
+		return ret;
 	}
 	
-	public String searchByAuthor(HttpServletRequest request, HttpServletResponse response)
+	private JSONObject getResultJSON(HttpServletRequest request, HttpServletResponse response, List<Post> posts, int total) throws ServletException, IOException {
+		JSONArray jsonArr = new JSONArray();
+		posts.forEach(post -> jsonArr.put(post.headertoJSON()));
+		JSONObject jsonOut = new JSONObject();
+		jsonOut.put("status", posts.size() > 0);
+		jsonOut.put("data", jsonArr);
+		jsonOut.put("total", total);
+		return jsonOut;
+	}
+	
+	public JSONObject searchAll(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String query = request.getParameter("query");
-
-		String id = request.getParameter("id");
-		String date = request.getParameter("date");
-		String next = request.getParameter("next");
-
-		PostRepository postRepository = new PostRepository();
-		List<Post> posts = null;
-		if (id == null) {
-			posts = postRepository.listPostHeaderOfAuthor(query);
-		} else {
-			int postId = Integer.parseInt(id);
-			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeaderOfAuthor(query, postId, createdAt, Boolean.valueOf(next));
-		}
-		if (posts.size() == 0) {
-			response.sendRedirect(request.getHeader("referer"));
-			return ""; // TODO: Test
-		}
-		request.setAttribute("posts", posts);
-		return "/resources/board/board.jsp";
-	}
-
-	public String searchByCategory(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String query = request.getParameter("query");
-
-		String id = request.getParameter("id");
-		String date = request.getParameter("date");
-		String next = request.getParameter("next");
-
-		PostRepository postRepository = new PostRepository();
-		List<Post> posts = null;
-		if (id == null) {
-			posts = postRepository.listPostHeaderOfCategory(query);
-		} else {
-			int postId = Integer.parseInt(id);
-			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeaderOfCategory(query, postId, createdAt, Boolean.valueOf(next));
-		}
-		if (posts.size() == 0) {
-			response.sendRedirect(request.getHeader("referer"));
-			return "";
-		}
-		request.setAttribute("posts", posts);
-		return "/resources/board/board.jsp";
-	}
-	
-	public String searchByContent(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String query = request.getParameter("query");
+		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
+		int pageNo = jsonIn.getInt("pageNo");
+		int pageSize = jsonIn.getInt("pageSize");
+		int offset = (pageNo-1)*pageSize;
 		
-		String id = request.getParameter("id");
-		String date = request.getParameter("date");
-		String next = request.getParameter("next");
-
-		PostRepository postRepository = new PostRepository();
-		List<Post> posts = null;
-		if (id == null) {
-			posts = postRepository.listPostHeaderOfContent(query);
-		} else {
-			int postId = Integer.parseInt(id);
-			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeaderOfContent(query, postId, createdAt, Boolean.valueOf(next));
-		}
-		if (posts.size() == 0) {
-			response.sendRedirect(request.getHeader("referer"));
-			return "";
-		}
-		request.setAttribute("posts", posts);
-		return "/resources/board/board.jsp";
+		PostRepository repository = new PostRepository();
+		List<Post> list = repository.listPostHeader(offset, pageSize);
+		int total = repository.countPost();
+		return getResultJSON(request, response, list, total);
 	}
-	
-	public String searchByGood(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String query = request.getParameter("query");
-		int good = 0;
-		try {
-			good = Integer.parseInt(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.sendRedirect(request.getHeader("referer"));
-			return "";
-		}
+
+	public JSONObject searchByAuthor(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
+		int pageNo = jsonIn.getInt("pageNo");
+		int pageSize = jsonIn.getInt("pageSize");
+		String author = jsonIn.getString("author");
+		int offset = (pageNo-1)*pageSize;
 		
-		String id = request.getParameter("id");
-		String date = request.getParameter("date");
-		String next = request.getParameter("next");
-
-		PostRepository postRepository = new PostRepository();
-		List<Post> posts = null;
-		if (id == null) {
-			posts = postRepository.listPostHeaderOfGood(good);
-		} else {
-			int postId = Integer.parseInt(id);
-			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeaderOfGood(good, postId, createdAt, Boolean.valueOf(next));
-		}
-		if (posts.size() == 0) {
-			response.sendRedirect(request.getHeader("referer"));
-			return "";
-		}
-		request.setAttribute("posts", posts);
-		return "/resources/board/board.jsp";
+		PostRepository repository = new PostRepository();
+		List<Post> list = repository.listPostHeaderOfAuthor(offset, pageSize, author);
+		int total = repository.countPostByAuthor(author);
+		return getResultJSON(request, response, list, total);
 	}
-	
-	public String searchByPostId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String query = request.getParameter("query");
+
+	public JSONObject searchByCategory(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
+		int pageNo = jsonIn.getInt("pageNo");
+		int pageSize = jsonIn.getInt("pageSize");
+		int offset = (pageNo-1)*pageSize;
+		String category = jsonIn.getString("category");
+		
+		PostRepository repository = new PostRepository();
+		List<Post> list = repository.listPostHeaderOfCategory(offset, pageSize, category);
+		int total = repository.countPostByCategory(category);
+		return getResultJSON(request, response, list, total);
+	}
+
+	public JSONObject searchByContent(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
+		int pageNo = jsonIn.getInt("pageNo");
+		int pageSize = jsonIn.getInt("pageSize");
+		String content = jsonIn.getString("content");
+		int offset = (pageNo-1)*pageSize;
+		
+		PostRepository repository = new PostRepository();
+		List<Post> list = repository.listPostHeaderOfContent(offset, pageSize, content);
+		int total = repository.countPostByContent(content);
+		return getResultJSON(request, response, list, total);
+	}
+
+	public JSONObject searchByGood(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
+		int pageNo = jsonIn.getInt("pageNo");
+		int pageSize = jsonIn.getInt("pageSize");
+		int good = jsonIn.getInt("good");
+		int offset = (pageNo-1)*pageSize;
+		PostRepository repository = new PostRepository();
+		List<Post> list = repository.listPostHeaderOfGood(offset, pageSize, good);
+		int total = repository.countPostByGood(good);
+		return getResultJSON(request, response, list, total);
+	}
+
+	public JSONObject searchByPostId(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
+		PostRepository repository = new PostRepository();
 		int postId = 0;
 		try {
-			postId = Integer.parseInt(query);
-		} catch (Exception e) {
-			response.sendRedirect(request.getHeader("referer"));
-			return "";
+			postId = jsonIn.getInt("postId");
+		} catch (JSONException e) {
+			return toJSON(false, "글 번호를 입력해주세요");
 		}
-		
-		PostRepository postRepository = new PostRepository();
-		List<Post> posts = Arrays.asList(postRepository.findOnePostById(postId));
-		if (posts.size() == 0) {
-			response.sendRedirect(request.getHeader("referer"));
-			return "";
-		}
-		request.setAttribute("posts", posts);
-		return "/resources/board/board.jsp";
+		 
+		Post post = repository.findOnePostById(postId);
+		List<Post> list = new ArrayList<>();
+		if (post != null) list.add(post);
+		return getResultJSON(request, response, list, 1);
 	}
-	
-	public String searchByTitle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String query = request.getParameter("query");
-		
-		String id = request.getParameter("id");
-		String date = request.getParameter("date");
-		String next = request.getParameter("next");
 
-		PostRepository postRepository = new PostRepository();
-		List<Post> posts = null;
-		if (id == null) {
-			posts = postRepository.listPostHeaderOfTitle(query);
-		} else {
-			int postId = Integer.parseInt(id);
-			Timestamp createdAt = Timestamp.valueOf(date);
-			posts = postRepository.listPostHeaderOfTitle(query, postId, createdAt, Boolean.valueOf(next));
-		}
-		if (posts.size() == 0) {
-			response.sendRedirect(request.getHeader("referer"));
-			return "";
-		}
-		request.setAttribute("posts", posts);
-		return "/resources/board/board.jsp";
+	public JSONObject searchByTitle(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
+		int pageNo = jsonIn.getInt("pageNo");
+		int pageSize = jsonIn.getInt("pageSize");
+		String title = jsonIn.getString("title");
+		int offset = (pageNo-1)*pageSize;
+		PostRepository repository = new PostRepository();
+		List<Post> list = repository.listPostHeaderOfTitle(offset, pageSize, title);
+		int total = repository.countPostByTitle(title);
+		return getResultJSON(request, response, list, total);
 	}
 }

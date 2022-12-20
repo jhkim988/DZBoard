@@ -40,7 +40,8 @@
 				/admin/synchronizeUrlAuth:admin.UrlAuthManage:synchronizeUrlAuth
 				/admin/viewUrlAuth:admin.UrlAuthManage:viewUrlAuth
 				/board/download:board.DownloadFile:download
-				/board:board.PostSearch:searchAll
+				/board:board.PostAction:boardMain
+				/board/all:board.PostSearch:searchAll
 				/board/author:board.PostSearch:searchByAuthor
 				/board/category:board.PostSearch:searchByCategory
 				/board/content:board.PostSearch:searchByContent
@@ -73,6 +74,8 @@
 				/member/updateMember:member.MemberAction:updateMember
 				/chat:chat.ChatAction:index
 				/chat/chatRoomList:chat.ChatAction:chatRoomList
+				/generateMember:test.TestGenerator:memberGenerator
+				/generatePost:test.TestGenerator:postGenerator
 			</param-value>
 		</init-param>
 	</servlet>
