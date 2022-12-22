@@ -27,6 +27,16 @@
 		</div>
 		<h1 id=title>Douzone Board</h1>
 	</header>
+	<form id="searchForm">
+		<label>
+			<input id="search" placeholder="검색어"/>
+		</label>
+		<input type="submit" value="검색"/>
+		<ul id="suggest">
+			<li class="suggestLi" style="display:none"><a href="#"></a></li>
+		</ul>
+	</form>
+	
 	<nav>
 		<a href="/DZBoard/chat">채팅 바로가기</a>
 		<a href="/DZBoard/board">게시판 바로가기</a>

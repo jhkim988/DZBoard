@@ -37,13 +37,13 @@ public class TestGenerator {
 	public String postGenerator(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Random rand = new Random();
 		PostRepository postRepository = new PostRepository();
-		for (int i = 300_002; i <= 400_000; i++) {
+		for (int i = 0; i <= 1000; i++) {
 			postRepository.createTestPost(
 					Post.builder()
-					.title("페이징 테스트" + rand.nextInt(10))
+					.title(Integer.toString(i))
 					.parent(i)
-					.content("글을 엄청 많이 써보자")
-					.category("일반")
+					.content("검색어 테스트")
+					.category("공지")
 					.build()
 					, Member.builder()
 					.id("user"+rand.nextInt(10))

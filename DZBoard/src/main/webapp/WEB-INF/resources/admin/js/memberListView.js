@@ -4,6 +4,7 @@ const main = () => {
 	const secondQuery = document.querySelector("#second");
 	const searchType = document.querySelector("#searchType");
 	const more = document.querySelector("button[id=more]");
+	const row = tbody.querySelector("tr").cloneNode(true);
 	
 	searchType.addEventListener("change", e => {
 		let target = e.target;
@@ -61,9 +62,8 @@ const main = () => {
 		// draw:
 		const json = await response.json();
 		if (json.status) {
-			const data = [];
-			json.data.forEach(x => data.push(makeTRTag(x)));
-			tbody.innerHTML = data.join('');			
+			tbody.replaceChildren();
+			json.data.forEach(x => tbody.appendChild(makeTRTag(x)));
 			more.dataset.request = json.more;
 		} else {
 			more.dataset.request = '';
@@ -78,27 +78,49 @@ const main = () => {
 		const response = await fetch(`/DZBoard/admin/memberSearch/${searchType.value}?${more.dataset.request}`);
 		const json = await response.json();
 		if (json.status) {
-			const data = [];
-			json.data.forEach(x => data.push(makeTRTag(x)));
-			tbody.innerHTML += data.join('');
+			json.data.forEach(x => tbody.appendChild(makeTRTag(x)));
 			more.dataset.request = json.more;
 		} else {
 			more.dataset.request = '';
 		}
 	});
 	
-	const makeTRTag = (member) => `<tr>
-			<td class='id'>${member.id}</td>
-			<td class='pwd'>${member.pwd}</td>
-			<td class='name'>${member.name}</td>
-			<td class='email'>${member.email}</td>
-			<td class='phone'>${member.phone}</td>
-			<td class='createdAt'>${member.createdAt}</td>
-			<td class='updatedAt'>${member.updatedAt}</td>
-			<td class='authority'>${member.authority}</td>
-			<td><a href='/DZBoard/admin/updateMemberForm?id=${member.id}'>수정</a></td>
-			<td><a href='/DZBoard/admin/deleteMember?id=${member.id}'>삭제</a></td>
-		</tr>`;
+	const deleteMember = async e => {
+		e.preventDefault();
+		alert(e.target.dataset.id);
+		const response = await fetch(`/DZBoard/admin/deleteMember`, {
+			method: 'POST'
+			, headers: {
+				'Content-Type': `application/json;charset=utf-8`
+			}
+			, body: JSON.stringify({
+				id: e.target.dataset.id
+			})
+		});
+		const json = await response.json();
+		if (json.status) {
+			alert(json.message);
+			tbody.removeChild(e.target.parentNode.parentNode);
+		}
+	}
+	
+	const makeTRTag = member => {
+		const copy = row.cloneNode(true);
+		copy.querySelector('.id').textContent = member.id;
+		copy.querySelector('.pwd').textContent = member.pwd;
+		copy.querySelector('.name').textContent = member.name;
+		copy.querySelector('.email').textContent = member.email;
+		copy.querySelector('.phone').textContent = member.phone;
+		copy.querySelector('.createdAt').textContent = member.createdAt;
+		copy.querySelector('.updatedAt').textContent = member.updatedAt;
+		copy.querySelector('.authority').textContent = member.authority;
+		copy.querySelector('.updateFormButton > a').href = `/DZBoard/admin/updateMemberForm?id=${member.id}`;
+		const deleteATag = copy.querySelector('.deleteButton > a');
+		deleteATag.dataset.id = member.id;
+		deleteATag.addEventListener("click", deleteMember);
+		copy.style.display = "table-row";
+		return copy;
+	}
 }
 
 window.onload = main;

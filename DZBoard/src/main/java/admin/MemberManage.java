@@ -17,13 +17,20 @@ import server.RequestMapping;
 public class MemberManage {
 	
 	@RequestMapping("/admin/deleteMember")
-	public String deleteMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;charset=utf-8");
-		String id = request.getParameter("id");
+	public JSONObject deleteMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
+		String id = jsonIn.getString("id");
+		
 		MemberRepository repository = new MemberRepository();
-		repository.deleteMemberById(id);
-		response.sendRedirect(request.getHeader("referer"));
-		return "";
+		JSONObject jsonOut = new JSONObject();
+		if (repository.deleteMemberById(id)) {
+			jsonOut.put("status", true);
+			jsonOut.put("message", "삭제 완료!");
+		} else {
+			jsonOut.put("status", false);
+			jsonOut.put("message", "삭제 실패");
+		}
+		return jsonOut;
 	}
 	
 	@RequestMapping("/admin/updateMemberForm")

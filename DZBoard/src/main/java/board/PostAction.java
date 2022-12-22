@@ -149,7 +149,6 @@ public class PostAction {
 			throw new UnsupportedOperationException();
 		}
 		
-		response.setContentType("application/json;charset=utf-8");
 		return jsonOut;
 	}
 	
@@ -191,7 +190,6 @@ public class PostAction {
 				.category(category)
 				.build();
 		
-		response.setContentType("application/json;charset=utf-8");
 		JSONObject json = new JSONObject();
 		if (oldPost != null && oldPost.isSameAuthor(loginMember) && postRepository.updatePost(oldPost, newPost)) {
 			json.put("status", true);

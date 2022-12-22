@@ -47,7 +47,7 @@ public class PostRepository {
 	}
 	
 	public List<Post> listPostHeaderOfContent(int pageNo, int pageSize, String content) {
-		return findPosts("select * from tb_dzboard_board where content like concat('%', ?, '%') limit ?, ?"
+		return findPosts("select * from tb_dzboard_board as fullsearch join (select id from tb_dzboard_board where content like concat('%', ?, '%') order by parent desc, id asc limit ?, ?) as covering on fullsearch.id = covering.id"
 				, content, pageNo, pageSize);
 	}
 
@@ -72,6 +72,11 @@ public class PostRepository {
 
 	public int countPostByGood(int good) {
 		return count("select count(*) from tb_dzboard_board where good >= ?", good);
+	}
+	
+	public List<Post> searchMain(String keyword, int limit) {
+		return findPosts("select * from tb_dzboard_board as fullsearch join (select id from tb_dzboard_board where title like concat(?, '%') order by parent, id asc limit ?) as covering on fullsearch.id = covering.id"
+				, keyword, limit);
 	}
 	
 	public List<Post> findPosts(String query, Object... params) {
@@ -198,7 +203,7 @@ public class PostRepository {
 				"update tb_dzboard_board set bad = bad+1 where id = ?"
 				, postId) == 1;
 	}
-
+	
 	private Post resultSetToHeader() {
 		try {
 			Post ret = Post.builder()
