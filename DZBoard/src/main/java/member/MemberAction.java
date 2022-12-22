@@ -35,7 +35,6 @@ public class MemberAction {
 	
 	@RequestMapping("/member/deleteMember")
 	public JSONObject deleteMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
 		JSONObject jsonOut = new JSONObject();
@@ -63,7 +62,6 @@ public class MemberAction {
 	
 	@RequestMapping("/member/dupMemberCheck")
 	public JSONObject dupMemberCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
 		
@@ -102,7 +100,6 @@ public class MemberAction {
 	
 	@RequestMapping("/member/findId")
 	public JSONObject findId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();
 		
 		JSONObject jsonIn = new JSONObject(in.readLine());
@@ -260,7 +257,6 @@ public class MemberAction {
 		BufferedReader in = request.getReader();
 		JSONObject jsonIn = new JSONObject(in.readLine());
 
-		response.setContentType("application/json;charset=utf-8");
 		keys.forEach(key -> info.put(key, jsonIn.getString(key)));
 		if (hasNullParameter()) {
 			return resultJSON(false, "모두 입력해주세요");
@@ -301,7 +297,6 @@ public class MemberAction {
 	
 	@RequestMapping("/member/updateMember")
 	public JSONObject updateMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json;charset=utf-8");
 		BufferedReader in = request.getReader();
 
 		JSONObject jsonIn = new JSONObject(in.readLine());

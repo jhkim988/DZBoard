@@ -47,6 +47,18 @@
 			</tr>
 		</thead>
 		<tbody>
+			<tr style="display:none">
+				<td class='id'></td>
+				<td class='pwd'></td>
+				<td class='name'></td>
+				<td class='email'></td>
+				<td class='phone'></td>
+				<td class='createdAt'></td>
+				<td class='updatedAt'></td>
+				<td class='authority'></td>
+				<td class='updateFormButton'><a href="#">수정</a></td>
+				<td class='deleteButton'><a href="#">삭제</a></td>
+			</tr>
 		</tbody>
 	</table>
 	<button id="more" data-request=''>더 보기</button>

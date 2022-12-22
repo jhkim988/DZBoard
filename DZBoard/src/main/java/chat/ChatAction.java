@@ -35,7 +35,6 @@ public class ChatAction {
 		});
 		jsonOut.put("data", jsonArr);
 		jsonOut.put("status", true);
-		response.setContentType("application/json;charset=utf-8");
 		return jsonOut;
 	}
 }

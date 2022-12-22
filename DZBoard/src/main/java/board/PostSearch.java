@@ -124,6 +124,22 @@ public class PostSearch {
 		return getResultJSON(request, response, list, total);
 	}
 	
+	@RequestMapping("/board/searchMain")
+	public JSONObject searchMain(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		JSONObject jsonIn = new JSONObject(request.getReader().readLine());
+		String keyword = jsonIn.getString("keyword");
+		
+		PostRepository repository = new PostRepository();
+		List<Post> list = repository.searchMain(keyword, 10);
+		
+		JSONObject jsonOut = new JSONObject();
+		JSONArray jsonArr = new JSONArray();
+		list.forEach(post -> jsonArr.put(post.headertoJSON()));
+		jsonOut.put("status", true);
+		jsonOut.put("data", jsonArr);
+		return jsonOut;
+	}
+	
 	private JSONObject toJSON(boolean status, String message) {
 		JSONObject ret = new JSONObject();
 		ret.put("status", status);

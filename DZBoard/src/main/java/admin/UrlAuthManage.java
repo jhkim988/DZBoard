@@ -35,7 +35,6 @@ public class UrlAuthManage {
 		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
 		boolean commit = urlAuthRepository.createUrlAuth(urlAuth);
 		
-		response.setContentType("application/json;charset=utf-8");
 		JSONObject jsonOut = new JSONObject();
 		if (commit) {
 			Utility.getServletContext().setAttribute("urlAuthMap", Collections.synchronizedMap(urlAuthRepository.findAllUrlAuth()));
@@ -56,7 +55,6 @@ public class UrlAuthManage {
 		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
 		boolean commit = urlAuthRepository.deleteUrlAuthByUrl(url);
 		
-		response.setContentType("application/json;charset=utf-8");
 		JSONObject jsonOut = new JSONObject();
 		
 		if (commit) {
@@ -94,7 +92,6 @@ public class UrlAuthManage {
 		UrlAuthRepository urlAuthRepository = new UrlAuthRepository();
 		boolean commit = urlAuthRepository.updateUrlAuth(newUrlAuth);
 		
-		response.setContentType("application/json;charset=utf-8");
 		JSONObject jsonOut = new JSONObject();
 		
 		if (commit) {

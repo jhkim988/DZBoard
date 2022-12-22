@@ -115,6 +115,7 @@ END
 /* 테이블 생성: Board 테이블 */
 CREATE TABLE `tb_dzboard_board` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`parent` INT(11) NOT NULL DEFAULT -1,
 	`author` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
 	`title` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
 	`content` VARCHAR(4000) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
@@ -123,12 +124,18 @@ CREATE TABLE `tb_dzboard_board` (
 	`viewcount` INT(11) NOT NULL DEFAULT '0',
 	`good` INT(11) NOT NULL DEFAULT '0',
 	`bad` INT(11) NOT NULL DEFAULT '0',
-	PRIMARY KEY (`id`) USING BTREE
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `parent` (`parent`, `id`) USING BTREE,
+	INDEX `good` (`good`, `parent`, `id`) USING BTREE,
+	INDEX `category` (`category`, `parent`, `id`) USING BTREE,
+	INDEX `title` (`title`, `parent`, `id`) USING BTREE,
+	INDEX `author` (`author`, `parent`, `id`) USING BTREE
 )
 COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=403
+AUTO_INCREMENT=400002
 ;
+
 
 
 /* 테이블 생성: category 테이블 */
